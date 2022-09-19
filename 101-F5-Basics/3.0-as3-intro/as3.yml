@@ -14,7 +14,7 @@
 
     - name: PUSH AS3
       uri:
-        url: "https://{{ ansible_host }}:8443/mgmt/shared/appsvcs/declare"
+        url: "https://{{ ansible_host }}:{{ server_port }}/mgmt/shared/appsvcs/declare"
         method: POST
         body: "{{ lookup('template','j2/tenant_base.j2', split_lines=False) }}"
         status_code: 200
