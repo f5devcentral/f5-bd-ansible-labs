@@ -1,0 +1,13 @@
+---
+- hosts: lb
+  connection: local
+  gather_facts: false
+  vars_files:
+    - vars/f5_vars.yml
+  roles:
+    - f5_setup_prework
+    - waf_export_policy
+    - waf_block_ip
+    - waf_block_urls
+    - waf_import_apply_policy
+

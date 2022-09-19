@@ -1,0 +1,7 @@
+---
+# Modify based on deployment
+F5_Admin_Port: "8443"
+local_folder_location: "/tmp/f5/"
+
+#Below Varaible cannot be modified at this time, looking for future solution
+file_name: UseCase-00-backup.ucs

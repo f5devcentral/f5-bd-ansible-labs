@@ -1,0 +1,72 @@
+---
+# tasks insttall Declaritive Onboarding Latest
+
+#hardcode timestamp into variable
+ - ansible.builtin.set_fact:
+     ASM_Final_File_Name: "{{F5_VIP_Name}}-ASMPolicy-{{ lookup('pipe','date +%Y-%m-%d-%H-%M-%S') }}.xml"
+
+ - name: Commit Changes to Git
+   ansible.builtin.shell: |
+     git config --global user.email "{{ git_email }}"
+     git config --global user.name "{{ git_username }}"
+
+ - name: Check if Repo Exists
+   ansible.builtin.uri:
+     url: "{{git_api_url}}{{git_workspace}}"
+     method: GET
+     user: "{{git_username}}"
+     password: "{{git_password}}"
+     force_basic_auth: yes
+     status_code: 200
+     body_format: json
+   delegate_to: localhost
+   register: repo_info
+
+ - name: check if repo exists
+   ansible.builtin.set_fact:
+     student_id: "{{ item }}"
+   with_items: "{{repo_info.json['values']}}"
+   when: item.name == repo_name
+
+ - name: Git checkout 1
+   ansible.builtin.git:
+     repo: "https://{{git_username | urlencode }}:{{git_password | urlencode}}@{{git_asm_default_repo[8:]}}"
+     dest: ~/asm-xml-files
+   when: student_id is undefined
+
+ - name: Copy Master Template to TMP
+   ansible.builtin.copy:
+     src: "{{ASM_Master_File}}"
+     dest: "{{ ASM_Policy_File }}"
+   when: student_id is undefined
+
+ - name: Git checkout 2
+   ansible.builtin.git:
+     repo: "https://{{git_username | urlencode }}:{{git_password | urlencode}}@{{git_website[8:]}}{{git_workspace}}/{{repo_name}}"
+     dest: ~/asm-xml-files
+   ignore_errors: true
+   when: student_id is defined
+
+ - name: Find Latest File
+   ansible.builtin.shell: ls ~/asm-xml-files -Artf | tail -n 1
+   register: latest_file_output
+   when: student_id is defined
+
+ - ansible.builtin.debug:
+     var: latest_file_output.stdout
+   when: student_id is defined
+
+ - name: Copy Master Template to TMP
+   ansible.builtin.copy:
+     src: "~/asm-xml-files/{{latest_file_output.stdout}}"
+     dest: "{{ ASM_Policy_File }}"
+   when: student_id is defined
+
+ - name: Get Checksum of Master file
+   ansible.builtin.stat:
+     path : "{{ ASM_Policy_File }}"
+   register: first_file
+  
+ - name: Master Template SHA1
+   ansible.builtin.set_fact:
+     file1_sha: "{{ first_file.stat.checksum }}"  

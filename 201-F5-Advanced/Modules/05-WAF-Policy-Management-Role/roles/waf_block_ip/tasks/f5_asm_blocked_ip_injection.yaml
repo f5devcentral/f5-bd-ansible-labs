@@ -1,0 +1,22 @@
+---
+
+#Validate Existing IP Addresses
+  - name: Validate Existing IP Addresses
+    ansible.builtin.shell: grep "<ip_address>{{ item }}" {{ ASM_Policy_File }}
+    register: Blocked_IP_Valid
+    with_items: "{{ Blocked_IPs }}"
+    ignore_errors: yes
+    when: Blocked_IPs is defined
+
+#Import Additional Disallowed IPs
+  - name: Add Disallowed IPs
+    community.general.xml:
+      path: "{{ ASM_Policy_File }}"
+      pretty_print: yes
+      input_type: xml
+      insertafter: yes
+      xpath: /policy/geolocation
+      add_children: "<whitelist><ip_address>{{ item.item }}</ip_address><subnet_mask>255.255.255.255</subnet_mask><policy_builder_trusted>false</policy_builder_trusted><ignore_anomalies>false</ignore_anomalies><never_log>false</never_log><block_ip>Always</block_ip><never_learn>false</never_learn><description>blocked</description><ignore_ip_reputation>false</ignore_ip_reputation></whitelist>"
+    with_items: "{{ Blocked_IP_Valid.results }}"
+    when: Blocked_IPs is defined and item.rc == 1
+

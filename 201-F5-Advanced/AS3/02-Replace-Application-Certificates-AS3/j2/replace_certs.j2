@@ -1,0 +1,58 @@
+{
+	"class": "AS3",
+	"action": "deploy",
+	"persist": true,
+	"declaration": {
+		"class": "ADC",
+		"schemaVersion": "3.0.0",
+		"id": "usecase2",
+		"label": "Ansible Workshops 2",
+		"remark": "HTTPS with predictive-node pool 2",
+		"AnsibleWorkshop": {
+			"class": "Tenant",
+			"AS3-UseCase-2": {
+				"class": "Application",
+				"{{F5_VIP_Name}}": {
+				  "class": "Service_HTTPS",
+          "virtualPort": 8081,
+					"virtualAddresses": [
+						"{{private_ip}}"
+					],
+					"pool": "{{ F5_VIP_Name }}_pool",
+					"redirect80": false,
+					"serverTLS": "{{ F5_VIP_Name }}_cert",
+          "persistenceMethods": []
+				},
+				"{{ F5_VIP_Name }}_pool": {
+					"class": "Pool",
+	        "minimumMembersActive": 0,
+          "minimumMonitors": "all",
+					"monitors": [
+						"http"
+					],
+					"members": [{
+						"servicePort": 80,
+					  "serverAddresses": [
+                    {% set comma = joiner(",") %}
+                    {% for mem in pool_members %}
+                        {{comma()}} "{{  hostvars[mem]['private_ip']  }}"
+                    {% endfor %}
+            ]
+					}]
+				},
+				"{{ F5_VIP_Name }}_cert": {
+					"class": "TLS_Server",
+					"certificates": [{
+						"certificate": "{{ F5_VIP_Name }}_crt"
+					}]
+				},
+				"{{ F5_VIP_Name }}_crt": {
+					"class": "Certificate",
+					"remark": "in practice we recommend using a passphrase",
+          "certificate": "{{ lookup('file', '{{playbook_dir}}/app-demo.crt') | replace('\n', '\\n') }}",
+          "privateKey": "{{ lookup('file', '{{playbook_dir}}/app-demo.key') | replace('\n', '\\n') }}"
+				}
+			}
+		}
+	}
+}

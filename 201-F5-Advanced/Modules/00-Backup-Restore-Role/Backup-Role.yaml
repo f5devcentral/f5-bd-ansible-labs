@@ -1,0 +1,8 @@
+---
+- hosts: lb
+  connection: local
+  gather_facts: false
+  vars_files:
+    - vars/f5_vars.yml
+  roles:
+    - f5_backup_data

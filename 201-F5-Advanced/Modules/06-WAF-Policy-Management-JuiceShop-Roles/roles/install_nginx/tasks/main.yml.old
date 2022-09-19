@@ -1,0 +1,41 @@
+- name: install epel-release
+  yum:
+    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+    disable_gpg_check: yes
+    state: present
+
+- name: Add NGINX GPG key
+  rpm_key:
+    key: "/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-8"
+    state: present
+
+- name: install nginx-proxy
+  yum:
+    name: nginx
+    state: present
+
+- name: copy nginx configuration
+  copy:
+    src: "{{ role_path }}/files/nginx.conf"
+    dest: /etc/nginx/nginx.conf
+
+- name: add nginx user
+  user:
+    name: nginx
+    comment: Nginx web server
+    create_home: no
+    home: /var/lib/nginx
+    shell: /sbin/nologin
+    state: present
+
+- name: start nginx
+  service:
+    name: nginx
+    state: started
+    enabled: yes
+
+- name: Set httpd_can_network_connect flag on and keep it persistent across reboots
+  seboolean:
+    name: httpd_can_network_connect
+    state: yes
+    persistent: yes

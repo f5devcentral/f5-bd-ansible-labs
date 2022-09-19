@@ -1,0 +1,16 @@
+---
+- hosts: lb
+  connection: local
+  gather_facts: false
+  vars_files:
+    - vars/f5_vars.yml
+  roles:
+    - previous_usecases_run
+    - credentials_bypass
+    - install_do
+    - install_asm
+    - git_checkout
+    - waf_block_ip
+    - waf_block_urls
+    - git_checkin
+    - apply_as3

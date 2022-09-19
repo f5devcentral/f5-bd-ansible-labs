@@ -1,0 +1,49 @@
+---
+
+#Validate Existing URL Addresses
+  - name: Validate Existing URL Addresses
+    ansible.builtin.shell: grep 'name="{{ item }}"' {{ ASM_Policy_File }}
+    register: Blocked_URLs_Valid
+    with_items: "{{ Blocked_URLs }}"
+    ignore_errors: yes
+    when: Blocked_URLs is defined
+
+
+#create Disallowed URLs Section if missing
+  - name: Add Disallowed URLs
+    community.general.xml:
+      path: "{{ ASM_Policy_File }}"
+      input_type: xml
+      pretty_print: yes
+      insertafter: yes
+      xpath: /policy/urls/url[*]
+      add_children: "<disallowed_urls></disallowed_urls>"
+    when: "'<disallowed_urls>' not in lookup('file', ASM_Policy_File ) and Blocked_URLs is defined"
+
+#Import Additional Disallowed URLs
+  - name: Add Disallowed URLs
+    community.general.xml:
+      path: "{{ ASM_Policy_File }}"
+      input_type: xml
+      pretty_print: yes
+      xpath: /policy/urls/disallowed_urls
+      add_children:
+        - "<url protocol=\"HTTP\" type=\"explicit\" name=\"{{ item.item }}\"/>"
+        - "<url protocol=\"HTTPS\" type=\"explicit\" name=\"{{ item.item }}\"/>"
+    with_items: "{{ Blocked_URLs_Valid.results }}"
+    when: Blocked_URLs is defined and item.rc == 1
+
+#Enable Illegal URL Blocking Violations
+  - name: Illegal URL Blocking Violations Enablement
+    community.general.xml:
+      path: "{{ ASM_Policy_File }}"
+      input_type: xml
+      pretty_print: yes
+      xpath: /policy/blocking/violation[@name="Illegal URL"]
+      set_children:
+        - "<alarm>true</alarm>"
+        - "<block>true</block>"
+        - "<learn>true</learn>"
+        - "<policy_builder_tracking>enabled</policy_builder_tracking>"
+    when: Blocked_URLs is defined
+

@@ -1,0 +1,10 @@
+---
+# defaults file for ASM-Role
+
+provider:
+  server: "{{private_ip}}"
+  user: "{{ansible_user}}"
+  password: "{{ansible_ssh_pass}}"
+  server_port: "{{F5_Admin_Port}}"
+  validate_certs: "no"
+

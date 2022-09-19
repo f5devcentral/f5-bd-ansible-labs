@@ -1,0 +1,32 @@
+---
+# tasks insttall Declaritive Onboarding Latest
+
+ - name: PUSH AS3
+   ansible.builtin.uri:
+     url: "https://{{ ansible_host }}:{{F5_Admin_Port}}/mgmt/shared/appsvcs/declare"
+     method: POST
+     body: "{{ lookup('template','configure_as3.j2', split_lines=False) }}"
+     status_code: 200, 202
+     timeout: 300
+     body_format: json
+     force_basic_auth: true
+     user: "{{ ansible_user }}"
+     password: "{{ ansible_ssh_pass }}"
+     validate_certs: false
+   delegate_to: localhost
+   when: sha_matched is defined
+
+ - name: PUSH AS3 ALT
+   ansible.builtin.uri:
+     url: "https://{{ ansible_host }}:{{F5_Admin_Port}}/mgmt/shared/appsvcs/declare"
+     method: POST
+     body: "{{ lookup('template','configure_as3_alt.j2', split_lines=False) }}"
+     status_code: 200, 202
+     timeout: 300
+     body_format: json
+     force_basic_auth: true
+     user: "{{ ansible_user }}"
+     password: "{{ ansible_ssh_pass }}"
+     validate_certs: false
+   delegate_to: localhost
+   when: sha_matched is not defined

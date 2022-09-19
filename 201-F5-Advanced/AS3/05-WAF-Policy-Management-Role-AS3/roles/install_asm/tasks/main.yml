@@ -1,0 +1,48 @@
+---
+# tasks install ASM
+
+ - name: GET ASM - Module Install Status
+   ansible.builtin.uri:
+     url: "https://{{ ansible_host }}:{{F5_Admin_Port}}/mgmt/tm/sys/provision/asm"
+     method: GET
+     status_code: 200
+     timeout: 300
+     force_basic_auth: true
+     user: "{{ ansible_user }}"
+     password: "{{ ansible_ssh_pass }}"
+     validate_certs: false
+   delegate_to: localhost
+   register: installed_status
+
+ - name: Install ASM - Push via DO (if not Installed)
+   ansible.builtin.uri:
+     url: "https://{{ ansible_host }}:{{F5_Admin_Port}}/mgmt/shared/declarative-onboarding/declare"
+     method: POST
+     body: "{{ lookup('template','provision.j2', split_lines=False) }}"
+     status_code: 202
+     timeout: 300
+     body_format: json
+     force_basic_auth: true
+     user: "{{ ansible_user }}"
+     password: "{{ ansible_ssh_pass }}"
+     validate_certs: false
+   delegate_to: localhost
+   register: do_result
+   when: installed_status.json.level != "nominal"
+    
+ - name: Wait for DO Task to complete
+   ansible.builtin.uri:
+     url: "https://{{ ansible_host }}:{{F5_Admin_Port}}/mgmt/shared/declarative-onboarding/task/{{ do_result.json.id }}"
+     method: GET
+     return_content: true
+     status_code: 200
+     force_basic_auth: true
+     user: "{{ ansible_user }}"
+     password: "{{ ansible_ssh_pass }}"
+     validate_certs: false
+   register: atc_DO_status
+   until: atc_DO_status is success
+   retries: 30
+   delay: 15
+   delegate_to: localhost
+   when: installed_status.json.level != "nominal"

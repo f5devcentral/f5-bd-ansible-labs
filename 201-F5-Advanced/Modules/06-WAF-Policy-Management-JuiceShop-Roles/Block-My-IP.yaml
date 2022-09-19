@@ -1,0 +1,12 @@
+---
+- hosts: lb
+  connection: local
+  gather_facts: true
+  vars_files:
+    - vars/f5_vars.yml
+  roles:
+    - block_my_ip
+    - waf_export_policy
+    - waf_block_ip
+    - waf_import_apply_policy
+

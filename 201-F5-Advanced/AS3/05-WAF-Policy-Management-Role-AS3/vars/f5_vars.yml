@@ -1,0 +1,41 @@
+---
+# Modify based on deployment
+ansible_python_interpreter: "{{ ansible_playbook_python }}" 
+
+
+F5_VIP_Port: "8084"
+F5_Admin_Port: "8443"
+F5_VIP_Name: Use-Case-5-VIP
+
+ASM_Master_File: "~/asm-xml-files/Master_Template_v16.xml"
+ASM_Policy_File: "/tmp/f5/Modified_Master_Template_v16.xml"
+File_Location: "/tmp/f5/"
+
+#Blocked URLS Tasks Variables
+Blocked_URLs:
+- /blocked.html
+- /hacked.html
+- /robot.txt
+
+#Blocked IPs Tasks Variables
+Blocked_IPs:
+- 10.192.1.199
+- 10.105.192.199
+- 172.16.192.199
+- 192.168.30.199
+- 192.172.1.1
+
+pool_members: "{{ groups['web'] }}"
+repo_name: "{{lookup('env', 'USER')}}-repo"
+do_uri: "https://github.com/F5Networks/f5-declarative-onboarding/releases"
+
+#GIT CREDENTIALS
+git_username: "vdi-tech-guy"
+git_password: "2UEcBDRpK5TKUGwraHgx" #This Code is invalid needs to be changed.
+git_email: "m.mabis@f5.com"
+
+#GIT Site Information
+git_website: "https://bitbucket.org/"
+git_api_url: "https://api.bitbucket.org/2.0/repositories/"
+git_workspace: "vdi-tech-guy"
+git_asm_default_repo: "https://bitbucket.org/vdi-tech-guy/f5-asm-policies.git" #This repo is public and can be used regardless of site/credentials 
