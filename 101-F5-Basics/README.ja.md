@@ -2,12 +2,12 @@
 
 **これは Ansible Automation Platform 2 のドキュメントです**
 
-![f5workshop](../../images/ansiblef5-transparent.png)
+![f5workshop](../images/ansiblef5-transparent.png)
 
 このコンテンツは、F5 BIG-IP での Ansible
 の機能を効果的に説明するための多目的ツールキットです。ここでは、インストラクターによる講義、ハンズオン、または自己ペースの演習など、さまざまな形式でワークショップトレーニングが提供されます。
 
-**他の言語でもお読みいただけます**: ![uk](../../images/uk.png) [English](README.md)、![japan](../../images/japan.png) [日本語](README.ja.md)
+**他の言語でもお読みいただけます**: ![uk](../images/uk.png) [English](README.md)、![japan](../images/japan.png) [日本語](README.ja.md)
 
 This is the documentation for Ansible Automation Platform 1.2.  If you are
 looking for Ansible Automation Platform 2, please go to
@@ -15,10 +15,10 @@ looking for Ansible Automation Platform 2, please go to
 
 ## プレゼンテーション
 プレゼンテーションの資料が必要ですか? ここから入手いただけます:
-[Ansible F5 WorkshopDeck](../../decks/ansible_f5.pdf)
+[Ansible F5 WorkshopDeck](../decks/ansible_f5.pdf)
 
 ## 図
-![f5 diagram](../../images/ansible_f5_diagram.png)
+![f5 diagram](../images/ansible_f5_diagram.png)
 
 BIG-IP のログイン情報: - ユーザー名: admin - パスワード: **インストラクターから提供**
 
@@ -58,4 +58,4 @@ BIG-IP のログイン情報: - ユーザー名: admin - パスワード: **イ�
 
 ---
 ![Red Hat Ansible
-Automation](../../images/rh-ansible-automation-platform.png)
+Automation](../images/rh-ansible-automation-platform.png)
