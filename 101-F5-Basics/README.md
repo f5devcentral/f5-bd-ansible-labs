@@ -2,18 +2,18 @@
 
 **This is documentation for Ansible Automation Platform 2**
 
-![f5workshop](../../images/ansiblef5-transparent.png)
+![f5workshop](../images/ansiblef5-transparent.png)
 
 This content is a multi-purpose toolkit for effectively demonstrating Ansible's capabilities on F5 BIG-IP by providing  workshop training in various forms -- instructor-led, hands-on or self-paced.
 
-**Read this in other languages**: ![uk](../../images/uk.png) [English](README.md),  ![japan](../../images/japan.png) [日本語](README.ja.md).
+**Read this in other languages**: ![uk](../images/uk.png) [English](README.md),  ![japan](../images/japan.png) [日本語](README.ja.md).
 
 ## Presentation
 Want the Presentation Deck?  Its right here:
-[Ansible F5 Workshop Deck](../../decks/ansible_f5.pdf)
+[Ansible F5 Workshop Deck](../decks/ansible_f5.pdf)
 
 ## Diagram
-![f5 diagram](../../images/ansible_f5_diagram.png)
+![f5 diagram](../images/ansible_f5_diagram.png)
 
 Login information for the BIG-IP:
 - username: admin
@@ -54,4 +54,4 @@ Login information for the BIG-IP:
   - **https://devcentral.f5.com/questions/f5-ansible-automation-discussion-63579**
 
 ---
-![Red Hat Ansible Automation](../../images/rh-ansible-automation-platform.png)
+![Red Hat Ansible Automation](../images/rh-ansible-automation-platform.png)
