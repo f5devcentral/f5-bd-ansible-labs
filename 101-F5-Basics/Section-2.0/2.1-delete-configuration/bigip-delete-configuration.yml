@@ -3,6 +3,8 @@
   hosts: lb
   connection: local
   gather_facts: false
+  vars:
+    irules: ['irule1', 'irule2']
 
   tasks:
     - name: Setup provider
