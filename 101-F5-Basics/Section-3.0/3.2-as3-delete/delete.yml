@@ -14,5 +14,5 @@
   tasks:
     - name: REMOVE AS3 TENANT
       f5networks.f5_bigip.bigip_as3_deploy:
-        as3_tenant: "{{ as3_tenant_name }}"
+        tenant: "{{ as3_tenant_name }}"
         state: absent
