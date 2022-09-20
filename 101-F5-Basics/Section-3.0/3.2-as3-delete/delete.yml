@@ -1,22 +1,18 @@
 ---
-- name: LINKLIGHT AS3
+- name: AS3 Tenant
   hosts: lb
-  connection: local
+  connection: httpapi
   gather_facts: false
 
+  vars:
+    ansible_httpapi_password: "{{ ansible_password }}"
+    ansible_network_os: f5networks.f5_bigip.bigip
+    ansible_httpapi_use_ssl: yes
+    ansible_httpapi_validate_certs: no
+    as3_tenant_name: "WorkshopExample"
+
   tasks:
-    - name: PUSH AS3
-      uri:
-        url: "https://{{ ansible_host }}:{{ server_port }}/mgmt/shared/appsvcs/declare/WorkshopExample"
-        method: DELETE
-        status_code: 200
-        timeout: 300
-        body_format: json
-        force_basic_auth: true
-        user: "{{ ansible_user }}"
-        password: "{{ ansible_password }}"
-        validate_certs: false
-      delegate_to: localhost
-      register: f5networks
-      until: f5networks is not failed
-      retries: 5
+    - name: REMOVE AS3 TENANT
+      f5networks.f5_bigip.bigip_as3_deploy:
+        as3_tenant: "{{ as3_tenant_name }}"
+        state: absent
