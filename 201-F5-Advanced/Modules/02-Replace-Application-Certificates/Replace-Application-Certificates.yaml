@@ -73,7 +73,7 @@
       name: "{{ F5_VIP_Name }}_ClientSSL_profile"
       cert_key_chain:
        - cert: "{{ F5_VIP_Name }}_Cert"
-         key: "{{ F5_VIP_Name }}_Key"
+         key: "{{ F5_VIP_Name }}_Cert"
 
   - name: UPDATE A VIRTUAL SERVER
     f5networks.f5_modules.bigip_virtual_server:
