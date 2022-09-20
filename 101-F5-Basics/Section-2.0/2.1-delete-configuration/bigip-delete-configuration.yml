@@ -40,6 +40,5 @@
         provider: "{{ provider }}"
         module: "ltm"
         name: "{{ item }}"
-        content: "{{ lookup('file','{{ item }}') }}"
         state: absent
       with_items: "{{ irules }}"
