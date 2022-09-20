@@ -63,7 +63,7 @@
   - name: SSL key upload
     f5networks.f5_modules.bigip_ssl_key:
       provider: "{{ provider }}"
-      name: "{{ F5_VIP_Name }}_Key"
+      name: "{{ F5_VIP_Name }}_Cert"
       content: "{{ lookup('file', SSL_Key) }}"
 
   - name: Create a client SSL profile with a cert/key/chain setting
