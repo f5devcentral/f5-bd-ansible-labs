@@ -1,11 +1,11 @@
 
   - debug:
-      msg: "{{hostvars[inventory_hostname]['ansible_env']}}"
+      msg: "{{ hostvars[inventory_hostname]['ansible_env'] }}"
 
 #Gather My Client IP From SSH
   - name: Gather Client IP Information from SSH
     ansible.builtin.set_fact:
-      My_IP_Address: "{{hostvars[inventory_hostname]['ansible_env'].SSH_CONNECTION.split(' ')[0]}}"
+      My_IP_Address: "{{ hostvars[inventory_hostname]['ansible_env'].SSH_CONNECTION.split(' ')[0] }}"
     when: Block_My_IP |lower == "yes"
 
 #Add My Client IP to Blocked IP Array

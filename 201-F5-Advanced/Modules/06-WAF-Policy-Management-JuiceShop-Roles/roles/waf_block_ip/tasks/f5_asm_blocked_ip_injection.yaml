@@ -1,16 +1,4 @@
 ---
-#Gather My Client IP From SSH
-#  - name: Gather Client IP Information from SSH
-#    set_fact:
-#      My_IP_Address: hostvars[inventory_hostname]['ansible_env'].SSH_CONNECTION.split(' ')[2]
-#    when: Block_My_IP |lower = "yes"
-
-#Block My Client IP Found in SSH
-#  - name: Block My IP Address
-#    set_fact:
-#      Blocked_IPs: "{{ Blocked_IPs + [ My_IP_Address ] }}"
-#    when: Block_My_IP |lower = "yes"
-
 #Validate Existing IP Addresses
   - name: Validate Existing IP Addresses
     ansible.builtin.shell: grep "<ip_address>{{ item }}" {{ ASM_Policy_File }}

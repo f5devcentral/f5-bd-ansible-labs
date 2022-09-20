@@ -3,14 +3,14 @@
 #Re-Deploy ASM policy
   - name: Create an LTM policy
     f5networks.f5_modules.bigip_policy:
-      provider: "{{provider}}"
+      provider: "{{ provider }}"
       name: "{{ ASM_Policy_Name }}"
       state: present
     when: Blocked_URLs is defined or Blocked_IPs is defined
 
   - name: Import ASM policy
     f5networks.f5_modules.bigip_asm_policy_import:
-      provider: "{{provider}}"
+      provider: "{{ provider }}"
       name: "{{ ASM_Policy_Name }}"
       source: "{{ ASM_Policy_File }}"
       force: yes
@@ -18,7 +18,7 @@
 
   - name: Replace a forward action with an ASM action
     f5networks.f5_modules.bigip_policy_rule:
-      provider: "{{provider}}"
+      provider: "{{ provider }}"
       policy: "{{ ASM_Policy_Name }}"
       name: rule1
       actions:
@@ -28,7 +28,7 @@
 
   - name: Deploy Draft ASM policy
     f5networks.f5_modules.bigip_policy:
-      provider: "{{provider}}"
+      provider: "{{ provider }}"
       name: "{{ ASM_Policy_Name }}"
       state: present
       rules:
@@ -38,11 +38,11 @@
 #Assign ASM Policy to VIP
   - name: Update the HTTPS Virtual Server
     f5networks.f5_modules.bigip_virtual_server:
-      provider: "{{provider}}"
+      provider: "{{ provider }}"
       state: present
       description: "HTTPS Virtual Server"
       name: "{{ F5_VIP_Name }}_https_vip"
-      destination: "{{ private_ip }}"
+      destination: "{{ external_ip }}"
       port: "{{ F5_VIP_Port }}"
       pool: "{{ F5_VIP_Name }}_pool"
       snat: Automap
@@ -59,12 +59,12 @@
 #Apply Draft ASM policy
   - name: Activate ASM Policy
     f5networks.f5_modules.bigip_asm_policy_manage:
-      provider: "{{provider}}"
+      provider: "{{ provider }}"
       name: "{{ ASM_Policy_Name }}"
       active: yes
 
 #Publish ASM Policy via TMSH
   - name: Publish ASM Policy via TMSH
     f5networks.f5_modules.bigip_command:
-      commands: "publish asm policy {{ASM_Policy_Name}}"
-      provider: "{{provider}}"
+      commands: "publish asm policy {{ ASM_Policy_Name }}"
+      provider: "{{ provider }}"

@@ -3,7 +3,7 @@
 #Fetch ASM_Policy to Variable
   - name: Fetching ASM Policy
     f5networks.f5_modules.bigip_asm_policy_fetch:
-      provider: "{{provider}}"
+      provider: "{{ provider }}"
       name: "{{ ASM_Policy_Name }}"
       inline: yes
       force: yes

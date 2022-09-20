@@ -5,7 +5,7 @@ ansible_python_interpreter: "{{ ansible_playbook_python }}"
 #Use-Case Variables
 F5_VIP_Name: Use-Case-5-VIP
 F5_VIP_Port: "8084"
-F5_Admin_Port: "8443"
+F5_Admin_Port: "443"
 ASM_Policy_Name: "Use-Case-5-ASM"
 ASM_Policy_File: "/tmp/f5/Use-Case-5-XML-Policy.xml"
 
