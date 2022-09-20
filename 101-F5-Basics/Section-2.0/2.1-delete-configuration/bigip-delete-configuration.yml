@@ -32,3 +32,12 @@
         name: "{{ hostvars[item].inventory_hostname }}"
         state: absent
       loop: "{{ groups['web'] }}"
+
+    - name: Delete iRules
+      f5networks.f5_modules.bigip_irule:
+        provider: "{{ provider }}"
+        module: "ltm"
+        name: "{{ item }}"
+        content: "{{ lookup('file','{{ item }}') }}"
+        state: absent
+      with_items: "{{ irules }}"
