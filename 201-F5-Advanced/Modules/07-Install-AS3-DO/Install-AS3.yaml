@@ -4,12 +4,12 @@
   gather_facts: no
 
   vars:
-    as3_uri: "https://github.com/F5Networks/f5-appsvcs-extension/releases"
+    as3_uri: "https://api.github.com/repos/F5Networks/f5-appsvcs-extension/releases/latest "
   
   tasks:
 
   - name: Get latest AS3 RPM version
-    ansible.builtin.shell: curl -s {{as3_uri}} | grep -E rpm | head -1 | cut -d "/" -f 7 | cut -d "=" -f 1 |  cut -d "\"" -f 1
+    ansible.builtin.shell: curl -s {{as3_uri}} | grep -E rpm |grep -E browser_download_url | head -1 | cut -d "/" -f 9 | cut -d "=" -f 1 |  cut -d "\"" -f 1
     register: as3_output
 
   - debug:
@@ -19,7 +19,7 @@
      as3_release: "{{as3_output.stdout_lines[0]}}"
 
   - name: Get latest AS3 RPM version
-    ansible.builtin.shell: curl -s {{as3_uri}} | grep -E rpm | head -1 | cut -d "/" -f 6
+    ansible.builtin.shell: curl -s {{as3_uri}} | grep -E rpm | grep -E browser_download_url | head -1 | cut -d "/" -f 8
     register: as3_output
 
   - debug:
