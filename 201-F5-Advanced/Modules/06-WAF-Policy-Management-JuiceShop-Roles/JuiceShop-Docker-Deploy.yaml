@@ -3,6 +3,10 @@
 #  connection: local
   gather_facts: false
   become: yes
+  vars:
+    ansible_become: yes 
+    ansible_become_method: sudo
+    ansible_become_pass: "{{ ansible_password }}
   roles:
     - install_docker
     - install_juice_shop
