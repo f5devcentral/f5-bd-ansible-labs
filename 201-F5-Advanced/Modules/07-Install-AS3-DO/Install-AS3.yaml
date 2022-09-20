@@ -8,29 +8,19 @@
   
   tasks:
 
-  - name: Get latest AS3 RPM version
-    ansible.builtin.shell: curl -s {{as3_uri}} | grep -E rpm |grep -E browser_download_url | head -1 | cut -d "/" -f 9 | cut -d "=" -f 1 |  cut -d "\"" -f 1
+  - name: Get latest AS3 RPM
+    ansible.builtin.shell: curl -s {{as3_uri}} | grep -E rpm |grep -E browser_download_url | head -1 | cut -d "\"" -f 4
     register: as3_output
 
   - debug:
      var: as3_output.stdout_lines[0]
 
   - ansible.builtin.set_fact:
-     as3_release: "{{as3_output.stdout_lines[0]}}"
-
-  - name: Get latest AS3 RPM version
-    ansible.builtin.shell: curl -s {{as3_uri}} | grep -E rpm | grep -E browser_download_url | head -1 | cut -d "/" -f 8
-    register: as3_output
-
-  - debug:
-     var: as3_output.stdout_lines[0]
-
-  - ansible.builtin.set_fact:
-     as3_release_tag: "{{as3_output.stdout_lines[0]}}"
+     as3_download: "{{as3_output.stdout_lines[0]}}"
 
   - name: Grab AS3 RPM from github
     ansible.builtin.get_url:
-     url: "{{as3_uri}}/download/{{as3_release_tag}}/{{as3_release}}?raw=true"
+     url: "{{as3_download}}?raw=true"
      dest: "~/"
      validate_certs: false
 
