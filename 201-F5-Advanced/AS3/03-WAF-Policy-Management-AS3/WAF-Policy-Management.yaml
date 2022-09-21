@@ -159,7 +159,7 @@
     when: Blocked_URLs is defined
 
   - name: Store Modified File in Webserver
-    ansible.builtin.shell: cp "{{ ASM_Policy_File }}" "{{ ASM_WebServer_File_Location }}{{ ASM_Final_File_Name }}"
+    ansible.builtin.shell: cp {{ ASM_Policy_File }} {{ ASM_WebServer_File_Location }}{{ ASM_Final_File_Name }}
     delegate_to: localhost
 
   - name: PUSH AS3 Template
