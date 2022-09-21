@@ -24,7 +24,7 @@
       ansible.builtin.get_url:
         url: "{{do_download}}?raw=true"
         dest: "~/"
-      validate_certs: false
+        validate_certs: false
 
     - name: Set a fact named 'provider' with BIG-IP login information
       ansible.builtin.set_fact:
