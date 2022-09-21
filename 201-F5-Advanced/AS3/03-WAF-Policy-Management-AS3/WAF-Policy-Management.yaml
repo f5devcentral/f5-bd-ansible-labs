@@ -78,6 +78,11 @@
     delegate_to: localhost
     when: installed_status.json.level != "nominal"
 
+ - name: Pause for Install to complete
+   ansible.builtin.pause:
+     minutes: 1
+   when: install_do.changed
+   
 # Get Master XML File and store
   - name: Copy Master File to tmp
     ansible.builtin.copy:
