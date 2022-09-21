@@ -1,7 +1,7 @@
 ---
 - import_playbook: "{{playbook_dir}}/files/Install-DO.yaml"
 
----
+
 - name: AS3 USECASE-3
   hosts: lb
   connection: httpapi
