@@ -33,7 +33,7 @@
       validate_certs: no
 
   - name: Install DO
-    ansible.builtin.include_tasks: "{{ playbook_dir }}/files/Install-DO.yaml"
+    ansible.builtin.include_playbook: "{{ playbook_dir }}/files/Install-DO.yaml"
 
   - name: GET ASM - Module Install Status
     ansible.builtin.uri:
