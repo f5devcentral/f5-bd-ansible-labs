@@ -1,105 +1,36 @@
 ---
-- name: USECASE3-AS3
+- name: AS3 USECASE-3
   hosts: lb
-  connection: local
+  connection: httpapi
   gather_facts: false
+
+  vars:
+    ansible_httpapi_password: "{{ ansible_password }}"
+    ansible_network_os: f5networks.f5_bigip.bigip
+    ansible_httpapi_use_ssl: yes
+    ansible_httpapi_validate_certs: no
+    as3_tenant_name: "WorkshopExample"
+    F5_Admin_Port: "443"
+    F5_VIP_Name: Use-Case-3-VIP
+    pool_members: "{{ groups['web'] }}"
 
   vars_files:
     - vars/f5_vars.yml
  
   tasks:
-
-  - name: Check if Previous AS3 Command was run
-    ansible.builtin.uri:
-      url: "https://{{ ansible_host }}:8443/mgmt/tm/ltm/virtual"
-      method: GET
-      return_content: yes
-      force_basic_auth: true
-      user: "{{ ansible_user }}"
-      password: "{{ ansible_ssh_pass }}"
-      validate_certs: false
-    delegate_to: localhost
-    register: previous_as3
-
-  - name: Check if Previous UseCases exists
-    set_fact:
-      previous_as3_exists: "{{item.description}}"
-    with_items: "{{ previous_as3.json['items'] }}"
-    when: item.description != "AS3-UseCase-3"
-    loop_control:
-      label: "{{ item.description }}"
-
-  - debug: 
-      msg: "AS3 Code Didn't Push becasue previous Usecase Exists, please run ansible-playbook delete.yml before re-running"
-    when: previous_as3_exists is defined
-
-  - meta: end_play
-    when: previous_as3_exists is defined
-
-#Bypass for userAuth
-  - ansible.builtin.stat:
-      path: "{{ File_Location }}/credentials.yml"
-    register: credentials_bypass
-
-  - ansible.builtin.include_vars:
-      file: "{{ File_Location }}/credentials.yml"
-    when: credentials_bypass.stat.exists
-
+  
 #hardcode timestamp into variable
   - ansible.builtin.set_fact:
       ASM_Final_File_Name: "{{F5_VIP_Name}}-ASMPolicy-{{ lookup('pipe','date +%Y-%m-%d-%H-%M-%S') }}.xml"
 
-  - name: Commit Changes to Git
-    ansible.builtin.shell: |
-      git config --global user.email "{{ git_email }}"
-      git config --global user.name "{{ git_username }}"
-  
-  - name: Get latest DO RPM name
-    ansible.builtin.shell: curl -s {{do_uri}} | grep -E rpm | head -1 | cut -d "/" -f 7 | cut -d "=" -f 1 |  cut -d "\"" -f 1
-    register: do_output
-
-  - ansible.builtin.set_fact:
-     do_release: "{{do_output.stdout_lines[0]}}"
-
-  - name: Get latest DO RPM version
-    ansible.builtin.shell: curl -s {{do_uri}} | grep -E rpm | head -1 | cut -d "/" -f 6
-    register: do_output
-
-  - ansible.builtin.set_fact:
-     do_release_tag: "{{do_output.stdout_lines[0]}}"
-
-  - name: Grab DO RPM from github
-    ansible.builtin.get_url:
-     url: "{{do_uri}}/download/{{do_release_tag}}/{{do_release}}?raw=true"
-     dest: "~/"
-     validate_certs: false
-
   - name: Set a fact named 'provider' with BIG-IP login information
     ansible.builtin.set_fact:
      provider:
-      server: "{{private_ip}}"
-      user: "{{ansible_user}}"
-      password: "{{ansible_ssh_pass}}"
-      server_port: "{{F5_Admin_Port}}"
+      server: "{{ ansible_host }}"
+      user: "{{ ansible_user }}"
+      password: "{{ ansible_ssh_pass }}"
+      server_port: "{{ F5_Admin_Port }}"
       validate_certs: no
-
-  - name: Grab the DO version from the home directory
-    ansible.builtin.shell: ls -Art ~/*.rpm | tail -n 1 | rev | cut -d/ -f 1 | rev
-    register: ls_output
-
-  - ansible.builtin.set_fact:
-     do_rpm: "{{ls_output.stdout}}"
-
-  - name: Install DO
-    f5networks.f5_modules.bigip_lx_package:
-     package: "~/{{do_rpm}}"
-     provider: "{{provider}}"
-    register: install_do
-
-  - name: Pause for Install to complete
-    ansible.builtin.pause:
-      minutes: 1
-    when: install_do.changed
 
   - name: GET ASM - Module Install Status
     ansible.builtin.uri:
@@ -147,67 +78,11 @@
     delegate_to: localhost
     when: installed_status.json.level != "nominal"
 
-
-  - name: Check if Repo Exists
-    ansible.builtin.uri:
-      url: "{{git_api_url}}{{git_workspace}}"
-      method: GET
-      user: "{{git_username}}"
-      password: "{{git_password}}"
-      force_basic_auth: yes
-      status_code: 200
-      body_format: json
-    delegate_to: localhost
-    register: repo_info
-
-  - name: check if repo exists
-    ansible.builtin.set_fact:
-      student_id: "{{ item }}"
-    with_items: "{{repo_info.json['values']}}"
-    when: item.name == repo_name
-
-  - name: Git checkout 1
-    ansible.builtin.git:
-      repo: "https://{{git_username | urlencode }}:{{git_password | urlencode}}@{{git_asm_default_repo[8:]}}"
-      dest: ~/asm-xml-files
-    when: student_id is undefined
-
-  - name: Copy Master Template to TMP
+# Get Master XML File and store
+  - name: Copy Master File to tmp
     ansible.builtin.copy:
       src: "{{ ASM_Master_File }}"
       dest: "{{ ASM_Policy_File }}"
-    when: student_id is undefined
-
-  - name: Git checkout 2
-    ansible.builtin.git:
-      repo: "https://{{git_username | urlencode }}:{{git_password | urlencode}}@{{git_website[8:]}}{{git_workspace}}/{{repo_name}}"
-      dest: ~/asm-xml-files
-    ignore_errors: true
-    when: student_id is defined
-
-  - name: Find Latest File
-    ansible.builtin.shell: ls ~/asm-xml-files -Artf | tail -n 1
-    register: latest_file_output
-    when: student_id is defined
-
-  - ansible.builtin.debug:
-      var: latest_file_output.stdout
-    when: student_id is defined
-
-  - name: Copy Master Template to TMP
-    ansible.builtin.copy:
-      src: "~/asm-xml-files/{{latest_file_output.stdout}}"
-      dest: "{{ ASM_Policy_File }}"
-    when: student_id is defined
-
-  - name: Get Checksum of Master file
-    ansible.builtin.stat:
-      path : "{{ ASM_Policy_File }}"
-    register: first_file
-  
-  - name: Master Template SHA1
-    ansible.builtin.set_fact:
-      file1_sha: "{{ first_file.stat.checksum }}"  
 
 #Validate Existing IP Addresses
   - name: Validate Existing IP Addresses
@@ -275,134 +150,12 @@
         - "<policy_builder_tracking>enabled</policy_builder_tracking>"
     when: Blocked_URLs is defined
 
-  - name: Get Checksum of Modified file
-    ansible.builtin.stat:
-      path : "{{ ASM_Policy_File }}"
-    register: second_file
-
-  - name: Master Template SHA1
-    ansible.builtin.set_fact:
-      file2_sha: "{{ second_file.stat.checksum }}"
-
-  - name: Compilation Changed
-    ansible.builtin.set_fact:
-      sha_matched: = "{{file2_sha and file1_sha}}"
-    when:  file2_sha != file1_sha
-   
-  - name: Check if Repo Exists
-    ansible.builtin.uri:
-      url: "{{git_api_url}}{{git_workspace}}"
-      method: GET
-      user: "{{git_username}}"
-      password: "{{git_password}}"
-      force_basic_auth: yes
-      status_code: 200
-      body_format: json
-    delegate_to: localhost
-    register: repo_info
+  - name: PUSH AS3 Template
+    f5networks.f5_bigip.bigip_as3_deploy:
+      content: "{{ lookup('template','j2/configure_as3.j2', split_lines=False) }}"
     when: sha_matched is defined
 
-  - name: check if repo exists
-    ansible.builtin.set_fact:
-      student_id: "{{ item }}"
-    with_items: "{{repo_info.json['values']}}"
-    when: sha_matched is defined and item.name == repo_name
-
-  - name: Create a Bitbucket Repo
-    ansible.builtin.uri:
-      url: "{{git_api_url}}{{git_workspace}}/{{repo_name}}"
-      method: POST
-      user: "{{git_username}}"
-      password: "{{git_password}}"
-      body: "{{ lookup('template','j2/create_repo.j2', split_lines=False) }}"
-      force_basic_auth: yes
-      status_code: 200
-      body_format: json
-    delegate_to: localhost
-    when: sha_matched is defined and student_id is undefined
-
-  - pause:
-      seconds: 20
-    when: sha_matched is defined and student_id is undefined
-
-  - name: Create a directory if it does not exist
-    ansible.builtin.file:
-      path: "/root/asm-xml-files-student"
-      state: directory
-      mode: '0755'
-
-  - name: Initialize Git
-    ansible.builtin.shell: |
-      cd /root/asm-xml-files-student/
-      git init
-      exit 0
-    when: sha_matched is defined and student_id is undefined
-      
-  - name: Git checkout 3
-    ansible.builtin.git:
-      repo: "https://{{git_username | urlencode }}:{{git_password | urlencode}}@{{git_website[8:]}}{{git_workspace}}/{{repo_name}}"
-      dest: /root/asm-xml-files-student
-    ignore_errors: true 
-    when: sha_matched is defined and student_id is defined
-
-  - name: Copy Modified File to Git Repo
-    ansible.builtin.copy:
-      src: "{{ASM_Policy_File}}"
-      dest: "/root/asm-xml-files-student/{{ASM_Final_File_Name}}"
-    when: sha_matched is defined
-    register: file_name_output
-
-  - ansible.builtin.debug: 
-      var: file_name_output
-
-  - name: Initial Commit Changes to Git
-    ansible.builtin.shell: |
-      cd /root/asm-xml-files-student/
-      git remote add origin "https://{{git_username | urlencode }}:{{git_password | urlencode}}@{{git_website[8:]}}{{git_workspace}}/{{repo_name}}.git"
-      git add .
-      git commit -m "ASM File Update $(date +"%Y-%m-%d %H:%M:%S")"
-      git push -u origin master
-      exit 0
-    when: sha_matched is defined and student_id is undefined
-
-  - name: Commit Changes to Git
-    ansible.builtin.shell: |
-      cd /root/asm-xml-files-student/
-      git add .
-      git commit -m "ASM File Update $(date +"%Y-%m-%d %H:%M:%S")"
-      git push
-      exit 0
-    when: sha_matched is defined and student_id is defined
-  
-  - ansible.builtin.debug:
-      var: ASM_Final_File_Name
-     
-  - name: PUSH AS3
-    ansible.builtin.uri:
-      url: "https://{{ ansible_host }}:{{F5_Admin_Port}}/mgmt/shared/appsvcs/declare"
-      method: POST
-      body: "{{ lookup('template','j2/configure_as3.j2', split_lines=False) }}"
-      status_code: 200, 202
-      timeout: 300
-      body_format: json
-      force_basic_auth: true
-      user: "{{ ansible_user }}"
-      password: "{{ ansible_ssh_pass }}"
-      validate_certs: false
-    delegate_to: localhost
-    when: sha_matched is defined
-
-  - name: PUSH AS3 ALT
-    ansible.builtin.uri:
-      url: "https://{{ ansible_host }}:{{F5_Admin_Port}}/mgmt/shared/appsvcs/declare"
-      method: POST
-      body: "{{ lookup('template','j2/configure_as3_alt.j2', split_lines=False) }}"
-      status_code: 200, 202
-      timeout: 300
-      body_format: json
-      force_basic_auth: true
-      user: "{{ ansible_user }}"
-      password: "{{ ansible_ssh_pass }}"
-      validate_certs: false
-    delegate_to: localhost
+  - name: PUSH AS3 Template No Changes
+    f5networks.f5_bigip.bigip_as3_deploy:
+      content: "{{ lookup('template','j2/configure_as3_alt.j2', split_lines=False) }}"
     when: sha_matched is not defined

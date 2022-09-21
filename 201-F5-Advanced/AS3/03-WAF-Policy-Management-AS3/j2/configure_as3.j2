@@ -8,7 +8,7 @@
 		"id": "usecase3",
 		"label": "Ansible Workshops 3",
 		"remark": "HTTPS with pool 3",
-		"AnsibleWorkshop": {
+		"{{ as3_tenant_name }}": {
 			"class": "Tenant",
 			"AS3-UseCase-3": {
 				"class": "Application",
@@ -16,7 +16,7 @@
 					"class": "Service_HTTPS",
 					"virtualPort": 8082,
 					"virtualAddresses": [
-						"{{private_ip}}"
+						"{{ external_ip }}"
 					],
 					"profileHTTP": "basic", 
 					"pool": "{{ F5_VIP_Name }}_pool",
@@ -41,7 +41,7 @@
 					  "serverAddresses": [
                     {% set comma = joiner(",") %}
                     {% for mem in pool_members %}
-                        {{comma()}} "{{  hostvars[mem]['private_ip']  }}"
+                        {{comma()}} "{{  hostvars[mem]['internal_ip']  }}"
                     {% endfor %}
             ]
 					}]
