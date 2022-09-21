@@ -158,6 +158,9 @@
         - "<policy_builder_tracking>enabled</policy_builder_tracking>"
     when: Blocked_URLs is defined
 
+  - pause:
+      minutes: 10
+
   - name: Store Modified File in Webserver
     ansible.builtin.copy:
       src: "{{ ASM_Policy_File }}"
