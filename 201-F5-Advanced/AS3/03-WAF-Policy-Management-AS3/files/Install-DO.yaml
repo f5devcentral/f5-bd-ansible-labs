@@ -1,28 +1,22 @@
-- name: Download latest DO RPM
-  hosts: localhost
-  connection: local
-  gather_facts: no
+---
+- ansible.builtin.set_fact:
+   do_uri: "https://api.github.com/repos/F5Networks/f5-declarative-onboarding/releases/latest"
 
-  vars:
-    do_uri: "https://api.github.com/repos/F5Networks/f5-declarative-onboarding/releases/latest"
-  
-  tasks:
+- name: Get latest DO RPM version
+  ansible.builtin.shell: curl -s {{do_uri}} | grep -E rpm |grep -E browser_download_url | head -1 | cut -d "\"" -f 4
+  register: do_output
 
-  - name: Get latest DO RPM version
-    ansible.builtin.shell: curl -s {{do_uri}} | grep -E rpm |grep -E browser_download_url | head -1 | cut -d "\"" -f 4
-    register: do_output
+- debug:
+   var: do_output.stdout_lines[0]
 
-  - debug:
-     var: do_output.stdout_lines[0]
+- ansible.builtin.set_fact:
+   do_download: "{{do_output.stdout_lines[0]}}"
 
-  - ansible.builtin.set_fact:
-     do_download: "{{do_output.stdout_lines[0]}}"
-
-  - name: Grab DO RPM from github
-    ansible.builtin.get_url:
-     url: "{{do_download}}?raw=true"
-     dest: "~/"
-     validate_certs: false
+- name: Grab DO RPM from github
+  ansible.builtin.get_url:
+   url: "{{do_download}}?raw=true"
+   dest: "~/"
+   validate_certs: false
 
 - name: Install DO package to BIG-IP
   hosts: f5
