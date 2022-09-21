@@ -8,7 +8,7 @@
 		"id": "usecase2",
 		"label": "Ansible Workshops 2",
 		"remark": "HTTPS with predictive-node pool 2",
-		"AnsibleWorkshop": {
+		"{{ as3_tenant_name }}": {
 			"class": "Tenant",
 			"AS3-UseCase-2": {
 				"class": "Application",
@@ -16,7 +16,7 @@
 				  "class": "Service_HTTPS",
           "virtualPort": 8081,
 					"virtualAddresses": [
-						"{{private_ip}}"
+						"{{internal_ip]}}"
 					],
 					"pool": "{{ F5_VIP_Name }}_pool",
 					"redirect80": false,

@@ -8,14 +8,14 @@
     "id": "usecase1",
     "label": "Ansible Workshops",
     "remark": "HTTPS with pool",
-    "AnsibleWorkshop": {
+    "{{ as3_tenant_name }}": {
       "class": "Tenant",
       "AS3-UseCase-1": {
         "class": "Application",
         "{{F5_VIP_Name}}": {
           "class": "Service_HTTPS",
           "virtualAddresses": [
-            "{{private_ip}}"
+            "{{ internal_ip }}"
           ],
           "pool": "{{ F5_VIP_Name }}_pool",
 #          "serverTLS": "{{ F5_VIP_Name }}_cert"
