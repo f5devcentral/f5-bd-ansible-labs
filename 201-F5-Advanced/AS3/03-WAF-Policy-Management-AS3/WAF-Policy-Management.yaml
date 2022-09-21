@@ -162,8 +162,7 @@
     ansible.builtin.copy:
       src: "{{ ASM_Policy_File }}"
       dest: "{{ ASM_WebServer_File_Location }}{{ ASM_Final_File_Name }}"
-      become: yes
-      ansible_become_pass: "{{ ansible_password }}"
+    delegate_to: localhost
 
   - name: PUSH AS3 Template
     f5networks.f5_bigip.bigip_as3_deploy:
