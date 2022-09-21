@@ -1,4 +1,7 @@
 ---
+- name: Install DO
+  ansible.builtin.include_playbook: "{{ playbook_dir }}/files/Install-DO.yaml"
+
 - name: AS3 USECASE-3
   hosts: lb
   connection: httpapi
@@ -31,9 +34,6 @@
       password: "{{ ansible_ssh_pass }}"
       server_port: "{{ F5_Admin_Port }}"
       validate_certs: no
-
-  - name: Install DO
-    ansible.builtin.include_playbook: "{{ playbook_dir }}/files/Install-DO.yaml"
 
   - name: GET ASM - Module Install Status
     ansible.builtin.uri:
