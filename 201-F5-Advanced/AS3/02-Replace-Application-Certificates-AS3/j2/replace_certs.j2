@@ -35,7 +35,7 @@
 					  "serverAddresses": [
                     {% set comma = joiner(",") %}
                     {% for mem in pool_members %}
-                        {{comma()}} "{{  hostvars[mem]['private_ip']  }}"
+                        {{comma()}} "{{  hostvars[mem]['internal_ip']  }}"
                     {% endfor %}
             ]
 					}]
