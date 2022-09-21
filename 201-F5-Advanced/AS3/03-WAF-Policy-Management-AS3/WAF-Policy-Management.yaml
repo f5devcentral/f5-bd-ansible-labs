@@ -160,7 +160,6 @@
 
   - name: Store Modified File in Webserver
     ansible.builtin.shell: cp "{{ ASM_Policy_File }}" "{{ ASM_WebServer_File_Location }}{{ ASM_Final_File_Name }}"
-    become: yes
     delegate_to: localhost
 
   - name: PUSH AS3 Template
