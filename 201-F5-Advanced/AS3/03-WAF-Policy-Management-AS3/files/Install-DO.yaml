@@ -15,7 +15,7 @@
       register: do_output
 
     - debug:
-      var: do_output.stdout_lines[0]
+        var: do_output.stdout_lines[0]
 
     - ansible.builtin.set_fact:
         do_download: "{{do_output.stdout_lines[0]}}"
