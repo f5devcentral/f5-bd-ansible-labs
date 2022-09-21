@@ -5,10 +5,10 @@ ansible_python_interpreter: "{{ ansible_playbook_python }}"
 F5_Admin_Port: "443"
 F5_VIP_Name: Use-Case-3-VIP
 
-ASM_Policy_Website: "http://10.1.1.4/ASM-Policies"
+ASM_Policy_Website: "http://10.1.1.4:8090/"
 ASM_Master_File: "{{ playbook_dir }}/files/Master_Template_v16.xml"
 ASM_Policy_File: "/tmp/f5/Modified_Master_Template_v16.xml"
-ASM_WebServer_File_Location: "/usr/share/nginx/html/ASM-Policies/"
+ASM_WebServer_File_Location: "/usr/share/nginx/html/asm-profiles/"
 
 Blocked_URLs:
 - /blocked.html
