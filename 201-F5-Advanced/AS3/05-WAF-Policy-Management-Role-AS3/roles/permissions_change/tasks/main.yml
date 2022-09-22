@@ -3,7 +3,7 @@
 - name: Check Permisisons of Folder
   ansible.builtin.find:
     path: "{{ ASM_WebServer_File_Location }}"
-    file_type: folder
+    file_type: directory
   register: folder_output
 
 - debug:
