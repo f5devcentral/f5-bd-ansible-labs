@@ -16,7 +16,7 @@
       mode: '0777'
     become: yes
     become_method: sudo
-    become_user: root
+    # become_user: root
 
 - name: AS3 USECASE-3
   hosts: lb
