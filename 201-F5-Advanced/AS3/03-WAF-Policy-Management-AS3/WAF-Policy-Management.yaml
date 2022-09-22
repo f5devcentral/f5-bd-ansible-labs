@@ -5,6 +5,9 @@
   hosts: localhost
   connection: localhost
   gather_facts: False
+  vars_files:
+    - vars/f5_vars.yml
+ 
 
   tasks:
 
@@ -186,6 +189,8 @@
   hosts: localhost
   connection: localhost
   gather_facts: False
+  vars_files:
+    - vars/f5_vars.yml
 
   tasks:
 
