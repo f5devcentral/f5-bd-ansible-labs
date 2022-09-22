@@ -18,6 +18,7 @@
     - existing_policy
     - waf_block_ip
     - waf_block_urls
+    - checksum
     - apply_as3
 
 - name: CHMOD WebServer - Close
