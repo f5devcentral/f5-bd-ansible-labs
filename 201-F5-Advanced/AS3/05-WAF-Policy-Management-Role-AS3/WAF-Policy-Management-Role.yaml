@@ -1,5 +1,4 @@
 ---
-
 - name: CHMOD WebServer - Open
   hosts: ansible
   gather_facts: False
