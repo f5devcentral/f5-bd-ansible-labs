@@ -122,7 +122,7 @@
 
   - name: Copy Master Template to TMP
     ansible.builtin.copy:
-      src: "{{latest_file_output.stdout}}"
+      src: "{{ ASM_WebServer_File_Location }}{{latest_file_output.stdout}}"
       dest: "{{ ASM_Policy_File }}"
     when: does_xml_exist.matched >= 1
 
