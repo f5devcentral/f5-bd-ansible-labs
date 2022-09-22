@@ -8,4 +8,4 @@
 
 - name: Set start to 0
   ansible.builtin.set_fact:
-    start: 0
+    finish: 1

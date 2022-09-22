@@ -23,4 +23,4 @@
   become: yes
   become_method: sudo
   become_user: root
-  when: ('"rwx" in folder_output.acl[1]') and ('"0" in start')
+  when: ('"rwx" in folder_output.acl[1]') and ('"1" in finish')
