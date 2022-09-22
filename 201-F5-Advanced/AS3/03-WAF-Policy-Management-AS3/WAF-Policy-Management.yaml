@@ -1,6 +1,24 @@
 ---
 - import_playbook: "{{playbook_dir}}/files/Install-DO.yaml"
 
+- name: CHMOD WebServer - Close
+  hosts: ansible
+  connection: localhost
+  gather_facts: False
+  vars_files:
+    - vars/f5_vars.yml
+
+  tasks:
+
+  - name: Modify Permissions of "{{ ASM_WebServer_File_Location }}" to 777
+    ansible.builtin.file:
+      path: "{{ ASM_WebServer_File_Location }}"
+      state: directory
+      mode: '0777'
+    become: yes
+    become_method: sudo
+    become_user: root
+
 - name: AS3 USECASE-3
   hosts: lb
   connection: httpapi
