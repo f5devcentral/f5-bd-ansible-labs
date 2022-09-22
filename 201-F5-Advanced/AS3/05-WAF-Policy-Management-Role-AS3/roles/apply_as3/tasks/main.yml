@@ -6,6 +6,6 @@
     content: "{{ lookup('template','configure_as3.j2', split_lines=False) }}"
   when:  (does_xml_exist.matched == 0) or (file2_sha != file1_sha)
 
-- name: Set finish to 1
+- name: Set finished to 1
   ansible.builtin.set_fact:
-    finish: 1
+    finished: 1
