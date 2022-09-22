@@ -29,4 +29,4 @@
 - name: Use Existing ASM policy
   ansible.builtin.set_fact:
     ASM_Final_File_Name: "{{ latest_file_output.stdout }}"
-  when:  (file2_sha == file1_sha)
+  when:  (does_xml_exist.matched >= 1) and (file2_sha == file1_sha)
