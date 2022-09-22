@@ -13,7 +13,9 @@
   become: yes
   become_method: sudo
   become_user: root
-  when: ('"r-x" in folder_output.acl[1]') and ('"1" in start')
+  when:
+    - '"r-x" in folder_output.acl[1]'
+    - start == 1
 
 - name: Modify Permissions of "{{ ASM_WebServer_File_Location }}" to 755
   ansible.builtin.file:
@@ -23,4 +25,6 @@
   become: yes
   become_method: sudo
   become_user: root
-  when: ('"rwx" in folder_output.acl[1]') and ('"1" in finish')
+  when: 
+    - '"rwx" in folder_output.acl[1]'
+    - finish == 1
