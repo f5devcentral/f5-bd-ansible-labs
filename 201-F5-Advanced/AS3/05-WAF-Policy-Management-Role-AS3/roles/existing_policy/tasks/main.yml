@@ -9,8 +9,8 @@
     patterns: '*.xml'
   register: does_xml_exist
 
-- ansible.builtin.debug:
-    var: does_xml_exist
+# - ansible.builtin.debug:
+#     var: does_xml_exist
 
 - name: Find Latest File
   ansible.builtin.shell: ls {{ ASM_WebServer_File_Location }} -Artf | tail -n 1
