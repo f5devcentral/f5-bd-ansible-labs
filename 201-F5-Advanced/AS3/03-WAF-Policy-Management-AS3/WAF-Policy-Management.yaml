@@ -13,6 +13,7 @@
   - name: Modify File for Web Use
     ansible.builtin.shell: chmod 777 {{ ASM_WebServer_File_Location }}
     become: yes
+    become_method: sudo
 
 - name: AS3 USECASE-3
   hosts: lb
@@ -197,3 +198,4 @@
   - name: Modify File for Web Use
     ansible.builtin.shell: chmod 755 {{ ASM_WebServer_File_Location }}
     become: yes
+    become_method: sudo
