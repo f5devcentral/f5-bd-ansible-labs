@@ -46,8 +46,7 @@
     become: yes
     become_method: sudo
     become_user: root
-    delegate_to: "{{ item }}"
-    loop: "{{ groups['control'] }}"
+    delegate_to: ansible
 
 #hardcode timestamp into variable
   - ansible.builtin.set_fact:
