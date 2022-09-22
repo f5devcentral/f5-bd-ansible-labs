@@ -17,7 +17,7 @@
 
 - debug:
     msg: READ EXECUTE
-  when: '"r-x" in folder_output.acl[1]]'
+  when: '"r-x" in folder_output.acl[1]'
 
 - name: Modify Permissions of "{{ ASM_WebServer_File_Location }}" to 755
   ansible.builtin.file:
