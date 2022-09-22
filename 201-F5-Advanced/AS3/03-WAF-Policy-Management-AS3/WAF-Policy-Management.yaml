@@ -17,7 +17,6 @@
     become: yes
     become_method: sudo
     become_user: root
-    ansible_become_password: "{{ ansible_password }}"
 
 - name: AS3 USECASE-3
   hosts: lb
