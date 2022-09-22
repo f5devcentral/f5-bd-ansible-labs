@@ -10,11 +10,11 @@
 
 - debug:
     msg: READ WRITE EXECUTE
-  when: folder_output.acl.group contains "rwx"
+  when: "rwx" in folder_output.acl.group
 
 - debug:
     msg: READ EXECUTE
-  when: folder_output.acl.group contains "r-x"
+  when: "r-x" in folder_output.acl.group
 
 - name: Modify Permissions of "{{ ASM_WebServer_File_Location }}" to 755
   ansible.builtin.file:
