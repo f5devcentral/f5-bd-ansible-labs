@@ -16,6 +16,7 @@
       state: directory
       mode: '0777'
     become: yes
+    become_method: sudo
       
 - name: AS3 USECASE-3
   hosts: lb
@@ -203,3 +204,4 @@
       state: directory
       mode: '0755'
     become: yes
+    become_method: sudo
