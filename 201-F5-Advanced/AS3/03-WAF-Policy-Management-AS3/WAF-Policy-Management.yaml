@@ -3,7 +3,6 @@
 
 - name: CHMOD WebServer - Close
   hosts: ansible
-  connection: localhost
   gather_facts: False
   vars_files:
     - vars/f5_vars.yml
