@@ -28,6 +28,7 @@
   f5networks.f5_modules.bigip_lx_package:
     package: "~/{{do_rpm}}"
     provider: "{{provider}}"
+  register: install_do
 
 - name: Pause for Install to complete
   ansible.builtin.pause:
