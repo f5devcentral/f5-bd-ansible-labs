@@ -166,11 +166,8 @@
       src: "{{ ASM_Policy_File }}"
       dest: "{{ ASM_WebServer_File_Location }}{{ ASM_Final_File_Name }}"
 
-  - name: Allow apache to modify files in /srv/git_repos
-    community.general.sefcontext:
-      target: "{{ ASM_WebServer_File_Location }}"
-      setype: httpd_sys_content_t
-      state: present
+  - name: Modify File for Web Use
+    ansible.builtin.shell: chcon -t httpd_sys_content_t {{ ASM_WebServer_File_Location }}{{ ASM_Final_File_Name }}
 
   - name: PUSH AS3 Template
     f5networks.f5_bigip.bigip_as3_deploy:
