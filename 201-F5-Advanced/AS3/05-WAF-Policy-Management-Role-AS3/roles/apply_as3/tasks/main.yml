@@ -4,7 +4,6 @@
 - name: PUSH AS3 Template
   f5networks.f5_bigip.bigip_as3_deploy:
     content: "{{ lookup('template','configure_as3.j2', split_lines=False) }}"
-  when:  (does_xml_exist.matched == 0) or (file2_sha != file1_sha)
 
 - name: Set finished to 1
   ansible.builtin.set_fact:
