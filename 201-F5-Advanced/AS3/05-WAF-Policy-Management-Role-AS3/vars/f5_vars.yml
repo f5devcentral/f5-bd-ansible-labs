@@ -1,8 +1,5 @@
 ---
 
-start: 1
-finish: 0
-
 # Modify based on deployment
 ansible_python_interpreter: "{{ ansible_playbook_python }}" 
 ansible_httpapi_password: "{{ ansible_password }}"
