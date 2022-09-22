@@ -5,6 +5,12 @@
     path: "{{ ASM_WebServer_File_Location }}"
   register: folder_output
 
+- debug: 
+    var: folder_output
+
+- debug: 
+    var: finish
+
 - name: Modify Permissions of "{{ ASM_WebServer_File_Location }}" to 777
   ansible.builtin.file:
     path: "{{ ASM_WebServer_File_Location }}"
