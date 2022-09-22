@@ -10,7 +10,7 @@
  
   tasks:
 
-  - name: Create a directory if it does not exist
+  - name: Modify Permissions of "{{ ASM_WebServer_File_Location }}" to 777
     ansible.builtin.file:
       path: "{{ ASM_WebServer_File_Location }}"
       state: directory
@@ -197,8 +197,9 @@
 
   tasks:
 
-  - name: Modify File for Web Use
-    ansible.builtin.shell: chmod 755 {{ ASM_WebServer_File_Location }}
+  - name: Modify Permissions of "{{ ASM_WebServer_File_Location }}" to 755
+    ansible.builtin.file:
+      path: "{{ ASM_WebServer_File_Location }}"
+      state: directory
+      mode: '0755'
     become: yes
-    become_method: sudo
-    delegate_to: localhost
