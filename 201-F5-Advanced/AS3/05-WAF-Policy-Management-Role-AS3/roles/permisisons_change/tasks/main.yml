@@ -1,0 +1,28 @@
+---
+
+- name: Check Permisisons of Folder
+  ansible.builtin.find:
+    path: "{{ ASM_WebServer_File_Location }}"
+    file_type: folder
+  register: folder_output
+
+- debug:
+    var: folder_output
+
+- name: Modify Permissions of "{{ ASM_WebServer_File_Location }}" to 755
+  ansible.builtin.file:
+    path: "{{ ASM_WebServer_File_Location }}"
+    state: directory
+    mode: '0755'
+  become: yes
+  become_method: sudo
+  become_user: root
+
+  - name: Modify Permissions of "{{ ASM_WebServer_File_Location }}" to 755
+  ansible.builtin.file:
+    path: "{{ ASM_WebServer_File_Location }}"
+    state: directory
+    mode: '0755'
+  become: yes
+  become_method: sudo
+  become_user: root

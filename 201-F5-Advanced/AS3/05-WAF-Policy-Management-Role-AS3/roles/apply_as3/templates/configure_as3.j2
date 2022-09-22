@@ -6,17 +6,17 @@
 		"class": "ADC",
 		"schemaVersion": "3.0.0",
 		"id": "usecase5",
-		"label": "Ansible Workshops 5",
-		"remark": "HTTPS with pool 5",
-		"AnsibleWorkshop": {
+		"label": "Ansible Workshops 3",
+		"remark": "HTTPS with pool 3",
+		"{{ as3_tenant_name }}": {
 			"class": "Tenant",
-			"AS3-UseCase-5": {
+			"AS3-UseCase-3": {
 				"class": "Application",
 				"{{F5_VIP_Name}}": {
 					"class": "Service_HTTPS",
 					"virtualPort": 8084,
 					"virtualAddresses": [
-						"{{private_ip}}"
+						"{{ external_ip }}"
 					],
 					"profileHTTP": "basic", 
 					"pool": "{{ F5_VIP_Name }}_pool",
@@ -41,14 +41,14 @@
 					  "serverAddresses": [
                     {% set comma = joiner(",") %}
                     {% for mem in pool_members %}
-                        {{comma()}} "{{  hostvars[mem]['private_ip']  }}"
+                        {{comma()}} "{{  hostvars[mem]['internal_ip']  }}"
                     {% endfor %}
             ]
 					}]
 				},
 			"{{F5_VIP_Name}}-Policy": {
       "class": "WAF_Policy",
-      "url": "{{git_website}}{{git_workspace}}/{{repo_name}}/raw/master/{{ASM_Final_File_Name}}",
+      "url": "{{ ASM_Policy_Website }}{{ASM_Final_File_Name}}",
       "ignoreChanges": false
 			}
 			}

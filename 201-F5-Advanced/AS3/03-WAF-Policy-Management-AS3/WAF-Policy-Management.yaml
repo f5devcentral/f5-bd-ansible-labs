@@ -210,9 +210,6 @@
         - "<policy_builder_tracking>enabled</policy_builder_tracking>"
     when: Blocked_URLs is defined
 
-  # - pause:
-  #     minutes: 10
-
   - name: Get Checksum of Modified file
     ansible.builtin.stat:
       path : "{{ ASM_Policy_File }}"
