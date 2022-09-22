@@ -12,6 +12,10 @@
     msg: READ WRITE EXECUTE
   when: folder_output.acl.group contains "rwx"
 
+- debug:
+    msg: READ EXECUTE
+  when: folder_output.acl.group contains "r-x"
+
 - name: Modify Permissions of "{{ ASM_WebServer_File_Location }}" to 755
   ansible.builtin.file:
     path: "{{ ASM_WebServer_File_Location }}"
