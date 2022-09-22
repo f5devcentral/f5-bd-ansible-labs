@@ -38,14 +38,6 @@
  
   tasks:
 
-  - name: Modify Permissions of "{{ ASM_WebServer_File_Location }}" to 777
-    ansible.builtin.file:
-      path: "{{ ASM_WebServer_File_Location }}"
-      state: directory
-      mode: '0775'
-    delegate_to: ansible
-    connection: local
-
 #hardcode timestamp into variable
   - ansible.builtin.set_fact:
       ASM_Final_File_Name: "{{F5_VIP_Name}}-ASMPolicy-{{ lookup('pipe','date +%Y-%m-%d-%H-%M-%S') }}.xml"
@@ -198,19 +190,18 @@
       content: "{{ lookup('template','j2/configure_as3.j2', split_lines=False) }}"
 
 - name: CHMOD WebServer - Close
-  hosts: localhost
-  connection: localhost
+  hosts: ansible
   gather_facts: False
   vars_files:
     - vars/f5_vars.yml
 
   tasks:
 
-  - name: Modify Permissions of "{{ ASM_WebServer_File_Location }}" to 755
+  - name: Modify Permissions of "{{ ASM_WebServer_File_Location }}" to 777
     ansible.builtin.file:
       path: "{{ ASM_WebServer_File_Location }}"
       state: directory
-      mode: '0755'
+      mode: '0777'
     become: yes
     become_method: sudo
     become_user: root
