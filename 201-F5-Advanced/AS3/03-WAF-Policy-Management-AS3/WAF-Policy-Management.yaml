@@ -42,8 +42,9 @@
     ansible.builtin.file:
       path: "{{ ASM_WebServer_File_Location }}"
       state: directory
-      mode: '0777'
+      mode: '0775'
     become: yes
+    become_method: sudo
     become_user: root
     delegate_to: ansible
 
