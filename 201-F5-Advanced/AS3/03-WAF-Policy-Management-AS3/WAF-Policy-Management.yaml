@@ -1,24 +1,6 @@
 ---
 - import_playbook: "{{playbook_dir}}/files/Install-DO.yaml"
 
-- name: CHMOD WebServer - Open
-  hosts: localhost
-  connection: localhost
-  gather_facts: False
-  vars_files:
-    - vars/f5_vars.yml
- 
-  tasks:
-
-  - name: Modify Permissions of "{{ ASM_WebServer_File_Location }}" to 777
-    ansible.builtin.file:
-      path: "{{ ASM_WebServer_File_Location }}"
-      state: directory
-      mode: '0777'
-    become: yes
-    become_method: sudo
-    become_user: root
-      
 - name: AS3 USECASE-3
   hosts: lb
   connection: httpapi
@@ -38,7 +20,18 @@
     - vars/f5_vars.yml
  
   tasks:
-  
+
+  - name: Modify Permissions of "{{ ASM_WebServer_File_Location }}" to 777
+    ansible.builtin.file:
+      path: "{{ ASM_WebServer_File_Location }}"
+      state: directory
+      mode: '0777'
+    become: yes
+    become_method: sudo
+    become_user: root
+    delegate_to: "{{ item }}"
+    loop: "{{ groups['dbservers'] }}"
+
 #hardcode timestamp into variable
   - ansible.builtin.set_fact:
       ASM_Final_File_Name: "{{F5_VIP_Name}}-ASMPolicy-{{ lookup('pipe','date +%Y-%m-%d-%H-%M-%S') }}.xml"
