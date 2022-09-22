@@ -3,6 +3,7 @@
 F5_Admin_Port: '8443'
 F5_VIP_Name: "Use-Case-4-VIP"
 F5_Pool_Name: "Use-Case-4-VIP_pool"
+as3_tenant_name: "WorkshopExample"
 
 pool_members: "{{ groups['web'] }}"
 

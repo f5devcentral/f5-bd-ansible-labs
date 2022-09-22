@@ -8,7 +8,7 @@
     "id": "usecase4",
     "label": "Ansible Workshops 4",
     "remark": "HTTPS with pool 4",
-    "AnsibleWorkshop": {
+    "{{ as3_tenant_name }}": {
       "class": "Tenant",
       "AS3-UseCase-4": {
         "class": "Application",
@@ -16,7 +16,7 @@
 		  "class": "Service_HTTPS",
 		  "virtualPort": 8082,
           "virtualAddresses": [
-            "{{private_ip}}"
+            "{{ external_ip }}"
           ],
           "pool": "{{ F5_VIP_Name }}_pool",
 		  "redirect80": false,
@@ -37,7 +37,7 @@
         {
           "servicePort": 80,
           "serverAddresses": [
-          "{{hostvars[item]['private_ip'] }}"
+          "{{hostvars[item]['internal_ip'] }}"
           ],
           {%  if hostvars[item]['inventory_hostname'] in F5_Pool_Members %}
           "adminState": "{{F5_Pool_Node_State|lower}}"

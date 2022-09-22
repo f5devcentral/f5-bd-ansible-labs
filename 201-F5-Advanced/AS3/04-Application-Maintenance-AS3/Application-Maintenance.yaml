@@ -1,51 +1,16 @@
 ---
-- name: USECASE4-AS3
+- name: AS3 USECASE-4
   hosts: lb
-  connection: local
+  connection: httpapi
   gather_facts: false
 
-  vars_files:
-    - vars/f5_vars.yml
+  vars:
+    ansible_httpapi_password: "{{ ansible_password }}"
+    ansible_network_os: f5networks.f5_bigip.bigip
+    ansible_httpapi_use_ssl: yes
+    ansible_httpapi_validate_certs: no
 
   tasks:
-
-    - name: Check if Previous AS3 Command was run
-      ansible.builtin.uri:
-        url: "https://{{ ansible_host }}:8443/mgmt/tm/ltm/virtual"
-        method: GET
-        return_content: yes
-        force_basic_auth: true
-        user: "{{ ansible_user }}"
-        password: "{{ ansible_ssh_pass }}"
-        validate_certs: false
-      delegate_to: localhost
-      register: previous_as3
-
-    - name: Check if Previous UseCases exists
-      set_fact:
-        previous_as3_exists: "{{item.description}}"
-      with_items: "{{ previous_as3.json['items'] }}"
-      when: item.description != "AS3-UseCase-4"
-      loop_control:
-        label: "{{ item.description }}"
-
-    - debug: 
-        msg: "AS3 Code Didn't Push becasue previous Usecase Exists, please run ansible-playbook delete.yml before re-running"
-      when: previous_as3_exists is defined
-
-    - meta: end_play
-      when: previous_as3_exists is defined
-
-    - name: PUSH AS3
-      ansible.builtin.uri:
-        url: "https://{{ ansible_host }}:8443/mgmt/shared/appsvcs/declare"
-        method: POST
-        body: "{{ lookup('template','j2/app_maint.j2', split_lines=False) }}"
-        status_code: 200
-        timeout: 300
-        body_format: json
-        force_basic_auth: true
-        user: "{{ ansible_user }}"
-        password: "{{ ansible_ssh_pass }}"
-        validate_certs: false
-      delegate_to: localhost
+    - name: PUSH AS3 Template
+      f5networks.f5_bigip.bigip_as3_deploy:
+        content: "{{ lookup('template','j2/app_maint.j2', split_lines=False) }}"
