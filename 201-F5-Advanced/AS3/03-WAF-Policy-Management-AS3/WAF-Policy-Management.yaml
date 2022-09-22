@@ -14,7 +14,9 @@
       path: "{{ ASM_WebServer_File_Location }}"
       state: directory
       mode: '0777'
-
+    become: yes
+    become_method: sudo
+    become_user: root
 
 - name: AS3 USECASE-3
   hosts: lb
