@@ -44,6 +44,7 @@
       state: directory
       mode: '0775'
     delegate_to: ansible
+    connection: local
 
 #hardcode timestamp into variable
   - ansible.builtin.set_fact:
