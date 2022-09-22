@@ -21,7 +21,7 @@
   become_user: root
   when:
     - '"r-x" in folder_output.acl[1]'
-    - finished is not defined
+    - '{{ hostvars['f5']['finished']}} is not defined'
 
 - name: Modify Permissions of "{{ ASM_WebServer_File_Location }}" to 755
   ansible.builtin.file:
@@ -33,4 +33,4 @@
   become_user: root
   when: 
     - '"rwx" in folder_output.acl[1]'
-    - finished is defined
+    - '{{ hostvars['f5']['finished']}} is defined'
