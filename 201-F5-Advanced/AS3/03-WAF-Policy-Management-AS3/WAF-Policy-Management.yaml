@@ -114,6 +114,7 @@
   - name: Find Latest File
     ansible.builtin.shell: ls ~/asm-xml-files -Artf | tail -n 1
     register: latest_file_output
+    when: does_xml_exist.matched >= 1
 
   - ansible.builtin.debug:
       var: latest_file_output.stdout
