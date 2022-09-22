@@ -5,14 +5,12 @@
     path: "{{ ASM_WebServer_File_Location }}"
   register: folder_output
 
-# - name: Check Permisisons of Folder
-#   ansible.builtin.find:
-#     path: "{{ ASM_WebServer_File_Location }}"
-#     file_type: directory
-#   register: folder_output
-
 - debug:
     var: folder_output
+
+- debug:
+    msg: READ WRITE EXECUTE
+  when: folder_output.acl.group contains "rwx"
 
 - name: Modify Permissions of "{{ ASM_WebServer_File_Location }}" to 755
   ansible.builtin.file:
