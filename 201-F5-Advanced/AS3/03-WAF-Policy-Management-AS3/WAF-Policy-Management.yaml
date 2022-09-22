@@ -112,35 +112,38 @@
       var: does_xml_exist
 
   - name: Find Latest File
-    ansible.builtin.shell: ls ~/asm-xml-files -Artf | tail -n 1
+    ansible.builtin.shell: ls {{ ASM_WebServer_File_Location }} -Artf | tail -n 1
     register: latest_file_output
     when: does_xml_exist.matched >= 1
 
   - ansible.builtin.debug:
       var: latest_file_output.stdout
+    when: does_xml_exist.matched >= 1
 
   - name: Copy Master Template to TMP
     ansible.builtin.copy:
-      src: "~/asm-xml-files/{{latest_file_output.stdout}}"
+      src: "{{latest_file_output.stdout}}"
       dest: "{{ ASM_Policy_File }}"
-    when: student_id is defined
+    when: does_xml_exist.matched >= 1
 
   - name: Get Checksum of Master file
     ansible.builtin.stat:
       path : "{{ ASM_Policy_File }}"
     register: first_file
+    when: does_xml_exist.matched >= 1
     
   - name: Master Template SHA1
     ansible.builtin.set_fact:
       file1_sha: "{{ first_file.stat.checksum }}"  
-
+    when: does_xml_exist.matched >= 1
 
 # Get Master XML File and store
   - name: Copy Master File to tmp
     ansible.builtin.copy:
       src: "{{ ASM_Master_File }}"
       dest: "{{ ASM_Policy_File }}"
-
+    when: does_xml_exist.matched == 0
+    
 #Validate Existing IP Addresses
   - name: Validate Existing IP Addresses
     ansible.builtin.shell: grep "<ip_address>{{ item }}" {{ ASM_Policy_File }}
@@ -210,17 +213,37 @@
   # - pause:
   #     minutes: 10
 
+  - name: Get Checksum of Modified file
+    ansible.builtin.stat:
+      path : "{{ ASM_Policy_File }}"
+    register: second_file
+    when: does_xml_exist.matched >= 1
+    
+  - name: Modified File Sha1
+    ansible.builtin.set_fact:
+      file1_sha: "{{ second_file.stat.checksum }}"  
+    when: does_xml_exist.matched >= 1
+
+  - name: Compilation Changed
+    ansible.builtin.set_fact:
+      sha_matched: = "{{file2_sha and file1_sha}}"
+    when:  file2_sha != file1_sha
+
   - name: Store Modified File in Webserver
     ansible.builtin.copy:
       src: "{{ ASM_Policy_File }}"
       dest: "{{ ASM_WebServer_File_Location }}{{ ASM_Final_File_Name }}"
+    when: sha_matched is not defined
 
   - name: Modify File for Web Use
     ansible.builtin.shell: chcon -t httpd_sys_content_t {{ ASM_WebServer_File_Location }}{{ ASM_Final_File_Name }}
+    when: sha_matched is not defined
 
   - name: PUSH AS3 Template
     f5networks.f5_bigip.bigip_as3_deploy:
       content: "{{ lookup('template','j2/configure_as3.j2', split_lines=False) }}"
+    when: sha_matched is not defined
+    
 
 - name: CHMOD WebServer - Close
   hosts: ansible
