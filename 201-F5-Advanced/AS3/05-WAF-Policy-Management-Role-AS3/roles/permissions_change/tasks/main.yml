@@ -5,34 +5,36 @@
     path: "{{ ASM_WebServer_File_Location }}"
   register: folder_output
 
-- debug:
-    var: folder_output
+# - debug:
+#     var: folder_output
 
-- debug:
-    var: folder_output.acl[1]
+# - debug:
+#     var: folder_output.acl[1]
 
-- debug:
-    msg: READ WRITE EXECUTE
+# - debug:
+#     msg: READ WRITE EXECUTE
+#   when: '"rwx" in folder_output.acl[1]'
+
+# - debug:
+#     msg: READ EXECUTE
+#   when: '"r-x" in folder_output.acl[1]'
+
+- name: Modify Permissions of "{{ ASM_WebServer_File_Location }}" to 755
+  ansible.builtin.file:
+    path: "{{ ASM_WebServer_File_Location }}"
+    state: directory
+    mode: '0755'
+  become: yes
+  become_method: sudo
+  become_user: root
+  when: '"r-x" in folder_output.acl[1]'  
+
+- name: Modify Permissions of "{{ ASM_WebServer_File_Location }}" to 755
+  ansible.builtin.file:
+    path: "{{ ASM_WebServer_File_Location }}"
+    state: directory
+    mode: '0755'
+  become: yes
+  become_method: sudo
+  become_user: root
   when: '"rwx" in folder_output.acl[1]'
-
-- debug:
-    msg: READ EXECUTE
-  when: '"r-x" in folder_output.acl[1]'
-
-- name: Modify Permissions of "{{ ASM_WebServer_File_Location }}" to 755
-  ansible.builtin.file:
-    path: "{{ ASM_WebServer_File_Location }}"
-    state: directory
-    mode: '0755'
-  become: yes
-  become_method: sudo
-  become_user: root
-
-- name: Modify Permissions of "{{ ASM_WebServer_File_Location }}" to 755
-  ansible.builtin.file:
-    path: "{{ ASM_WebServer_File_Location }}"
-    state: directory
-    mode: '0755'
-  become: yes
-  become_method: sudo
-  become_user: root
