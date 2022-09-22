@@ -44,8 +44,6 @@
       state: directory
       mode: '0775'
     become: yes
-    become_method: sudo
-    become_user: root
     delegate_to: ansible
 
 #hardcode timestamp into variable
