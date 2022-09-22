@@ -197,11 +197,11 @@
 
   tasks:
 
-  - name: Modify Permissions of "{{ ASM_WebServer_File_Location }}" to 777
+  - name: Modify Permissions of "{{ ASM_WebServer_File_Location }}" to 755
     ansible.builtin.file:
       path: "{{ ASM_WebServer_File_Location }}"
       state: directory
-      mode: '0777'
+      mode: '0755'
     become: yes
     become_method: sudo
     become_user: root
