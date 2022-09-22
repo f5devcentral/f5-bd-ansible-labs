@@ -221,7 +221,7 @@
     
   - name: Modified File Sha1
     ansible.builtin.set_fact:
-      file1_sha: "{{ second_file.stat.checksum }}"  
+      file2_sha: "{{ second_file.stat.checksum }}"  
     when: does_xml_exist.matched >= 1
 
   - name: Compilation Changed
