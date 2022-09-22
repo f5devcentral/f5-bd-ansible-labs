@@ -29,7 +29,7 @@
     package: "~/{{do_rpm}}"
     provider: "{{provider}}"
 
- - name: Pause for Install to complete
-   ansible.builtin.pause:
-     minutes: 1
-   when: install_do.changed
+- name: Pause for Install to complete
+  ansible.builtin.pause:
+    minutes: 1
+  when: install_do.changed
