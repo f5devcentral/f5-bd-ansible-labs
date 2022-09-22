@@ -44,7 +44,6 @@
       state: directory
       mode: '0777'
     become: yes
-    become_method: sudo
     become_user: root
     delegate_to: ansible
 
