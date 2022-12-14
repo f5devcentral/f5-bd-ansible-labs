@@ -98,7 +98,7 @@
     when: atc_DO_status.changed
 
 - name: ASM Policy
-  hosts: ansible
+  hosts: localhost
   gather_facts: False
   vars_files:
     - vars/f5_vars.yml
