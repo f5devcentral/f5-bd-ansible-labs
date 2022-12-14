@@ -19,7 +19,7 @@
     become_user: root
 
 - name: AS3 USECASE-3
-  hosts: localhost
+  hosts: lb
   gather_facts: false
 
   vars:
@@ -100,6 +100,14 @@
     ansible.builtin.pause:
       minutes: 1
     when: atc_DO_status.changed
+
+- name: ASM Policy
+  hosts: localhost
+  gather_facts: False
+  vars_files:
+    - vars/f5_vars.yml
+
+  tasks:
 
   - name: Does Previous Policy Exist?
     ansible.builtin.find:
