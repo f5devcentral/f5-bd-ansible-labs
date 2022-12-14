@@ -46,3 +46,9 @@
       f5networks.f5_modules.bigip_lx_package:
         package: "~/{{do_rpm}}"
         provider: "{{provider}}"
+      register: install_do
+    
+    - name: Pause 30 Seconds if DO Installs
+      ansible.builtin.pause:
+        minutes: 1
+      when: install_do.changed
