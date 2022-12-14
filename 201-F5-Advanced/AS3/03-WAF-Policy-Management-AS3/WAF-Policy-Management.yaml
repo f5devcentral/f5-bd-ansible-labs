@@ -243,15 +243,6 @@
     ansible.builtin.shell: chcon -t httpd_sys_content_t {{ ASM_WebServer_File_Location }}{{ ASM_Final_File_Name }}
     when:  (does_xml_exist.matched == 0) or (file2_sha != file1_sha)
 
-- name: Apply AS3
-  hosts: lb
-  gather_facts: False
-  connection: httpapi
-  vars_files:
-    - vars/f5_vars.yml
-
-  tasks:
-
   - name: PUSH AS3 Template
     f5networks.f5_bigip.bigip_as3_deploy:
       content: "{{ lookup('template','j2/configure_as3.j2', split_lines=False) }}"
