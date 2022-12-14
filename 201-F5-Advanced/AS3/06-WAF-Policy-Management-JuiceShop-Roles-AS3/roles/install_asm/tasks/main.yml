@@ -3,7 +3,7 @@
 
  - name: GET ASM - Module Install Status
    ansible.builtin.uri:
-     url: "https://{{ ansible_host }}:{{F5_Admin_Port}}/mgmt/tm/sys/provision/asm"
+     url: "https://{{ ansible_host }}:{{ server_port }}/mgmt/tm/sys/provision/asm"
      method: GET
      status_code: 200
      timeout: 300
@@ -16,7 +16,7 @@
 
  - name: Install ASM - Push via DO (if not Installed)
    ansible.builtin.uri:
-     url: "https://{{ ansible_host }}:{{F5_Admin_Port}}/mgmt/shared/declarative-onboarding/declare"
+     url: "https://{{ ansible_host }}:{{ server_port }}/mgmt/shared/declarative-onboarding/declare"
      method: POST
      body: "{{ lookup('template','provision.j2', split_lines=False) }}"
      status_code: 202
@@ -32,7 +32,7 @@
     
  - name: Wait for DO Task to complete
    ansible.builtin.uri:
-     url: "https://{{ ansible_host }}:{{F5_Admin_Port}}/mgmt/shared/declarative-onboarding/task/{{ do_result.json.id }}"
+     url: "https://{{ ansible_host }}:{{ server_port }}/mgmt/shared/declarative-onboarding/task/{{ do_result.json.id }}"
      method: GET
      return_content: true
      status_code: 200
