@@ -37,7 +37,7 @@
         {
           "servicePort": 80,
           "serverAddresses": [
-          "{{hostvars[item]['internal_ip'] }}"
+          "{{hostvars[item]['private_ip'] }}"
           ],
           {%  if hostvars[item]['inventory_hostname'] in F5_Pool_Members %}
           "adminState": "{{F5_Pool_Node_State|lower}}"
