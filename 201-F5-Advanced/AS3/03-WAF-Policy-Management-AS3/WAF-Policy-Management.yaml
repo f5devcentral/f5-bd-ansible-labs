@@ -37,10 +37,6 @@
  
   tasks:
 
-#hardcode timestamp into variable
-  - ansible.builtin.set_fact:
-      ASM_Final_File_Name: "{{F5_VIP_Name}}-ASMPolicy-{{ lookup('pipe','date +%Y-%m-%d-%H-%M-%S') }}.xml"
-
   - name: Set a fact named 'provider' with BIG-IP login information
     ansible.builtin.set_fact:
      provider:
@@ -109,6 +105,10 @@
 
   tasks:
 
+#hardcode timestamp into variable
+  - ansible.builtin.set_fact:
+      ASM_Final_File_Name: "{{F5_VIP_Name}}-ASMPolicy-{{ lookup('pipe','date +%Y-%m-%d-%H-%M-%S') }}.xml"
+      
   - name: Does Previous Policy Exist?
     ansible.builtin.find:
       paths: "{{ ASM_WebServer_File_Location }}"
