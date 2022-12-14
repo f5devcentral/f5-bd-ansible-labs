@@ -48,7 +48,7 @@
         provider: "{{provider}}"
       register: install_do
     
-    - name: Pause 30 Seconds if DO Installs
+    - name: Pause 60 Seconds if DO Installs
       ansible.builtin.pause:
         minutes: 1
       when: install_do.changed
