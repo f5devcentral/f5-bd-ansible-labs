@@ -14,7 +14,7 @@
           server_port: "{{ server_port }}"
           validate_certs: false
         name: "vip"
-        destination: "{{ external_ip }}"
+        destination: "{{ private_ip }}"
         port: "443"
         enabled_vlans: "all"
         all_profiles: ['http', 'clientssl', 'oneconnect']

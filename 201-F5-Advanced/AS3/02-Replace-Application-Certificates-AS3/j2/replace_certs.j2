@@ -16,7 +16,7 @@
 				  "class": "Service_HTTPS",
           "virtualPort": 8081,
 					"virtualAddresses": [
-						"{{ external_ip }}"
+						"{{ private_ip }}"
 					],
 					"pool": "{{ F5_VIP_Name }}_pool",
 					"redirect80": false,

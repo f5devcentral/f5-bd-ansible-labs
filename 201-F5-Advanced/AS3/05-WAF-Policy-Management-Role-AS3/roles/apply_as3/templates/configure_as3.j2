@@ -16,7 +16,7 @@
 					"class": "Service_HTTPS",
 					"virtualPort": 8084,
 					"virtualAddresses": [
-						"{{ external_ip }}"
+						"{{ private_ip }}"
 					],
 					"profileHTTP": "basic", 
 					"pool": "{{ F5_VIP_Name }}_pool",
