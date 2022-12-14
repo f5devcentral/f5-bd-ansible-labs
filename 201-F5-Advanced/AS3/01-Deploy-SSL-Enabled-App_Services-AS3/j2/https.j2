@@ -15,7 +15,7 @@
         "{{F5_VIP_Name}}": {
           "class": "Service_HTTPS",
           "virtualAddresses": [
-            "{{ external_ip }}"
+            "{{ private_ip }}"
           ],
           "pool": "{{ F5_VIP_Name }}_pool",
 #          "serverTLS": "{{ F5_VIP_Name }}_cert"

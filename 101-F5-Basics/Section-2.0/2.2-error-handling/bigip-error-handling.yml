@@ -45,7 +45,7 @@
           f5networks.f5_modules.bigip_virtual_server:
             provider: "{{ provider }}"
             name: "vip"
-            destination: "{{ external_ip }}"
+            destination: "{{ private_ip }}"
             port: "443"
             enabled_vlans: "all"
             all_profiles: ['http', 'clientssl', 'oneconnect']
