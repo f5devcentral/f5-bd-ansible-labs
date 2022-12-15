@@ -16,7 +16,7 @@ pool_members: "{{ groups['web'] }}"
 F5_VIP_Name: Use-Case-3-VIP
 
 #ASM_Policy_Website: "http://10.1.1.4:8090/"
-ASM_Policy_Website: "http://{{ hostvars[f5]['ansible_host'] }}/"
+ASM_Policy_Website: "http://{{ hostvars['f5'].ansible_host }}/"
 ASM_Master_File: "{{ playbook_dir }}/files/Master_Template_v16.xml"
 ASM_Policy_File: "/tmp/Modified_Master_Template_v16.xml"
 #ASM_WebServer_File_Location: "/usr/share/nginx/html/asm-profiles/"
