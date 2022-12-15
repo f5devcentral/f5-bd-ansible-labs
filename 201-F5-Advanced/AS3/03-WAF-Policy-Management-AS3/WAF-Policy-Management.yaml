@@ -1,7 +1,7 @@
 ---
 - import_playbook: "{{playbook_dir}}/files/Install-DO.yaml"
 
-- name: CHMOD WebServer - Close
+- name: WebServer Create Directory and Set Permissions
   hosts: node1
   gather_facts: False
   become: yes
@@ -9,13 +9,11 @@
     - vars/f5_vars.yml
 
   tasks:
-
   - name: Modify Permissions of "{{ ASM_WebServer_File_Location }}" to 777
     ansible.builtin.file:
       path: "{{ ASM_WebServer_File_Location }}"
       state: directory
       mode: '0777'
-    delegate_to: localhost
 
 - name: Install AS3/DO
   hosts: lb
