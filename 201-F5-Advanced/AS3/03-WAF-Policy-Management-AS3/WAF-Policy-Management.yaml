@@ -249,12 +249,10 @@
       src: "{{ ASM_Policy_File }}"
       dest: "{{ ASM_WebServer_File_Location }}{{ ASM_Final_File_Name }}"
     when:  (does_xml_exist.matched == 0) or (file2_sha != file1_sha)
-    delegate_to: localhost
 
   - name: Modify File for Web Use
     ansible.builtin.shell: chcon -t httpd_sys_content_t {{ ASM_WebServer_File_Location }}{{ ASM_Final_File_Name }}
     when:  (does_xml_exist.matched == 0) or (file2_sha != file1_sha)
-    delegate_to: localhost
 
 - name: CHMOD WebServer - Close
   hosts: lb
