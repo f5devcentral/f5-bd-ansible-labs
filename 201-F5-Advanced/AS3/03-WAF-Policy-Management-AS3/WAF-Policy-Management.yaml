@@ -2,7 +2,7 @@
 - import_playbook: "{{playbook_dir}}/files/Install-DO.yaml"
 
 - name: CHMOD WebServer - Close
-  hosts: ansible
+  hosts: node1
   gather_facts: False
   vars_files:
     - vars/f5_vars.yml
@@ -255,14 +255,14 @@
 #    when:  (does_xml_exist.matched == 0) or (file2_sha != file1_sha) 
 
 - name: CHMOD WebServer - Close
-  hosts: ansible
+  hosts: node1
   gather_facts: False
   vars_files:
     - vars/f5_vars.yml
 
   tasks:
 
-  - name: Modify Permissions of "{{ ASM_WebServer_File_Location }}" to 755
+  - name: Modify Permissions of "{{ ASM_WenbServer_File_Location }}" to 755
     ansible.builtin.file:
       path: "{{ ASM_WebServer_File_Location }}"
       state: directory
