@@ -14,7 +14,7 @@
     ansible.builtin.yum: 
       name: 
       - python3
-      state: present
+    state: present
 
   - name: Modify Permissions of "{{ ASM_WebServer_File_Location }}" to 777
     ansible.builtin.file:
