@@ -128,6 +128,7 @@
     ansible.builtin.fetch:
       src: "{{ ASM_WebServer_File_Location }}{{latest_file_output.stdout}}"
       dest: "{{ ASM_Policy_File }}"
+      flat: yes
     when: does_xml_exist.matched >= 1
 
   - name: Get Checksum of Master file
