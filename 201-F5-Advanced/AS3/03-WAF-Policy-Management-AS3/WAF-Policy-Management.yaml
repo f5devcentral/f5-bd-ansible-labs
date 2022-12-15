@@ -129,7 +129,6 @@
       src: "{{ ASM_WebServer_File_Location }}{{latest_file_output.stdout}}"
       dest: "{{ ASM_Policy_File }}"
     when: does_xml_exist.matched >= 1
-    delegate_to: localhost
 
   - name: Get Checksum of Master file
     ansible.builtin.stat:
@@ -148,7 +147,6 @@
       src: "{{ ASM_Master_File }}"
       dest: "{{ ASM_Policy_File }}"
     when: does_xml_exist.matched == 0
-    delegate_to: localhost
 
 #Validate Existing IP Addresses
   - name: Validate Existing IP Addresses
@@ -157,7 +155,6 @@
     with_items: "{{ Blocked_IPs }}"
     ignore_errors: yes
     when: Blocked_IPs is defined
-    delegate_to: localhost
 
 #Import Additional Disallowed IPs
   - name: Add Disallowed IPs
@@ -170,7 +167,6 @@
       add_children: "<whitelist><ip_address>{{ item.item }}</ip_address><subnet_mask>255.255.255.255</subnet_mask><policy_builder_trusted>false</policy_builder_trusted><ignore_anomalies>false</ignore_anomalies><never_log>false</never_log><block_ip>Always</block_ip><never_learn>false</never_learn><description>blocked</description><ignore_ip_reputation>false</ignore_ip_reputation></whitelist>"
     with_items: "{{ Blocked_IP_Valid.results }}"
     when: Blocked_IPs is defined and item.rc == 1
-    delegate_to: localhost
 
 #Validate Existing URL Addresses
   - name: Validate Existing URL Addresses
@@ -179,7 +175,6 @@
     with_items: "{{ Blocked_URLs }}"
     ignore_errors: yes
     when: Blocked_URLs is defined
-    delegate_to: localhost
 
 #create Disallowed URLs Section if missing
   - name: Add Disallowed URLs
@@ -191,7 +186,6 @@
       xpath: /policy/urls/url[*]
       add_children: "<disallowed_urls></disallowed_urls>"
     when: "'<disallowed_urls>' not in lookup('file', ASM_Policy_File ) and Blocked_URLs is defined"
-    delegate_to: localhost
 
 #Import Additional Disallowed URLs
   - name: Add Disallowed URLs
@@ -205,7 +199,6 @@
         - "<url protocol=\"HTTPS\" type=\"explicit\" name=\"{{ item.item }}\"/>"
     with_items: "{{ Blocked_URLs_Valid.results }}"
     when: Blocked_URLs is defined and item.rc == 1
-    delegate_to: localhost
 
 #Enable Illegal URL Blocking Violations
   - name: Illegal URL Blocking Violations Enablement
@@ -220,26 +213,22 @@
         - "<learn>true</learn>"
         - "<policy_builder_tracking>enabled</policy_builder_tracking>"
     when: Blocked_URLs is defined
-    delegate_to: localhost
 
   - name: Get Checksum of Modified file
     ansible.builtin.stat:
       path : "{{ ASM_Policy_File }}"
     register: second_file
     when: does_xml_exist.matched >= 1
-    delegate_to: localhost
 
   - name: Modified File Sha1
     ansible.builtin.set_fact:
       file2_sha: "{{ second_file.stat.checksum }}"  
     when: does_xml_exist.matched >= 1
-    delegate_to: localhost
 
   - name: Compilation Changed
     ansible.builtin.set_fact:
       sha_matched: = "{{file2_sha and file1_sha}}"
     when:  (does_xml_exist.matched >= 1) and (file2_sha != file1_sha)
-    delegate_to: localhost
 
   - name: Store Modified File in Webserver
     ansible.builtin.copy:
