@@ -111,7 +111,6 @@
       paths: "{{ ASM_WebServer_File_Location }}"
       patterns: '*.xml'
     register: does_xml_exist
-    delegate_to: localhost
 
   - ansible.builtin.debug:
       var: does_xml_exist
@@ -120,7 +119,6 @@
     ansible.builtin.shell: ls {{ ASM_WebServer_File_Location }} -Artf | tail -n 1
     register: latest_file_output
     when: does_xml_exist.matched >= 1
-    delegate_to: localhost
 
   - ansible.builtin.debug:
       var: latest_file_output.stdout
@@ -138,13 +136,11 @@
       path : "{{ ASM_Policy_File }}"
     register: first_file
     when: does_xml_exist.matched >= 1
-    delegate_to: localhost
 
   - name: Master Template SHA1
     ansible.builtin.set_fact:
       file1_sha: "{{ first_file.stat.checksum }}"  
     when: does_xml_exist.matched >= 1
-    delegate_to: localhost
 
 # Get Master XML File and store
   - name: Copy Master File to tmp
