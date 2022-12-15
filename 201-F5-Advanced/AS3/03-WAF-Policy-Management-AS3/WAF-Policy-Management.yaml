@@ -236,7 +236,7 @@
     f5networks.f5_bigip.bigip_as3_deploy:
       content: "{{ lookup('template','j2/configure_as3.j2', split_lines=False) }}"
     when:  (does_xml_exist.matched == 0) or (file2_sha != file1_sha) 
-    delegate_to: "{{ groups['lb'] }}"
+    delegate_to: "{{ groups['f5'] }}"
 
 - name: CHMOD WebServer - Close
   hosts: ansible
