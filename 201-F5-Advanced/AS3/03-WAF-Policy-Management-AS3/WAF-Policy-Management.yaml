@@ -129,7 +129,6 @@
       src: "{{ ASM_WebServer_File_Location }}{{latest_file_output.stdout}}"
       dest: "{{ ASM_Policy_File }}"
     when: does_xml_exist.matched >= 1
-    delegate_to: localhost
 
   - name: Get Checksum of Master file
     ansible.builtin.stat:
