@@ -2,7 +2,7 @@
 - import_playbook: "{{playbook_dir}}/files/Install-DO.yaml"
 
 - name: CHMOD WebServer - Close
-  hosts: web
+  hosts: node1
   gather_facts: False
   become: yes
   vars_files:
@@ -15,6 +15,7 @@
       path: "{{ ASM_WebServer_File_Location }}"
       state: directory
       mode: '0777'
+    delegate_to: localhost
 
 - name: Install AS3/DO
   hosts: lb
