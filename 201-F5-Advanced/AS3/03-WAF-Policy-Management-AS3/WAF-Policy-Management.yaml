@@ -98,6 +98,9 @@
   - ansible.builtin.set_fact:
       ASM_Final_File_Name: "{{F5_VIP_Name}}-ASMPolicy-{{ ansible_date_time.iso8601 }}.xml"
 
+  - debug:
+      var: ASM_Final_File_Name
+
   - name: Does Previous Policy Exist?
     ansible.builtin.find:
       paths: "{{ ASM_WebServer_File_Location }}"
@@ -257,6 +260,9 @@
 
   - ansible.builtin.set_fact:
       ASM_Final_File_Name: "{{F5_VIP_Name}}-ASMPolicy-{{ ansible_date_time.iso8601 }}.xml"
+
+  - debug:
+      var: ASM_Final_File_Name
 
   - name: PUSH AS3 Template
     f5networks.f5_bigip.bigip_as3_deploy:
