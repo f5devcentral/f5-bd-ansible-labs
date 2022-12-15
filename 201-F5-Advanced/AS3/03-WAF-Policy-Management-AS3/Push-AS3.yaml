@@ -33,6 +33,20 @@
       content: "{{ lookup('template','j2/configure_as3.j2', split_lines=False) }}"
 #    when:  (does_xml_exist.matched == 0) or (file2_sha != file1_sha) 
 
+  - name: PUSH AS3
+    ansible.builtin.uri:
+      url: "https://{{ ansible_host }}:{{ server_port}}/mgmt/shared/appsvcs/declare"
+      method: POST
+      body: "{{ lookup('template','j2/configure_as3.j2', split_lines=False) }}"
+      status_code: 200, 202
+      timeout: 300
+      body_format: json
+      force_basic_auth: true
+      user: "{{ ansible_user }}"
+      password: "{{ ansible_ssh_pass }}"
+      validate_certs: false
+    delegate_to: localhost
+
 - name: CHMOD WebServer - Close
   hosts: ansible
   gather_facts: False
