@@ -14,7 +14,7 @@
     ansible.builtin.file:
       path: "{{ ASM_WebServer_File_Location }}"
       state: directory
-      mode: '0777'
+#      mode: '0777'
 
 - name: Install AS3/DO
   hosts: lb
