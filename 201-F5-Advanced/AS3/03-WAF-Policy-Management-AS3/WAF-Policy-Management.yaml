@@ -4,6 +4,7 @@
 - name: CHMOD WebServer - Close
   hosts: node1
   gather_facts: False
+  become: yes
   vars_files:
     - vars/f5_vars.yml
 
@@ -14,9 +15,6 @@
       path: "{{ ASM_WebServer_File_Location }}"
       state: directory
       mode: '0777'
-    become: yes
-    become_method: sudo
-    become_user: root
 
 - name: Install AS3/DO
   hosts: lb
