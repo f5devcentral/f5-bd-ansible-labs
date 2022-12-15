@@ -11,5 +11,5 @@
   tasks:
 
   - debug:
-      var: hostvars
+      var: hostvars['f5']
         
