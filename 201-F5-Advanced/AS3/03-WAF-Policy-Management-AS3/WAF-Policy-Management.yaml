@@ -92,7 +92,7 @@
 
 - name: ASM Policy
   hosts: node1
-  gather_facts: False
+  gather_facts: true
   vars_files:
     - vars/f5_vars.yml
 
