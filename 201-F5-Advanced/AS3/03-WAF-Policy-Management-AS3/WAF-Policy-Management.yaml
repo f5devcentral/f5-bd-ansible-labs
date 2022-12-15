@@ -124,13 +124,12 @@
       var: latest_file_output.stdout
     when: does_xml_exist.matched >= 1
 
-  - name: Copy Master Template to TMP
+  - name: Copy WebServer Latest Template to TMP
     ansible.builtin.copy:
       src: "{{ ASM_WebServer_File_Location }}{{latest_file_output.stdout}}"
       dest: "{{ ASM_Policy_File }}"
       remote_src: yes
     when: does_xml_exist.matched >= 1
-    delegate_to: localhost
 
   - name: Get Checksum of Master file
     ansible.builtin.stat:
@@ -256,7 +255,7 @@
 
 - name: CHMOD WebServer - Close
   hosts: lb
-  gather_facts: False
+  gather_facts: true
   vars_files:
     - vars/f5_vars.yml
 
