@@ -263,9 +263,12 @@
 
   - name: Find Latest File
     ansible.builtin.shell: ls {{ ASM_WebServer_File_Location }} -Artf | tail -n 1
-    register: latest_file_output
+    register: file_name
     delegate_to: node1
 
+  - debug:
+      var: file_name
+      
   - name: PUSH AS3 Template
     f5networks.f5_bigip.bigip_as3_deploy:
       content: "{{ lookup('template','j2/configure_as3.j2', split_lines=False) }}"
