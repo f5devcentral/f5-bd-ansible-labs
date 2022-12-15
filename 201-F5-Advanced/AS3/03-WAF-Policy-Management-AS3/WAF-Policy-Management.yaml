@@ -18,7 +18,7 @@
     become_method: sudo
     become_user: root
 
-- name: AS3 USECASE-3
+- name: Install AS3/DO
   hosts: lb
   gather_facts: false
   vars_files:
@@ -87,7 +87,7 @@
     when: atc_DO_status.changed
 
 - name: ASM Policy
-  hosts: lb
+  hosts: node1
   gather_facts: False
   vars_files:
     - vars/f5_vars.yml
@@ -96,7 +96,7 @@
 
 #hardcode timestamp into variable
   - ansible.builtin.set_fact:
-      ASM_Final_File_Name: "{{F5_VIP_Name}}-ASMPolicy-{{ lookup('pipe','date +%Y-%m-%d-%H-%M-%S') }}.xml"
+      ASM_Final_File_Name: "{{F5_VIP_Name}}-ASMPolicy-{{ ansible_date_time.iso8601 }}.xml"
 
   - name: Does Previous Policy Exist?
     ansible.builtin.find:
@@ -248,6 +248,15 @@
     ansible.builtin.shell: chcon -t httpd_sys_content_t {{ ASM_WebServer_File_Location }}{{ ASM_Final_File_Name }}
     when:  (does_xml_exist.matched == 0) or (file2_sha != file1_sha)
     delegate_to: localhost
+
+- name: CHMOD WebServer - Close
+  hosts: lb
+  gather_facts: False
+  vars_files:
+    - vars/f5_vars.yml
+
+  - ansible.builtin.set_fact:
+      ASM_Final_File_Name: "{{F5_VIP_Name}}-ASMPolicy-{{ ansible_date_time.iso8601 }}.xml"
 
   - name: PUSH AS3 Template
     f5networks.f5_bigip.bigip_as3_deploy:
