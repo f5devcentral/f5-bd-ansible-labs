@@ -253,19 +253,19 @@
     ansible.builtin.shell: chcon -t httpd_sys_content_t {{ ASM_WebServer_File_Location }}{{ ASM_Final_File_Name }}
     when:  (does_xml_exist.matched == 0) or (file2_sha != file1_sha)
 
-- name: CHMOD WebServer - Close
+- name: Push AS3
   hosts: lb
-  gather_facts: true
+  gather_facts: false
   vars_files:
     - vars/f5_vars.yml
 
   tasks:
 
-  - ansible.builtin.set_fact:
-      ASM_Final_File_Name: "{{F5_VIP_Name}}-ASMPolicy-{{ ansible_date_time.iso8601 }}.xml"
+  # - ansible.builtin.set_fact:
+  #     ASM_Final_File_Name: "{{F5_VIP_Name}}-ASMPolicy-{{ ansible_date_time.iso8601 }}.xml"
 
-  - debug:
-      var: ASM_Final_File_Name
+  # - debug:
+  #     var: ASM_Final_File_Name
 
   - name: PUSH AS3 Template
     f5networks.f5_bigip.bigip_as3_deploy:
