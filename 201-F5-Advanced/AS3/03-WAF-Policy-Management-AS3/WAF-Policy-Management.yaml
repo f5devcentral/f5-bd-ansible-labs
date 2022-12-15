@@ -258,6 +258,8 @@
   vars_files:
     - vars/f5_vars.yml
 
+  tasks:
+
   - ansible.builtin.set_fact:
       ASM_Final_File_Name: "{{F5_VIP_Name}}-ASMPolicy-{{ ansible_date_time.iso8601 }}.xml"
 
