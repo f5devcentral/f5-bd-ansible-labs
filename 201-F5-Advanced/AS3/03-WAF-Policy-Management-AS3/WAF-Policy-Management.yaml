@@ -111,7 +111,6 @@
       paths: "{{ ASM_WebServer_File_Location }}"
       patterns: '*.xml'
     register: does_xml_exist
-    delegate_to: localhost
 
   - ansible.builtin.debug:
       var: does_xml_exist
@@ -120,7 +119,6 @@
     ansible.builtin.shell: ls {{ ASM_WebServer_File_Location }} -Artf | tail -n 1
     register: latest_file_output
     when: does_xml_exist.matched >= 1
-    delegate_to: localhost
 
   - ansible.builtin.debug:
       var: latest_file_output.stdout
@@ -130,6 +128,7 @@
     ansible.builtin.copy:
       src: "{{ ASM_WebServer_File_Location }}{{latest_file_output.stdout}}"
       dest: "{{ ASM_Policy_File }}"
+      remote_src: yes
     when: does_xml_exist.matched >= 1
     delegate_to: localhost
 
