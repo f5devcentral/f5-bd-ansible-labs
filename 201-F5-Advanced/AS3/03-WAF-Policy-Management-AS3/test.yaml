@@ -11,5 +11,5 @@
   tasks:
 
   - debug:
-      var: hostvars['f5'].ansbile_host
+      var: hostvars['f5'].ansible_host
         
