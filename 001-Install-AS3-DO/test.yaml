@@ -27,6 +27,7 @@
       query_string: "[?name=='f5-appsvcs'].package_name"
     register: output
 
-  - debug:
-    var: output
+  - name: debug
+    debug:
+      var: output
  
