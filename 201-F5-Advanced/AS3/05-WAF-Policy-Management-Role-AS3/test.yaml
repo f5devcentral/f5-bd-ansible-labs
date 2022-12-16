@@ -1,0 +1,18 @@
+---
+- name: Apply AS3
+  hosts: lb
+  connection: httpapi
+  gather_facts: false
+  vars_files:
+    - vars/f5_vars.yml
+  roles:
+    - find_file_webserver
+    - apply_as3
+
+- name: CHMOD WebServer - Close
+  hosts: node1
+  gather_facts: False
+  vars_files:
+    - vars/f5_vars.yml
+  roles: 
+    - permissions_change
