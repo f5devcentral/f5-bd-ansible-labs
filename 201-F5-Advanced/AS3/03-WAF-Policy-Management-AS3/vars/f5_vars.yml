@@ -1,6 +1,5 @@
 ---
 # Modify based on deployment
-ansible_python_interpreter: "{{ ansible_playbook_python }}" 
 
 as3_tenant_name: "WorkshopExample"
 pool_members: "{{ groups['web'] }}"
