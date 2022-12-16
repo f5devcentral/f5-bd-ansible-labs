@@ -15,10 +15,23 @@
   roles:
     - install_do
     - install_asm
+
+- name: CHMOD WebServer - Close
+  hosts: node1
+  gather_facts: False
+  vars_files:
+    - vars/f5_vars.yml
     - existing_policy
     - waf_block_ip
     - waf_block_urls
     - checksum
+
+- hosts: lb
+  connection: httpapi
+  gather_facts: false
+  vars_files:
+    - vars/f5_vars.yml
+  roles:
     - apply_as3
 
 - name: CHMOD WebServer - Close
