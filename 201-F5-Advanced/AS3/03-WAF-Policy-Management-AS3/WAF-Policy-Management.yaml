@@ -90,6 +90,7 @@
   become: yes
   vars_files:
     - vars/f5_vars.yml
+    - vars/f5_httpapi.yml
 
   tasks:
 
