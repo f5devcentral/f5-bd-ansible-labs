@@ -1,5 +1,5 @@
 - name: Test
-  hosts: localhost
+  hosts: lb
   connection: local
   gather_facts: no
 
