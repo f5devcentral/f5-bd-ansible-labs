@@ -31,7 +31,7 @@
 
 - name: Apply AS3
   hosts: lb
-  connection: httpapi
+#  connection: httpapi
   gather_facts: false
   vars_files:
     - vars/f5_vars.yml
