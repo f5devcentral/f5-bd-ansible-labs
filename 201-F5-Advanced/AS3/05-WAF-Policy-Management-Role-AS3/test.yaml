@@ -1,7 +1,7 @@
 ---
 - name: Apply AS3
   hosts: node1
-  connection: httpapi
+ # connection: httpapi
   gather_facts: false
   become: yes
   vars_files:
