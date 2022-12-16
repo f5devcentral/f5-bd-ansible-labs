@@ -7,7 +7,7 @@
     with_items: "{{ Blocked_URLs }}"
     ignore_errors: yes
     when: Blocked_URLs is defined
-
+  delegate_to: localhost
 
 #create Disallowed URLs Section if missing
   - name: Add Disallowed URLs
@@ -19,6 +19,7 @@
       xpath: /policy/urls/url[*]
       add_children: "<disallowed_urls></disallowed_urls>"
     when: "'<disallowed_urls>' not in lookup('file', ASM_Policy_File ) and Blocked_URLs is defined"
+  delegate_to: localhost
 
 #Import Additional Disallowed URLs
   - name: Add Disallowed URLs
@@ -32,6 +33,7 @@
         - "<url protocol=\"HTTPS\" type=\"explicit\" name=\"{{ item.item }}\"/>"
     with_items: "{{ Blocked_URLs_Valid.results }}"
     when: Blocked_URLs is defined and item.rc == 1
+  delegate_to: localhost
 
 #Enable Illegal URL Blocking Violations
   - name: Illegal URL Blocking Violations Enablement
@@ -46,4 +48,4 @@
         - "<learn>true</learn>"
         - "<policy_builder_tracking>enabled</policy_builder_tracking>"
     when: Blocked_URLs is defined
-
+  delegate_to: localhost

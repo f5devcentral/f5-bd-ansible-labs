@@ -33,11 +33,13 @@
     path : "{{ ASM_Policy_File }}"
   register: first_file
   when: does_xml_exist.matched >= 1
-  
+  delegate_to: localhost
+
 - name: Master Template SHA1
   ansible.builtin.set_fact:
     file1_sha: "{{ first_file.stat.checksum }}"  
   when: does_xml_exist.matched >= 1
+  delegate_to: localhost
 
 # Get Master XML File and store
 - name: Copy Master File to tmp
@@ -45,4 +47,4 @@
     src: "{{ ASM_Master_File }}"
     dest: "{{ ASM_Policy_File }}"
   when: does_xml_exist.matched == 0
-    
+  delegate_to: localhost   
