@@ -1,6 +1,6 @@
 ---
 - name: Apply AS3
-  hosts: lb
+  hosts: node1
   connection: httpapi
   gather_facts: false
   vars_files:
