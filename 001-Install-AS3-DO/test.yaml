@@ -18,7 +18,7 @@
         validate_certs: "no"
       gather_subset:
         - iapplx-packages
-    register: bigip_device_facts.iapplx_packages
+    register: bigip_device_facts
 
   - debug:
-     var: bigip_device_facts
+     var: bigip_device_facts.iapplx_packages
