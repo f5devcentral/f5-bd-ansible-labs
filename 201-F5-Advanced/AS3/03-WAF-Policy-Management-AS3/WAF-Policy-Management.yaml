@@ -5,7 +5,9 @@
   hosts: node1
   gather_facts: False
   become: yes
-
+  vars_files:
+    - vars/f5_vars.yml
+    
   tasks:
 
   # - name: install yum-utils
