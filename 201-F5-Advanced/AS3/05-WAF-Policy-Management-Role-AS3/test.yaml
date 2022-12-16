@@ -1,6 +1,6 @@
 ---
 - name: Apply AS3
-  hosts: node1
+  hosts: f5
  # connection: httpapi
   gather_facts: false
   become: yes
