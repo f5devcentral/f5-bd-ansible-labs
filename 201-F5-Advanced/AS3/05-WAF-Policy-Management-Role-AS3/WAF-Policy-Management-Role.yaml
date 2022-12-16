@@ -19,7 +19,8 @@
 
 - name: WAF Policy
   hosts: node1
-  gather_facts: False
+  gather_facts: true
+  become: yes
   vars_files:
     - vars/f5_vars.yml
   roles:
@@ -44,4 +45,3 @@
     - vars/f5_vars.yml
   roles: 
     - permissions_change
-    
