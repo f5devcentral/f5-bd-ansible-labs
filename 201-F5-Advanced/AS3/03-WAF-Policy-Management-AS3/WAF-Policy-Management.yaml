@@ -281,7 +281,9 @@
 - name: CHMOD WebServer - Close
   hosts: node1
   gather_facts: False
-
+  vars_files:
+    - vars/f5_vars.yml
+    
   tasks:
 
   - name: Modify Permissions of "{{ ASM_WebServer_File_Location }}" to 755
