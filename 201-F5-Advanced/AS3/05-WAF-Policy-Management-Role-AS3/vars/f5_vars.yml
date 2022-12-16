@@ -1,15 +1,5 @@
 ---
 
-# Modify based on deployment
-ansible_python_interpreter: "{{ ansible_playbook_python }}" 
-
-#AS3 Modules
-ansible_httpapi_password: "{{ ansible_password }}"
-ansible_network_os: f5networks.f5_bigip.bigip
-ansible_httpapi_use_ssl: yes
-ansible_httpapi_validate_certs: no
-ansible_httpapi_port: "{{ server_port }}"
-
 do_uri: "https://api.github.com/repos/F5Networks/f5-declarative-onboarding/releases/latest"
 
 F5_VIP_Port: "8084"
