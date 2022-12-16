@@ -48,7 +48,7 @@
 
     - name: Remove Previous AS3 Package
       f5networks.f5_modules.bigip_lx_package:
-       package: "f5-appsvcs-3.41.0-1.noarch.rpm"
+       package: "f5-appsvcs-*.rpm"
        provider: "{{provider}}"
        state: absent 
 
