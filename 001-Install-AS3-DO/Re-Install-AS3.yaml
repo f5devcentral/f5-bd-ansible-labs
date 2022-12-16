@@ -46,9 +46,9 @@
     - ansible.builtin.set_fact:
        as3_rpm: "{{ls_output.stdout}}"
 
-    - name: Install AS3
+    - name: Remove Previous AS3 Package
       f5networks.f5_modules.bigip_lx_package:
-       package: "	f5-appsvcs"
+       package: "f5-appsvcs"
        provider: "{{provider}}"
        state: absent 
 
