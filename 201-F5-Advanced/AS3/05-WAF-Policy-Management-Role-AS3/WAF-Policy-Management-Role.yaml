@@ -2,6 +2,8 @@
 - name: CHMOD WebServer - Open
   hosts: node1
   gather_facts: False
+  vars_files:
+    - vars/f5_vars.yml
   roles: 
     - permissions_change
 
