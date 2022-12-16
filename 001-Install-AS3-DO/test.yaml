@@ -29,5 +29,5 @@
 
   - name: debug
     debug:
-      var: output
+      var: output.results.item
  
