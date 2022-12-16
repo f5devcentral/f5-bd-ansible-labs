@@ -3,6 +3,7 @@
   hosts: node1
   connection: httpapi
   gather_facts: false
+  become: yes
   vars_files:
     - vars/f5_vars.yml
   roles:
