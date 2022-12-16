@@ -21,8 +21,8 @@
     var: latest_file_output.stdout
   when: does_xml_exist.matched >= 1
 
-- name: Copy Master Template to TMP
-  ansible.builtin.copy:
+- name: Fetch WebServer Latest Template to TMP
+  ansible.builtin.fetch:
     src: "{{ ASM_WebServer_File_Location }}{{latest_file_output.stdout}}"
     dest: "{{ ASM_Policy_File }}"
     flat: yes
