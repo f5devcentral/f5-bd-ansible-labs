@@ -8,7 +8,7 @@
     - vars/f5_vars.yml
   roles:
     - find_file_webserver
-#    - apply_as3
+    - apply_as3
 
 # - name: CHMOD WebServer - Close
 #   hosts: node1
