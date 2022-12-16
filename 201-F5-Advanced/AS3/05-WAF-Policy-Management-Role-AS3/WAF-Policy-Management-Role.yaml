@@ -1,6 +1,6 @@
 ---
 - name: CHMOD WebServer - Open
-  hosts: ansible
+  hosts: node1
   gather_facts: False
   vars_files:
     - vars/f5_vars.yml
@@ -22,7 +22,7 @@
     - apply_as3
 
 - name: CHMOD WebServer - Close
-  hosts: ansible
+  hosts: node1
   gather_facts: False
   vars_files:
     - vars/f5_vars.yml
