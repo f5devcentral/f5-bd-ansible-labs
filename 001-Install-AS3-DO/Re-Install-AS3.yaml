@@ -66,7 +66,7 @@
 
     - name: Remove Previous AS3 Package
       f5networks.f5_modules.bigip_lx_package:
-       package: "{{ output.results[0].item }}"
+       package: "{{ output.results[0].item }}.rpm"
        provider: "{{provider}}"
        state: absent 
 
