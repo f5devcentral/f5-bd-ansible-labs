@@ -2,7 +2,7 @@
 - import_playbook: "{{playbook_dir}}/files/Install-DO.yaml"
 
 - name: WebServer Create Directory and Set Permissions
-  hosts: node1
+  hosts: web
   gather_facts: False
   become: yes
   vars_files:
