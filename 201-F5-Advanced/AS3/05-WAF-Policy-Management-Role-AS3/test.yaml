@@ -7,7 +7,7 @@
   vars_files:
     - vars/f5_vars.yml
   roles:
-#    - find_file_webserver
+    - find_file_webserver
     - apply_as3
 
 # - name: CHMOD WebServer - Close
