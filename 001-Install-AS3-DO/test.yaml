@@ -23,8 +23,8 @@
   - debug:
      var: bigip_device_facts.iapplx_packages
 
-  - name: "Show members belonging to pool"
+  - name: "Show if AS3 Installed"
     debug: "msg={{ item }}"
     loop: "{{ bigip_device_facts.iapplx_packages | json_query(query_string) }}"
     vars:
-      query_string: "[?name=='f5-appsvcs'].members[*].name[]"
+      query_string: "[?name=='f5-appsvcs'].package_name"
