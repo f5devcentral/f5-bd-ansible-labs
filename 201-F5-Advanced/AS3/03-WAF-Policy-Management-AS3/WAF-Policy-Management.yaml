@@ -10,12 +10,6 @@
 
   tasks:
 
-  # - name: install yum-utils
-  #   ansible.builtin.yum: 
-  #     name: 
-  #     - python3
-  #     state: present
-
   - name: Modify Permissions of "{{ ASM_WebServer_File_Location }}" to 777
     ansible.builtin.file:
       path: "{{ ASM_WebServer_File_Location }}"
@@ -287,8 +281,6 @@
 - name: CHMOD WebServer - Close
   hosts: node1
   gather_facts: False
-  vars_files:
-    - vars/f5_vars.yml
 
   tasks:
 
