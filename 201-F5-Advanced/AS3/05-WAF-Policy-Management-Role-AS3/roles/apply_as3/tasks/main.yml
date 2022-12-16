@@ -9,7 +9,7 @@
   ansible.builtin.uri:
     url: "https://{{ ansible_host }}:{{ server_port }}/mgmt/shared/appsvcs/declare"
     method: POST
-    body: "{{ lookup('template','j2/configure_as3.j2', split_lines=False) }}"
+    body: "{{ lookup('template','configure_as3.j2', split_lines=False) }}"
     status_code: 200, 202
     timeout: 300
     body_format: json
@@ -18,7 +18,7 @@
     password: "{{ ansible_ssh_pass }}"
     validate_certs: false
   delegate_to: localhost
-  
+
 - name: Set finished to 1
   ansible.builtin.set_fact:
     finished: 1
