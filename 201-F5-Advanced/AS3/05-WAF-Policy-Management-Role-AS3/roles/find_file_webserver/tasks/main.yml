@@ -6,3 +6,6 @@
    register: file_name
    delegate_to: node1
 
+ - debug:
+     var: file_name
+
