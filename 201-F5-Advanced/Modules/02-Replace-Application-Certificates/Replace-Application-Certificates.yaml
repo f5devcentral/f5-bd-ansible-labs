@@ -31,7 +31,7 @@
       state: present
       pool: "{{ F5_VIP_Name }}_pool"
       name: "{{ hostvars[item].inventory_hostname }}"
-      host: "{{ hostvars[item].internal_ip }}"
+      host: "{{ hostvars[item].private_ip }}"
       port: "80"
     loop: "{{ groups['web'] }}"
 
@@ -41,7 +41,7 @@
       state: present
       description: "HTTPS Virtual Server"
       name: "{{ F5_VIP_Name }}_https_vip"
-      destination: "{{ external_ip }}"
+      destination: "{{ private_ip }}"
       port: "8081"
       pool: "{{ F5_VIP_Name }}_pool"
       snat: Automap
