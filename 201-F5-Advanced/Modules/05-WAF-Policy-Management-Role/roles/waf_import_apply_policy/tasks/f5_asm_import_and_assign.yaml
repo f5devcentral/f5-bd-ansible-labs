@@ -42,7 +42,7 @@
       state: present
       description: "HTTPS Virtual Server"
       name: "{{ F5_VIP_Name }}_https_vip"
-      destination: "{{ external_ip }}"
+      destination: "{{ private_ip }}"
       port: "{{ F5_VIP_Port }}"
       pool: "{{ F5_VIP_Name }}_pool"
       snat: Automap
