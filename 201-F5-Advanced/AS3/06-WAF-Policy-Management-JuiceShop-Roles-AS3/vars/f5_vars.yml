@@ -6,7 +6,8 @@ as3_tenant_name: "WorkshopExample"
 F5_VIP_Port: 8085
 F5_VIP_Name: Use-Case-6-VIP
 pool_members: "{{ groups['web'] }}"
- 
+pool_port: 3000 
+
 ASM_Policy_Website: "http://{{ hostvars['node1'].ansible_host }}/asm-profiles/"
 ASM_Master_File: "{{ playbook_dir }}/files/Master_Template_v16.xml"
 ASM_Policy_File: "/tmp/Modified_Master_Template_v16.xml"
