@@ -5,17 +5,20 @@
     path : "{{ ASM_Policy_File }}"
   register: second_file
   when: does_xml_exist.matched >= 1
-  
+  delegate_to: localhost
+
 - name: Modified File Sha1
   ansible.builtin.set_fact:
     file2_sha: "{{ second_file.stat.checksum }}"  
   when: does_xml_exist.matched >= 1
+  delegate_to: localhost
 
 - name: Compilation Changed
   ansible.builtin.set_fact:
     sha_matched: = "{{file2_sha and file1_sha}}"
   when:  (does_xml_exist.matched >= 1) and (file2_sha != file1_sha)
-
+  delegate_to: localhost
+  
 - name: Store Modified File in Webserver
   ansible.builtin.copy:
     src: "{{ ASM_Policy_File }}"
