@@ -1,0 +1,76 @@
+- name: Download latest AS3 RPM
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  vars:
+    as3_uri: "https://api.github.com/repos/F5Networks/f5-appsvcs-extension/releases/latest"
+  
+  tasks:
+
+  - name: Get latest AS3 RPM
+    ansible.builtin.shell: curl -s {{as3_uri}} | grep -E rpm |grep -E browser_download_url | head -1 | cut -d "\"" -f 4
+    register: as3_output
+
+  - debug:
+     var: as3_output.stdout_lines[0]
+
+  - ansible.builtin.set_fact:
+     as3_download: "{{as3_output.stdout_lines[0]}}"
+
+  - name: Grab AS3 RPM from github
+    ansible.builtin.get_url:
+     url: "{{as3_download}}?raw=true"
+     dest: "~/"
+     validate_certs: false
+
+- name: Install AS3 package to BIG-IP
+  hosts: f5
+  connection: local
+  gather_facts: no
+
+  tasks:
+    - name: Set a fact named 'provider' with BIG-IP login information
+      ansible.builtin.set_fact:
+       provider:
+        server: "{{ ansible_host }}"
+        user: "{{ ansible_user }}"
+        password: "{{ ansible_ssh_pass }}"
+        server_port: "{{ server_port }}"
+        validate_certs: no
+
+    - name: Grab the AS3 version from the home directory
+      ansible.builtin.shell: ls -Art ~/*.rpm | tail -n 1 | rev | cut -d/ -f 1 | rev
+      register: ls_output
+
+    - ansible.builtin.set_fact:
+       as3_rpm: "{{ls_output.stdout}}"
+
+    - name: Query BIG-IP facts
+      f5networks.f5_modules.bigip_device_info:
+        provider: "{{ provider }}"
+        gather_subset:
+          - iapplx-packages
+      register: bigip_device_facts
+
+    - name: "Show if AS3 Installed"
+      debug: "msg={{ item }}"
+      loop: "{{ bigip_device_facts.iapplx_packages | json_query(query_string) }}"
+      vars:
+        query_string: "[?name=='f5-appsvcs'].package_name"
+      register: output
+
+    # - name: debug
+    #   debug:
+    #     var: output.results[0].item
+
+    - name: Remove Previous AS3 Package
+      f5networks.f5_modules.bigip_lx_package:
+       package: "{{ output.results[0].item }}.rpm"
+       provider: "{{provider}}"
+       state: absent 
+
+    - name: Install AS3
+      f5networks.f5_modules.bigip_lx_package:
+       package: "~/{{as3_rpm}}"
+       provider: "{{provider}}"
