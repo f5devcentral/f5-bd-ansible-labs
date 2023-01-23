@@ -14,7 +14,7 @@
 				"class": "Application",
 				"{{F5_VIP_Name}}": {
 					"class": "Service_HTTPS",
-					"virtualPort": 8084,
+					"virtualPort": "{{ F5_VIP_Port }}",
 					"virtualAddresses": [
 						"{{ private_ip }}"
 					],
@@ -37,7 +37,7 @@
 						"http"
 					],
 					"members": [{
-						"servicePort": 80,
+						"servicePort": 3000,
 					  "serverAddresses": [
                     {% set comma = joiner(",") %}
                     {% for mem in pool_members %}

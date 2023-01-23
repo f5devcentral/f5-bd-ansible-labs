@@ -1,24 +1,16 @@
 ---
-# Modify based on deployment
-ansible_python_interpreter: "{{ ansible_playbook_python }}" 
-
-#AS3 Modules
-ansible_httpapi_password: "{{ ansible_password }}"
-ansible_network_os: f5networks.f5_bigip.bigip
-ansible_httpapi_use_ssl: yes
-ansible_httpapi_validate_certs: no
-ansible_httpapi_port: "{{ server_port }}"
 
 do_uri: "https://api.github.com/repos/F5Networks/f5-declarative-onboarding/releases/latest"
 
-F5_VIP_Name: Use-Case-6-VIP
+as3_tenant_name: "WorkshopExample"
 F5_VIP_Port: "8085"
+F5_VIP_Name: Use-Case-6-VIP
 pool_members: "{{ groups['web'] }}"
-
-ASM_Policy_Website: "http://10.1.1.4:8090/"
+ 
+ASM_Policy_Website: "http://{{ hostvars['node1'].ansible_host }}/asm-profiles/"
 ASM_Master_File: "{{ playbook_dir }}/files/Master_Template_v16.xml"
-ASM_Policy_File: "/tmp/f5/Modified_Master_Template_v16.xml"
-ASM_WebServer_File_Location: "/usr/share/nginx/html/asm-profiles/"
+ASM_Policy_File: "/tmp/Modified_Master_Template_v16.xml"
+ASM_WebServer_File_Location: "/var/www/html/asm-profiles/"
 
 #Blocked URLS Tasks Variables
 Blocked_URLs:
@@ -33,4 +25,3 @@ Blocked_IPs:
 - 172.16.192.199
 - 192.168.30.199
 - 192.172.1.1
-- 199.199.199.1
