@@ -7,4 +7,4 @@ provider:
   password: "{{ ansible_ssh_pass }}"
   server_port: "{{ server_port }}"
   validate_certs: "no"
-
+  timeout: 300
