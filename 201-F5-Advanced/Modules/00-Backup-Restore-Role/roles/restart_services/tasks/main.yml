@@ -1,0 +1,9 @@
+---
+
+- name: Restart REST
+  f5networks.f5_modules.bigip_command:
+    provider: "{{ provider }}"
+    commands:
+      - restart sys service restjavad
+      - restart sys service restnoded
+  ignore_errors: true
