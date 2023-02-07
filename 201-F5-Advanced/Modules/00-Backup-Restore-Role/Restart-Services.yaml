@@ -5,12 +5,5 @@
   gather_facts: false
   vars_files:
     - vars/f5_vars.yml
-  tasks:
-  
-    - name: Restart REST
-      f5networks.f5_modules.bigip_command:
-        provider: "{{ provider }}"
-        commands:
-          - restart sys service restjavad
-          - restart sys service restnoded
-      ignore_errors: true
+  roles:
+    - roles/restart_services
