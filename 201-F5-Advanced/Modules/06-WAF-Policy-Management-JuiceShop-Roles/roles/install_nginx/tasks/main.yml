@@ -39,3 +39,8 @@
     name: httpd_can_network_connect
     state: yes
     persistent: yes
+    
+- name: start nginx
+  ansible.builtin.service:
+    name: nginx
+    state: restarted
