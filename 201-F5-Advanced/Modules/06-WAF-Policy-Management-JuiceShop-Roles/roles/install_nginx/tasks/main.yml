@@ -18,6 +18,15 @@
   ansible.builtin.copy:
     src: "{{ role_path }}/files/nginx.conf"
     dest: /etc/nginx/nginx.conf
+  when: lab_version is not defined
+
+- name: copy nginx configuration (UDF)
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/nginx-udf.conf"
+    dest: /etc/nginx/nginx.conf
+  when: 
+  - lab_version is defined
+  - lab_version="udf"
 
 - name: add nginx user
   ansible.builtin.user:

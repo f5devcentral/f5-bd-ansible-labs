@@ -1,0 +1,21 @@
+- name: Creating HTTP-Redirect for Existing Application
+  hosts: web 
+  connection: local
+  gather_facts: false
+  
+#Environment variables defined
+  tasks:
+
+#Create VIP and Pool Member for Use Case
+
+  - debug:
+      var: lab_version
+
+  - name: Test Variables
+    ansible.builtin.command: cat /etc/redhat-release
+    when: lab_version is defined
+
+  - name: Test 2
+    ansible.builtin.command: cat /etc/redhat-release
+    when: lab_version is not defined
+    
