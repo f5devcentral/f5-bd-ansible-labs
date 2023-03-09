@@ -15,7 +15,7 @@
     ansible.builtin.command: cat /etc/redhat-release
     when: 
     - lab_version is defined
-    - lab_version="udf"
+    - lab_version == "udf"
 
   - name: Test 2
     ansible.builtin.command: cat /etc/redhat-release
