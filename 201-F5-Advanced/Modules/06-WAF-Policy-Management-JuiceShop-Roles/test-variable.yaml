@@ -11,13 +11,18 @@
   - debug:
       var: lab_version
 
-  - name: Test Variables
+  - name: Test 1 (UDF)
     ansible.builtin.command: cat /etc/redhat-release
     when: 
     - lab_version is defined
     - lab_version == "udf"
 
-  - name: Test 2
+  - name: Test 2 (Not Defined)
     ansible.builtin.command: cat /etc/redhat-release
     when: lab_version is not defined
     
+  - name: Test 3 (Defined but not UDF)
+    ansible.builtin.command: cat /etc/redhat-release
+    when: 
+    - lab_version is defined
+    - lab_version == "provisioner"
