@@ -13,7 +13,9 @@
 
   - name: Test Variables
     ansible.builtin.command: cat /etc/redhat-release
-    when: lab_version is defined
+    when: 
+    - lab_version is defined
+    - lab_version="udf"
 
   - name: Test 2
     ansible.builtin.command: cat /etc/redhat-release
