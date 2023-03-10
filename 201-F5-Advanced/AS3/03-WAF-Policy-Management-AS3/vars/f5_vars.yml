@@ -13,7 +13,7 @@ F5_VIP_Name: Use-Case-3-VIP
 ASM_Policy_Website: "http://{{ hostvars['node1'].ansible_host }}/asm-profiles/"
 ASM_Master_File: "{{ playbook_dir }}/files/Master_Template_v16.xml"
 ASM_Policy_File: "/tmp/Modified_Master_Template_v16.xml"
-ASM_WebServer_File_Location: "/var/www/html/asm-profiles/"
+ASM_WebServer_File_Location: "/usr/share/nginx/html/asm-profiles/"
 
 Blocked_URLs:
 - /blocked.html
