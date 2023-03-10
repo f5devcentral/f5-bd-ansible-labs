@@ -21,6 +21,7 @@
 - name: install yum-utils
   ansible.builtin.yum: 
     name: 
+    - python3-pip
     - yum-utils
     - device-mapper-persistent-data
     - lvm2
