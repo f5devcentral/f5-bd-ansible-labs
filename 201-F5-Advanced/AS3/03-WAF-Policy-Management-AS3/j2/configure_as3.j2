@@ -21,12 +21,15 @@
 					"profileHTTP": "basic", 
 					"pool": "{{ F5_VIP_Name }}_pool",
 					"policyWAF": {
-           "use": "{{F5_VIP_Name}}-Policy"
+           				"use": "{{F5_VIP_Name}}-Policy"
 					},
-          "redirect80": false,
+					"profileMultiplex": {
+              			"bigip": "/Common/oneconnect"
+          			},
+         			"redirect80": false,
 					"serverTLS": {
-              "bigip": "/Common/clientssl"
-          },
+              			"bigip": "/Common/clientssl"
+         			 },
           "persistenceMethods": []
 				},
 				"{{ F5_VIP_Name }}_pool": {

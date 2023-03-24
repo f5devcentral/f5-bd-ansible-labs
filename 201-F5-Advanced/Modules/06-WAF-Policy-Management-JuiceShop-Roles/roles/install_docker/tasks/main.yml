@@ -1,9 +1,9 @@
-- name: Ensure Community Grid is disabled
-  ansible.builtin.systemd:
-    name: boinc-client
-    state: stopped
-    enabled: false
-  ignore_errors: yes
+# - name: Ensure Community Grid is disabled
+#   ansible.builtin.systemd:
+#     name: boinc-client
+#     state: stopped
+#     enabled: false
+#   ignore_errors: yes
 
 - name: Add Docker GPG key
   ansible.builtin.rpm_key:

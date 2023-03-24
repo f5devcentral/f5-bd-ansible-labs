@@ -17,6 +17,9 @@
           "virtualAddresses": [
             "{{ private_ip }}"
           ],
+          "profileMultiplex": {
+              "bigip": "/Common/oneconnect"
+          },
           "pool": "{{ F5_VIP_Name }}_pool",
 #          "serverTLS": "{{ F5_VIP_Name }}_cert"
           "serverTLS": {

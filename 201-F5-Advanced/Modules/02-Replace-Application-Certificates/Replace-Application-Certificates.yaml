@@ -81,6 +81,7 @@
       name: "{{ F5_VIP_Name }}_https_vip"
       port: "8081"
       profiles:
+      - http
       - name: "{{ F5_VIP_Name }}_ClientSSL_profile"
         context: client-side
       - oneconnect
