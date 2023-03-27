@@ -8,7 +8,7 @@
   register: task
 
 - name: Install (upload, install) UCS without installing the license portion - check task
-  bigip_ucs:
+  f5networks.f5_bigip.bigip_ucs:
     ucs: "{{ task.ucs }}"
     task_id: "{{ task.task_id }}"
     timeout: 300
