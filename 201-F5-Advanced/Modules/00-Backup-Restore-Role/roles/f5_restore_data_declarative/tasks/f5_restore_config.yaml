@@ -6,12 +6,16 @@
     no_license: yes
     state: installed
   register: task
-
-- name: Install (upload, install) UCS without installing the license portion - check task
-  f5networks.f5_bigip.bigip_ucs:
-    ucs: "{{ task.ucs }}"
-    task_id: "{{ task.task_id }}"
-    timeout: 300
+  ignore_errors: true
 
 - debug:
-    var: ucs_backup
+    var: task
+
+# - name: Install (upload, install) UCS without installing the license portion - check task
+#   f5networks.f5_bigip.bigip_ucs:
+#     ucs: "{{ task.ucs }}"
+#     task_id: "{{ task.task_id }}"
+#     timeout: 300
+
+# - debug:
+#     var: ucs_backup
