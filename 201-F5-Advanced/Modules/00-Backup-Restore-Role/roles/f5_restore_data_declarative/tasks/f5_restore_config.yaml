@@ -1,7 +1,7 @@
 ---
 
 - name: Install UCS
-  5networks.f5_bigip.bigip_ucs:
+  f5networks.f5_bigip.bigip_ucs:
     ucs: UseCase-00-backup.ucs
     no_license: yes
     state: installed
