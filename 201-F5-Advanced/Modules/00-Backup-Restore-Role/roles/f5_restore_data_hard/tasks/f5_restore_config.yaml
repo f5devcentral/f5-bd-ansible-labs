@@ -1,0 +1,5 @@
+---
+
+- name: Restore UCS From Backup
+  ansible.builtin.shell:
+    cmd: load sys ucs /var/local/ucs/UseCase-00-backup.ucs no-license
