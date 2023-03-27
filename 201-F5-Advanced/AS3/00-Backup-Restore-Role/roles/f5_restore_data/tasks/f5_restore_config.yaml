@@ -17,7 +17,7 @@
 - name: Restore UCS From Backup
   f5networks.f5_modules.bigip_command:
     commands: 
-      - load sys ucs ./var/local/ucs/UseCase-00-backup.ucs no-license
+      - load sys ucs /var/local/ucs/UseCase-00-backup.ucs no-license
     provider: "{{provider}}"
   delegate_to: localhost
   when: restored.changed | bool
