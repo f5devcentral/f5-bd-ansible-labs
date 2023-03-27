@@ -1,7 +1,7 @@
 ---
 
-- name: Install (upload, install) UCS without installing the license portion - start task
-  bigip_ucs:
+- name: Install UCS
+  5networks.f5_bigip.bigip_ucs:
     ucs: UseCase-00-backup.ucs
     no_license: yes
     state: installed
