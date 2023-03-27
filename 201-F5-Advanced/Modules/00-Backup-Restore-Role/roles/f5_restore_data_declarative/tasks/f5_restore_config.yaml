@@ -2,10 +2,16 @@
 
 - name: Install UCS
   f5networks.f5_bigip.bigip_ucs:
-    ucs: UseCase-00-backup.ucs
+    ucs: /tmp/f5/UseCase-00-backup.ucs
     no_license: yes
     state: installed
-  register: ucs_backup
+  register: task
+
+- name: Install (upload, install) UCS without installing the license portion - check task
+  bigip_ucs:
+    ucs: "{{ task.ucs }}"
+    task_id: "{{ task.task_id }}"
+    timeout: 300
 
 - debug:
     var: ucs_backup
