@@ -5,8 +5,10 @@
     ucs: /tmp/f5/UseCase-00-backup.ucs
     no_license: yes
     state: installed
+    timeout: 300
   register: task
   ignore_errors: true
+
 
 - debug:
     var: task
