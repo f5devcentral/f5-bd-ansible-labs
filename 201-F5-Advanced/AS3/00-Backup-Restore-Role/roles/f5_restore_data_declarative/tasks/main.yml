@@ -20,7 +20,7 @@
      - restore
 
  - debug:
-     msg: "If Error above == Expecting value: line 1 column 1 (char 0), Then Restore Completed, if its not then RETRY code."
+     msg: "Error occurs but backup should still restore, ignore any errors."
    when: backup_file.stat.exists == true
    tags:
      - restore
