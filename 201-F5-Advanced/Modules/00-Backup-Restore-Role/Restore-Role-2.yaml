@@ -10,5 +10,6 @@
     ansible_httpapi_use_ssl: yes
     ansible_httpapi_validate_certs: no
     ansible_httpapi_port: "{{ server_port }}"
+    
   roles:
     - f5_restore_data_declarative
