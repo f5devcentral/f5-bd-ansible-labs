@@ -5,7 +5,7 @@
     ucs: UseCase-00-backup.ucs
     no_license: yes
     state: installed
-  register: task-ouput
+  register: ucs_backup
 
 - debug:
-    var: task-output
+    var: ucs_backup
