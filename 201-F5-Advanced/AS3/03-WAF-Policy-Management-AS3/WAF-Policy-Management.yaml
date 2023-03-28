@@ -27,7 +27,7 @@
   tasks:
 
   - name: Install ASM via DO
-    bigip_do_deploy:
+    f5networks.f5_bigip.bigip_do_deploy:
       content: "{{ lookup('template','j2/provision.j2', split_lines=False) }}"
     register: task
 
