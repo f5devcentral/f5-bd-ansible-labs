@@ -7,7 +7,7 @@
   roles: 
     - permissions_change
 
-- name: Install AS3/DO
+- name: Install DO/ASM
   hosts: lb
   connection: httpapi
   gather_facts: false
