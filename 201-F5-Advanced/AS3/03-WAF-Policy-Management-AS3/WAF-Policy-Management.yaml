@@ -34,7 +34,10 @@
   - debug:
       var: task
 
-  - name: Check for task that will reboot
+  - debug:
+      msg: "{{ task.task_id }}"
+
+  - name: Check if DO Completed installation Task
     f5networks.f5_bigip.bigip_do_deploy:
       task_id: "{{ task.task_id }}"
     register: result
@@ -44,17 +47,8 @@
 
   - name: Pause for Install to complete
     ansible.builtin.pause:
-      minutes: 5
+      minutes: 1
     when: task.changed
-
-  - name: Check for task that will reboot
-    f5networks.f5_bigip.bigip_do_deploy:
-      task_id: "{{ task.task_id }}"
-    register: result
-
-  - debug:
-      var: result
-
 
 - name: ASM Policy
   hosts: node1
