@@ -30,7 +30,7 @@
     - checksum
 
 - name: Apply AS3
-  hosts: f5
+  hosts: lb
   gather_facts: false
   vars_files:
     - vars/f5_vars.yml
