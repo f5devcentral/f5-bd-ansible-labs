@@ -29,13 +29,12 @@
     - waf_block_urls
     - checksum
 
-- name: Apply AS3
-  hosts: f5
- # connection: httpapi
+- name: Push AS3
+  hosts: lb
   gather_facts: false
-  become: yes
   vars_files:
     - vars/f5_vars.yml
+    - vars/f5_httpapi.yml
   roles:
     - find_file_webserver
     - apply_as3
