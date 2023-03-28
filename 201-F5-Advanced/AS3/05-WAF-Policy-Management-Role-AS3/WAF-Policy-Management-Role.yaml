@@ -34,6 +34,7 @@
   gather_facts: false
   vars_files:
     - vars/f5_vars.yml
+    - vars/f5_httpapi.yml
   roles:
     - find_file_webserver
     - apply_as3
