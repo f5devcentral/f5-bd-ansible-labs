@@ -19,65 +19,20 @@
 - name: Install ASM via DO
   hosts: lb
   gather_facts: false
+  connection: httpapi 
   vars_files:
     - vars/f5_vars.yml
- 
+    - vars/f5_httpapi.yml
+
   tasks:
 
-  - name: Set a fact named 'provider' with BIG-IP login information
-    ansible.builtin.set_fact:
-     provider:
-      server: "{{ ansible_host }}"
-      user: "{{ ansible_user }}"
-      password: "{{ ansible_ssh_pass }}"
-      server_port: "{{ server_port }}"
-      validate_certs: no
+  - name: Start complex declaration with restart
+    bigip_do_deploy:
+      content: "{{ lookup('template','j2/provision.j2', split_lines=False) }}"
+    register: task
 
-  - name: GET ASM - Module Install Status
-    ansible.builtin.uri:
-      url: "https://{{ ansible_host }}:{{ server_port }}/mgmt/tm/sys/provision/asm"
-      method: GET
-      status_code: 200
-      timeout: 300
-      force_basic_auth: true
-      user: "{{ ansible_user }}"
-      password: "{{ ansible_ssh_pass }}"
-      validate_certs: false
-    delegate_to: localhost
-    register: installed_status
-
-  - name: Install ASM - Push via DO (if not Installed)
-    ansible.builtin.uri:
-      url: "https://{{ ansible_host }}:{{ server_port }}/mgmt/shared/declarative-onboarding/declare"
-      method: POST
-      body: "{{ lookup('template','j2/provision.j2', split_lines=False) }}"
-      status_code: 202
-      timeout: 300
-      body_format: json
-      force_basic_auth: true
-      user: "{{ ansible_user }}"
-      password: "{{ ansible_ssh_pass }}"
-      validate_certs: false
-    delegate_to: localhost
-    register: do_result
-    when: installed_status.json.level != "nominal"
-    
-  - name: Wait for DO Task to complete
-    ansible.builtin.uri:
-      url: "https://{{ ansible_host }}:{{ server_port }}/mgmt/shared/declarative-onboarding/task/{{ do_result.json.id }}"
-      method: GET
-      return_content: true
-      status_code: 200
-      force_basic_auth: true
-      user: "{{ ansible_user }}"
-      password: "{{ ansible_ssh_pass }}"
-      validate_certs: false
-    register: atc_DO_status
-    until: atc_DO_status is success
-    retries: 30
-    delay: 15
-    delegate_to: localhost
-    when: installed_status.json.level != "nominal"
+  - debug:
+      var: task
 
   - name: Pause for Install to complete
     ansible.builtin.pause:
@@ -249,12 +204,10 @@
 
 - name: Push AS3
   hosts: lb
- # connection: httpapi
   gather_facts: false
   vars_files:
     - vars/f5_vars.yml
- #   - vars/f5_httpapi.yml
-
+    - vars/f5_httpapi.yml
 
   tasks:
   - name: Find Latest File
@@ -262,24 +215,13 @@
     register: file_name
     delegate_to: node1
 
-  - name: PUSH AS3
-    ansible.builtin.uri:
-      url: "https://{{ ansible_host }}:{{ server_port }}/mgmt/shared/appsvcs/declare"
-      method: POST
-      body: "{{ lookup('template','j2/configure_as3.j2', split_lines=False) }}"
-      status_code: 200, 202
-      timeout: 300
-      body_format: json
-      force_basic_auth: true
-      user: "{{ ansible_user }}"
-      password: "{{ ansible_ssh_pass }}"
-      validate_certs: false
-    delegate_to: localhost
-    
-#   - name: PUSH AS3 Template
-#     f5networks.f5_bigip.bigip_as3_deploy:
-#       content: "{{ lookup('template','j2/configure_as3.j2', split_lines=False) }}"
-# #    when:  (does_xml_exist.matched == 0) or (file2_sha != file1_sha) 
+  - name: Change Communication
+    ansible.builtin.set_fact:
+      ansible_connection: httpapi
+ 
+  - name: PUSH AS3 Template
+    f5networks.f5_bigip.bigip_as3_deploy:
+      content: "{{ lookup('template','j2/configure_as3.j2', split_lines=False) }}"
 
 - name: CHMOD WebServer - Close
   hosts: node1
