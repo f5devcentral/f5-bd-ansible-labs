@@ -37,6 +37,23 @@
   - debug:
       msg: "{{ task.task_id }}"
 
+  # - name: Wait for DO Task to complete
+  #   ansible.builtin.uri:
+  #     url: "https://{{ ansible_host }}:{{ server_port }}/mgmt/shared/declarative-onboarding/task/{{ do_result.json.id }}"
+  #     method: GET
+  #     return_content: true
+  #     status_code: 200
+  #     force_basic_auth: true
+  #     user: "{{ ansible_user }}"
+  #     password: "{{ ansible_ssh_pass }}"
+  #     validate_certs: false
+  #   register: atc_DO_status
+  #   until: atc_DO_status is success
+  #   retries: 30
+  #   delay: 15
+  #   delegate_to: localhost
+  #   when: installed_status.json.level != "nominal"
+    
   - name: Check if DO Completed installation Task
     f5networks.f5_bigip.bigip_do_deploy:
       task_id: "{{ task.task_id }}"
