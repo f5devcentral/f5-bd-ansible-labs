@@ -16,7 +16,7 @@
       state: directory
       mode: '0777'
 
-- name: Install ASM vi DO
+- name: Install ASM via DO
   hosts: lb
   gather_facts: false
   vars_files:
