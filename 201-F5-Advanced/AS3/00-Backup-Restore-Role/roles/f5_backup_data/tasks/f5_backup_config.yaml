@@ -2,6 +2,6 @@
 - name: Download a new UCS
   f5networks.f5_modules.bigip_ucs_fetch:
     src: "{{file_name}}"
-    dest: "{{local_folder_location}}/UseCase-00-backup.ucs"
+    dest: "{{local_folder_location}}{{file_name}}"
     provider: "{{provider}}"
   delegate_to: localhost

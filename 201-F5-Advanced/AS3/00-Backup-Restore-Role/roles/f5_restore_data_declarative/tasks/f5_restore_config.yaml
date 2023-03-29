@@ -2,7 +2,7 @@
 
 - name: Install UCS
   f5networks.f5_bigip.bigip_ucs:
-    ucs: /tmp/f5/UseCase-00-backup.ucs
+    ucs: "{{local_folder_location}}{{file_name}}"
     no_license: yes
     state: installed
     timeout: 300
@@ -10,6 +10,8 @@
   ignore_errors: true
 
 
+
+# This code needs to be validated as created error so using other method to identify
 # - debug:
 #     var: task
 

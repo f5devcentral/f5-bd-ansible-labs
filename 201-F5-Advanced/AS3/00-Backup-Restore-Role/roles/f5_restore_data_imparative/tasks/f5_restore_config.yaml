@@ -3,7 +3,7 @@
 #Ignore set due to Bug #1666 https://github.com/F5Networks/f5-ansible/issues/1666
 - name: Restore UCS From Backup
   f5networks.f5_modules.bigip_ucs:
-    ucs: "UseCase-00-backup.ucs"
+    ucs: "{{file_name}}"
     state: installed
     no_license: yes
     provider: "{{provider}}"
@@ -17,7 +17,7 @@
 - name: Restore UCS From Backup
   f5networks.f5_modules.bigip_command:
     commands: 
-      - load sys ucs /var/local/ucs/UseCase-00-backup.ucs no-license
+      - "load sys ucs /var/local/ucs/{{ file_name }} no-license"
     provider: "{{provider}}"
   delegate_to: localhost
   when: restored.changed | bool
