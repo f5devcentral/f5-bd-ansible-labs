@@ -3,5 +3,5 @@
 F5_Admin_Port: "{{ server_port }}"
 local_folder_location: "/tmp/f5/"
 
-#Below Varaible cannot be modified at this time, looking for future solution
+#File Name of Backup could use timestamps/names/etc.
 file_name: UseCase-00-backup.ucs

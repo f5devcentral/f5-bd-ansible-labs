@@ -2,7 +2,7 @@
 # tasks file for Backup-Restore Role
  - name: Check if Backup File Exists
    stat:
-     path: "{{local_folder_location}}/UseCase-00-backup.ucs"
+     path: "{{local_folder_location}}{{file_name}}""
    register: backup_file
    tags:
      - restore
@@ -20,7 +20,7 @@
      - restore
 
  - debug:
-     msg: "Error occurs but backup should still restore, ignore any errors."
+     msg: "An Error might occur but backup should still restore, ignore any errors."
    when: backup_file.stat.exists == true
    tags:
      - restore

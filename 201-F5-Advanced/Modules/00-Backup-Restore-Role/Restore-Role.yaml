@@ -14,3 +14,15 @@
 
   roles:
     - f5_restore_data_declarative
+
+
+
+# Imparative restore code
+# ---
+# - hosts: lb
+#   connection: local
+#   gather_facts: false
+#   vars_files:
+#     - vars/f5_vars.yml
+#   roles:
+#     - f5_restore_data_imparative

@@ -20,7 +20,7 @@
      - restore
 
  - debug:
-     msg: "If Error above == Expecting value: line 1 column 1 (char 0), Then Restore Completed, if its not then RETRY code."
+     msg: "Restore Completed, Ignore Above Error in Restoration Section.  Reported bug at https://github.com/F5Networks/f5-ansible/issues/1666"
    when: backup_file.stat.exists == true
    tags:
      - restore
