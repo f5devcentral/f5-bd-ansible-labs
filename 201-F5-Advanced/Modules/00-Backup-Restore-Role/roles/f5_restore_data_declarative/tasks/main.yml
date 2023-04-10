@@ -24,3 +24,9 @@
    when: backup_file.stat.exists == true
    tags:
      - restore
+
+ - debug:
+     msg: "Restores can take up to 5 Minutes to complete, please wait until your BIG-IP is Restored"
+   when: backup_file.stat.exists == true
+   tags:
+     - restore
