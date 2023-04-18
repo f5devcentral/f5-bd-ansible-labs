@@ -74,3 +74,6 @@
       f5networks.f5_modules.bigip_lx_package:
        package: "~/{{as3_rpm}}"
        provider: "{{provider}}"
+
+    - pause:
+        seconds: 30
