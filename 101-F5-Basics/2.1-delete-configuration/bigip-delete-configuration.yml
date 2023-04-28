@@ -23,13 +23,13 @@
         state: absent
 
     - name: DELETE POOL
-      bigip_pool:
+      f5networks.f5_modules.bigip_pool:
         provider: "{{ provider }}"
         name: "http_pool"
         state: absent
 
     - name: DELETE NODES
-      bigip_node:
+      f5networks.f5_modules.bigip_node:
         provider: "{{ provider }}"
         name: "{{ hostvars[item].inventory_hostname }}"
         state: absent
