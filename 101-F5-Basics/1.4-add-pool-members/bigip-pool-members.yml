@@ -15,7 +15,7 @@
           validate_certs: false
         state: "present"
         name: "{{ hostvars[item].inventory_hostname }}"
-        host: "{{ hostvars[item].ansible_host }}"
+        host: "{{ hostvars[item].private_ip }}"
         port: "80"
         pool: "http_pool"
       loop: "{{ groups['web'] }}"
