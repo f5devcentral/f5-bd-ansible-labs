@@ -13,6 +13,6 @@
           password: "{{ ansible_password }}"
           server_port: "{{ server_port }}"
           validate_certs: false
-        host: "{{ hostvars[item].ansible_host }}"
+        host: "{{ hostvars[item].private_ip }}"
         name: "{{ hostvars[item].inventory_hostname }}"
       loop: "{{ groups['web'] }}"
