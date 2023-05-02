@@ -1,12 +1,18 @@
 "web_app": {
     "class": "Application",
-    "template": "http",
     "serviceMain": {
         "class": "Service_HTTPS",
         "virtualAddresses": [
             "{{ private_ip }}"
         ],
+        "profileMultiplex": {
+            "bigip": "/Common/oneconnect"
+        },
         "pool": "app_pool"
+        "serverTLS": {
+                    "bigip": "/Common/clientssl"
+                },
+        "persistenceMethods": []
     },
     "app_pool": {
         "class": "Pool",
