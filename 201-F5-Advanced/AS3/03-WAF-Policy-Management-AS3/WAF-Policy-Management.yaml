@@ -10,6 +10,11 @@
 
   tasks:
 
+  - name: change Web Server based on lab
+    ansible.builtin.set_fact:
+      ASM_WebServer_File_Location: "{{ASM_WebServer_File_Location_2}}"
+    when: lab_version is not defined
+
   - name: Modify Permissions of "{{ ASM_WebServer_File_Location }}" to 777
     ansible.builtin.file:
       path: "{{ ASM_WebServer_File_Location }}"
@@ -75,6 +80,11 @@
     - vars/f5_vars.yml
 
   tasks:
+
+  - name: change Web Server based on lab
+    ansible.builtin.set_fact:
+      ASM_WebServer_File_Location: "{{ASM_WebServer_File_Location_2}}"
+    when: lab_version is not defined
 
 #hardcode timestamp into variable
   - ansible.builtin.set_fact:
@@ -238,6 +248,12 @@
     - vars/f5_httpapi.yml
 
   tasks:
+
+  - name: change Web Server based on lab
+    ansible.builtin.set_fact:
+      ASM_WebServer_File_Location: "{{ASM_WebServer_File_Location_2}}"
+    when: lab_version is not defined
+
   - name: Find Latest File
     ansible.builtin.shell: ls {{ ASM_WebServer_File_Location }} -Artf | tail -n 1
     register: file_name
@@ -258,6 +274,11 @@
     - vars/f5_vars.yml
 
   tasks:
+  
+  - name: change Web Server based on lab
+    ansible.builtin.set_fact:
+      ASM_WebServer_File_Location: "{{ASM_WebServer_File_Location_2}}"
+    when: lab_version is not defined
 
   - name: Modify Permissions of "{{ ASM_WebServer_File_Location }}" to 755
     ansible.builtin.file:
