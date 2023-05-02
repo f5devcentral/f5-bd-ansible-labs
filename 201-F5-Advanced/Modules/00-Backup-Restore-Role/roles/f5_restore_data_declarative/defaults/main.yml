@@ -7,3 +7,4 @@ provider:
   server_port: "{{ server_port }}"
   validate_certs: "no"
 
+do_uri: "https://api.github.com/repos/F5Networks/f5-declarative-onboarding/releases/latest"
