@@ -1,18 +1,12 @@
 "web_app": {
     "class": "Application",
+    "template": "http",
     "serviceMain": {
-        "class": "Service_HTTPS",
+        "class": "Service_HTTP",
         "virtualAddresses": [
             "{{ private_ip }}"
         ],
-        "profileMultiplex": {
-            "bigip": "/Common/oneconnect"
-        },
-        "pool": "app_pool",
-        "serverTLS": {
-            "bigip": "/Common/clientssl"
-        },
-        "persistenceMethods": []
+        "pool": "app_pool"
     },
     "app_pool": {
         "class": "Pool",
@@ -25,7 +19,7 @@
                 "serverAddresses": [
                     {% set comma = joiner(",") %}
                     {% for mem in pool_members %}
-                        {{comma()}} "{{  hostvars[mem]['private_ip']  }}"
+                        {{comma()}} "{{  hostvars[mem]['ansible_host']  }}"
                     {% endfor %}
 
                 ]
