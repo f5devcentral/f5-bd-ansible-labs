@@ -38,3 +38,8 @@
     f5networks.f5_modules.bigip_lx_package:
       package: "~/{{do_rpm}}"
       provider: "{{provider}}"
+    register: install_do
+
+  - pause: 
+      seconds: 30 
+    when: install_do.changed
