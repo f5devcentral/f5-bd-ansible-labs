@@ -5,6 +5,11 @@
 #     enabled: false
 #   ignore_errors: yes
 
+- name: Set Python Interpreter
+  ansible.builtin.set_fact:
+    ansible_python_interpreter: "/usr/libexec/platform-python"
+  when: lab_version is not defined
+
 - name: Add Docker GPG key
   ansible.builtin.rpm_key:
     key: https://download.docker.com/linux/centos/gpg
