@@ -1,5 +1,8 @@
 ---
 # tasks file for Backup-Restore Role
+ - name: Install Declarative Onboarding
+   include: Install-DO.yaml
+
  - name: Check if Backup File Exists
    stat:
      path: "{{local_folder_location}}{{file_name}}"
