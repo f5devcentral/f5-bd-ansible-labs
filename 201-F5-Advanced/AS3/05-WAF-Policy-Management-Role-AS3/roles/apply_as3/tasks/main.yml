@@ -1,12 +1,6 @@
 ---
 # tasks insttall Declaritive Onboarding Latest
 
-
-- name: change Web Server based on lab
-  ansible.builtin.set_fact:
-    ASM_WebServer_File_Location: "{{ASM_WebServer_File_Location_2}}"
-  when: lab_version is not defined
-
 - name: Change Communication
   ansible.builtin.set_fact:
     ansible_connection: httpapi
