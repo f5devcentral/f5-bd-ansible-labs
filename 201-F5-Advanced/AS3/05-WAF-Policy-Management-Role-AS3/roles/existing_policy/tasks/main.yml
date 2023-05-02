@@ -1,5 +1,11 @@
 ---
 
+
+- name: change Web Server based on lab
+  ansible.builtin.set_fact:
+    ASM_WebServer_File_Location: "{{ASM_WebServer_File_Location_2}}"
+  when: lab_version is not defined
+
 - ansible.builtin.set_fact:
     ASM_Final_File_Name: "{{F5_VIP_Name}}-ASMPolicy-{{ lookup('pipe','date +%Y-%m-%d-%H-%M-%S') }}.xml"
 

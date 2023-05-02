@@ -1,5 +1,10 @@
 ---
 
+- name: change Web Server based on lab
+  ansible.builtin.set_fact:
+    ASM_WebServer_File_Location: "{{ASM_WebServer_File_Location_2}}"
+  when: lab_version is not defined
+  
 - name: Get Checksum of Modified file
   ansible.builtin.stat:
     path : "{{ ASM_Policy_File }}"
