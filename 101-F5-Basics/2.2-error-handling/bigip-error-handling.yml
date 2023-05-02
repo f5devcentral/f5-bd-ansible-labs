@@ -19,7 +19,7 @@
         - name: CREATE NODES
           f5networks.f5_modules.bigip_node:
             provider: "{{ provider }}"
-            host: "{{ hostvars[item].ansible_host }}"
+            host: "{{ hostvars[item].private_ip }}"
             name: "{{ hostvars[item].inventory_hostname }}"
           loop: "{{ groups['web'] }}"
 
@@ -36,7 +36,7 @@
             provider: "{{ provider }}"
             state: "present"
             name: "{{ hostvars[item].inventory_hostname }}"
-            host: "{{ hostvars[item].ansible_host }}"
+            host: "{{ hostvars[item].private_ip }}"
             port: "80"
             pool: "http_pool"
           loop: "{{ groups['web'] }}"
