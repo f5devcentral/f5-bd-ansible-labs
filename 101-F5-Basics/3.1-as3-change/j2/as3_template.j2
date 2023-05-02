@@ -6,6 +6,9 @@
         "virtualAddresses": [
             "{{ private_ip }}"
         ],
+        "profileMultiplex": {
+            "bigip": "/Common/oneconnect"
+        },
         "pool": "app_pool"
     },
     "app_pool": {
@@ -19,7 +22,7 @@
                 "serverAddresses": [
                     {% set comma = joiner(",") %}
                     {% for mem in pool_members %}
-                        {{comma()}} "{{  hostvars[mem]['ansible_host']  }}"
+                        {{comma()}} "{{  hostvars[mem]['private_ip']  }}"
                     {% endfor %}
 
                 ]
