@@ -7,7 +7,7 @@
 
 - name: PUSH AS3 Template
   f5networks.f5_bigip.bigip_as3_deploy:
-    content: "{{ lookup('template','configure_as3.j2', split_lines=False) }}"
+    content: "{{ lookup('template','configure_as3-no-oneconnect.j2', split_lines=False) }}"
 
 - name: Set finished to 1
   ansible.builtin.set_fact:
