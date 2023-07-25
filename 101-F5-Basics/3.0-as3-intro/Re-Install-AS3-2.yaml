@@ -44,7 +44,6 @@
     gather_subset:
       - iapplx-packages
   register: bigip_device_facts
-  delegate_to: localhost
 
 - name: "Show if AS3 Installed"
   debug: "msg={{ item }}"
