@@ -1,4 +1,4 @@
-- set_fact:
+- ansible.builtin.set_fact:
     as3_uri: "https://api.github.com/repos/F5Networks/f5-appsvcs-extension/releases/latest"
     ansible_connection: local
 
@@ -66,6 +66,9 @@
     package: "~/{{as3_rpm}}"
     provider: "{{provider}}"
   delegate_to: localhost
+
+- ansible.builtin.set_fact:
+    ansible_connection: httpapi
 
 - pause:
     seconds: 60
