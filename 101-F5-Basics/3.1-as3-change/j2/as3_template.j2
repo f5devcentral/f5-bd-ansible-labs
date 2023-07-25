@@ -1,6 +1,5 @@
 "web_app": {
     "class": "Application",
-    "template": "http",
     "serviceMain": {
         "class": "Service_HTTPS",
         "virtualAddresses": [
@@ -10,6 +9,9 @@
             "bigip": "/Common/oneconnect"
         },
         "pool": "app_pool",
+        "serverTLS": {
+            "bigip": "/Common/clientssl"
+        },
         "persistenceMethods": []
     },
     "app_pool": {
