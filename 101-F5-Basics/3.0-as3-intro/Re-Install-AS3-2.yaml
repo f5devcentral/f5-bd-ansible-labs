@@ -51,20 +51,17 @@
   vars:
     query_string: "[?name=='f5-appsvcs'].package_name"
   register: output
-  delegate_to: localhost
 
 - name: Remove Previous AS3 Package
   f5networks.f5_modules.bigip_lx_package:
     package: "{{ output.results[0].item }}.rpm"
     provider: "{{provider}}"
     state: absent 
-  delegate_to: localhost
 
 - name: Install AS3
   f5networks.f5_modules.bigip_lx_package:
     package: "~/{{as3_rpm}}"
     provider: "{{provider}}"
-  delegate_to: localhost
 
 - ansible.builtin.set_fact:
     ansible_connection: httpapi
