@@ -57,6 +57,7 @@
     package: "{{ output.results[0].item }}.rpm"
     provider: "{{provider}}"
     state: absent 
+  ignore_errors: true
 
 - name: Install AS3
   f5networks.f5_modules.bigip_lx_package:
