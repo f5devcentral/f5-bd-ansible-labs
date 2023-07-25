@@ -30,7 +30,7 @@
       rescue:
 
         - name: RE-Install AS3 
-          ansible.builtin.import_playbook: "Re-Install-AS3-2.yaml"
+          include: "Re-Install-AS3-2.yaml"
 
         - name: CREATE AS3 JSON BODY
           set_fact:
