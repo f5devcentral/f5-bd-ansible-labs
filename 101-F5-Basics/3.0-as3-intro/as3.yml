@@ -1,5 +1,5 @@
 ---
-- import_playbook: "{{playbook_dir}}/Re-Install-AS3.yaml"
+#- import_playbook: "{{playbook_dir}}/Re-Install-AS3.yaml"
 
 - name: AS3 Tenant
   hosts: lb
@@ -23,3 +23,6 @@
     - name: PUSH AS3 Template
       f5networks.f5_bigip.bigip_as3_deploy:
         content: "{{ lookup('template','j2/tenant_base.j2', split_lines=False) }}"
+
+    - debug:
+        msg: "If the Above AS3 Fails try running the Re-Install-AS3.yaml playbook then retry"
