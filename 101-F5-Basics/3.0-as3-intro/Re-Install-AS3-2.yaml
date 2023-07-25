@@ -1,3 +1,6 @@
+- set_fact:
+    as3_uri: "https://api.github.com/repos/F5Networks/f5-appsvcs-extension/releases/latest"
+ 
 - name: Get latest AS3 RPM
   ansible.builtin.shell: curl -s {{as3_uri}} | grep -E rpm |grep -E browser_download_url | head -1 | cut -d "\"" -f 4
   register: as3_output
