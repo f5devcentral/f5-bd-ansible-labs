@@ -25,11 +25,11 @@
 - name: Set a fact named 'provider' with BIG-IP login information
   ansible.builtin.set_fact:
     provider:
-    server: "{{ ansible_host }}"
-    user: "{{ ansible_user }}"
-    password: "{{ ansible_ssh_pass }}"
-    server_port: "{{ server_port }}"
-    validate_certs: no
+      server: "{{ ansible_host }}"
+      user: "{{ ansible_user }}"
+      password: "{{ ansible_ssh_pass }}"
+      server_port: "{{ server_port }}"
+      validate_certs: no
 
 - name: Grab the AS3 version from the home directory
   ansible.builtin.shell: ls -Art ~/*.rpm | tail -n 1 | rev | cut -d/ -f 1 | rev
