@@ -1,0 +1,23 @@
+- debug:
+    var: id_array_output
+
+- name: Visualizer adding Array Objects
+  uri: 
+    url: "https://10.1.1.4/api/v2/workflow_job_templates/{{workflow_id.json.id}}/workflow_nodes/"
+    method: POST
+    user: "admin"
+    password: "Ansible123!"
+    force_basic_auth: yes
+    return_content: yes
+    body: {"unified_job_template": "{{id_array_output}}" }
+    body_format: json
+    status_code: 201
+  register: template_out
+  
+  
+#   curl -i -u "admin:Ansible123!" -H "Accept: application/json" -H "Content-Type:application/json" -X POST https://10.1.1.4/api/v2/workflow_job_templates/43/workflow_nodes/ --data '{"unified_job_template": 14, "success_nodes": [], "failure_nodes": [] }'
+# curl -i -u "admin:Ansible123!" -H "Accept: application/json" -H "Content-Type:application/json" -X POST https://10.1.1.4/api/v2/workflow_job_templates/43/workflow_nodes/ --data '{"unified_job_template": 15, "success_nodes": [1], "failure_nodes": [] }'
+# curl -i -u "admin:Ansible123!" -H "Accept: application/json" -H "Content-Type:application/json" -X POST https://10.1.1.4/api/v2/workflow_job_templates/43/workflow_nodes/ --data '{"unified_job_template": 16, "success_nodes": [2], "failure_nodes": [] }'
+# curl -i -u "admin:Ansible123!" -H "Accept: application/json" -H "Content-Type:application/json" -X POST https://10.1.1.4/api/v2/workflow_job_templates/43/workflow_nodes/ --data '{"unified_job_template": 17, "success_nodes": [], "failure_nodes": [1] }'
+# curl -i -u "admin:Ansible123!" -H "Accept: application/json" -H "Content-Type:application/json" -X POST https://10.1.1.4/api/v2/workflow_job_templates/43/workflow_nodes/ --data '{"unified_job_template": 18, "success_nodes": [], "failure_nodes": [2] }'
+# curl -i -u "admin:Ansible123!" -H "Accept: application/json" -H "Content-Type:application/json" -X POST https://10.1.1.4/api/v2/workflow_job_templates/43/workflow_nodes/ --data '{"unified_job_template": 19, "success_nodes": [], "failure_nodes": [3] }'

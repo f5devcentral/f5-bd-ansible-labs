@@ -1,0 +1,43 @@
+---
+- name: AAP
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars: 
+    id_array: []
+    array_var: 
+    - {name: "Disable node", playbook: "disable_node.yml" }
+    - {name: "Enable node", playbook: "enable_node.yml" }
+    - {name: "Patch server", playbook: "patch_server.yml" }
+    - {name: "Attach iRule", playbook: "attach_irule.yml" }
+    - {name: "Detach iRule", playbook: "detach_irule.yml" }
+
+  tasks:
+
+    - name: Create Workflow Templates
+      include: create_workflow_templates.yml
+      with_items: "{{array_var}}"
+      loop_control:
+        loop_var: array_var_output
+
+    - name: Create Workflow
+      uri: 
+        url: https://10.1.1.4/api/v2/workflow_job_templates/
+        method: POST
+        user: "admin"
+        password: "Ansible123!"
+        force_basic_auth: yes
+        return_content: yes
+        body: {"description": "", "inventory": 2, "name": "Node Maintenance Workflow", "organization": 1 }
+        body_format: json
+        status_code: 201
+      register: workflow_id
+
+    # - debug:
+    #     var: workflow_id.json.id
+
+    # - name: Create Visualizer
+    #   include: create_visualizer.yml
+    #   with_items: "{{id_array}}"
+    #   loop_control:
+    #     loop_var: id_array_output
