@@ -9,6 +9,7 @@
     body: {"description": "", "inventory": 2, "project": 12, "name": "{{array_var_output.name}}", "organization": 0, "playbook": "{{array_var_output.playbook}}"}
     body_format: json
     status_code: 201
+    validate_certs: no
   register: template_out
 
 - name: Add Credentials for {{array_var_output.name}}
@@ -22,6 +23,7 @@
     body: {"associate": true, "id": 4}
     body_format: json
     status_code: 204
+    validate_certs: no
   when: array_var_output.playbook != "patch_server.yml"
 
 - name: Add Credentials for {{array_var_output.name}}
@@ -35,6 +37,7 @@
     body: {"associate": true, "id": 3}
     body_format: json
     status_code: 204
+    validate_certs: no
   when: array_var_output.playbook == "patch_server.yml"
 
 - name: Create Array for IDs

@@ -31,6 +31,7 @@
         body: {"description": "", "inventory": 2, "name": "Node Maintenance Workflow", "organization": 1 }
         body_format: json
         status_code: 201
+        validate_certs: no
       register: workflow_id
 
     # - debug:
