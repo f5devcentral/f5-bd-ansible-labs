@@ -10,9 +10,9 @@
     "remark": "HTTPS with pool",
     "{{ as3_tenant_name }}": {
       "class": "Tenant",
-      "serviceMain": {
+      "AS3-UseCase-1": {
         "class": "Application",
-        "{{F5_VIP_Name}}": {
+        "serviceMain": {
           "class": "Service_HTTPS",
           "virtualAddresses": [
             "{{ private_ip }}"
