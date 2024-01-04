@@ -7,7 +7,7 @@
     name: juice-shop-app
     image: docker.io/bkimminich/juice-shop:latest
     expose:
-      - "3000:3000"
+      - 3000
     state: started
     restart: yes
 
