@@ -1,0 +1,25 @@
+---
+- hosts: web
+#  connection: local
+  gather_facts: false
+  become: yes
+  vars:
+    ansible_become: yes 
+    ansible_become_method: sudo
+    ansible_become_pass: "{{ ansible_password }}"
+  roles:
+    - Podman-Roles/install_podman
+    - Podman-Roles/install_juice_shop_podman
+  
+- hosts: lb
+  connection: local
+  gather_facts: true
+  vars_files:
+    - vars/f5_vars.yml
+  roles:
+    - F5-Roles/f5_setup_prework
+    - F5-Roles/waf_export_policy
+    - F5-Roles/waf_block_ip
+    - F5-Roles/waf_block_urls
+    - F5-Roles/waf_import_apply_policy
+
