@@ -13,6 +13,7 @@
       user: "{{ ansible_user }}"
       password: "{{ ansible_ssh_pass }}"
       server_port: "{{ F5_Admin_Port }}"
+      no_f5_teem: yes
       validate_certs: "no"
 
 #Create Pool and Virtual Server for Use Case
