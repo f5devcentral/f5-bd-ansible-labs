@@ -11,10 +11,15 @@
     ansible_httpapi_validate_certs: no
     ansible_httpapi_port: "{{ server_port }}"
     as3_tenant_name: "WorkshopExample"
+    F5_VIP_Name_UC1: Use-Case-1-VIP
     F5_VIP_Name: Use-Case-2-VIP
     pool_members: "{{ groups['web'] }}"
 
   tasks:
+    - name: CREATE AS3 JSON BODY
+      set_fact:
+        as3_app_body: "{{ lookup('template', 'j2/as3_template.j2', split_lines=False) }}"
+
     - name: PUSH AS3 Template
       f5networks.f5_bigip.bigip_as3_deploy:
-        content: "{{ lookup('template','j2/replace_certs.j2', split_lines=False) }}"
+        content: "{{ lookup('template','j2/tenant_base.j2', split_lines=False) }}"

@@ -37,6 +37,7 @@
         user: "{{ ansible_user }}"
         password: "{{ ansible_ssh_pass }}"
         server_port: "{{ server_port }}"
+        no_f5_teem: yes
         validate_certs: no
 
     - name: Grab the AS3 version from the home directory

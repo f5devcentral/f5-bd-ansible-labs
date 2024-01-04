@@ -1,7 +1,0 @@
----
-# tasks file for ASM-Role
-
- - name: Get My IP Addresss
-   include: get_my_ip.yaml
-   tags:
-     - provision

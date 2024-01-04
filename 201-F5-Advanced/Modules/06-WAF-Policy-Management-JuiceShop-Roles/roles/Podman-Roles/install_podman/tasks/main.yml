@@ -1,0 +1,32 @@
+# - name: Ensure Community Grid is disabled
+#   ansible.builtin.systemd:
+#     name: boinc-client
+#     state: stopped
+#     enabled: false
+#   ignore_errors: yes
+
+- name: Set Python Interpreter
+  ansible.builtin.set_fact:
+    ansible_python_interpreter: "/usr/libexec/platform-python"
+  when: lab_version is not defined
+
+- name: install yum-utils
+  ansible.builtin.yum: 
+    name: 
+    - python3-pip
+    - yum-utils
+    - device-mapper-persistent-data
+    - lvm2
+    - iptables
+    - podman
+    - python3
+    state: present
+
+# Install (podman) python package.
+- ansible.builtin.pip:
+    name: podman
+
+- name: start podman
+  ansible.builtin.service:
+    name: podman
+    state: started

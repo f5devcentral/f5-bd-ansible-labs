@@ -1,5 +1,0 @@
----
-# tasks file for ASM-Role
-
- - name: Block My IP Addresss
-   include: block_my_ip.yaml

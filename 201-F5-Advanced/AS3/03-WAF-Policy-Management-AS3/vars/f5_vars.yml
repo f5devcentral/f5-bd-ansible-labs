@@ -5,6 +5,8 @@ as3_tenant_name: "WorkshopExample"
 pool_members: "{{ groups['web'] }}"
 
 #Code
+F5_VIP_Name_UC1: Use-Case-1-VIP
+F5_VIP_Name_UC2: Use-Case-2-VIP
 F5_VIP_Name: Use-Case-3-VIP
 
 #ASM_Policy_Website: "http://10.1.1.4:8090/"

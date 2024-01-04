@@ -1,0 +1,60 @@
+{
+	"class": "AS3",
+	"action": "deploy",
+	"persist": true,
+	"declaration": {
+		"class": "ADC",
+		"schemaVersion": "3.0.0",
+		"id": "usecase5",
+		"label": "Ansible Workshops 3",
+		"remark": "HTTPS with pool 3",
+		"{{ as3_tenant_name }}": {
+			"class": "Tenant",
+			"AS3-UseCase-3": {
+				"class": "Application",
+				"{{F5_VIP_Name}}": {
+					"class": "Service_HTTPS",
+					"virtualPort": 8085,
+					"virtualAddresses": [
+						"{{ private_ip }}"
+					],
+					"profileHTTP": "basic", 
+					"pool": "{{ F5_VIP_Name }}_pool",
+					"policyWAF": {
+           "use": "{{F5_VIP_Name}}-Policy"
+					},
+          "redirect80": false,
+		  "profileMultiplex": {
+              "bigip": "/Common/oneconnect"
+          },
+					"serverTLS": {
+              "bigip": "/Common/clientssl"
+          },
+          "persistenceMethods": []
+				},
+				"{{ F5_VIP_Name }}_pool": {
+					"class": "Pool",
+          "minimumMembersActive": 0,
+          "minimumMonitors": "all",
+					"monitors": [
+						"http"
+					],
+					"members": [{
+						"servicePort": 3000,
+					  "serverAddresses": [
+                    {% set comma = joiner(",") %}
+                    {% for mem in pool_members %}
+                        {{comma()}} "{{  hostvars[mem]['private_ip']  }}"
+                    {% endfor %}
+            ]
+					}]
+				},
+			"{{F5_VIP_Name}}-Policy": {
+      "class": "WAF_Policy",
+      "url": "{{ ASM_Policy_Website }}{{ file_name.stdout }}",
+      "ignoreChanges": false
+			}
+			}
+		}
+	}
+}
