@@ -1,0 +1,13 @@
+---
+- hosts: web
+#  connection: local
+  gather_facts: false
+  become: yes
+  vars:
+    ansible_become: yes 
+    ansible_become_method: sudo
+    ansible_become_pass: "{{ ansible_password }}"
+  roles:
+    - install_podman
+    - install_juice_shop_podman
+    - install_nginx

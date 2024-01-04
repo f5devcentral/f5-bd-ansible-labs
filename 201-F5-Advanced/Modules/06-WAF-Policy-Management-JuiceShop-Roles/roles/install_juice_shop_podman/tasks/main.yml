@@ -1,0 +1,11 @@
+- name: pull juicebox image
+  containers.podman.podman_image:
+    name:  bkimminich/juice-shop:latest
+
+- name: start juicebox container
+  containers.podman.podman_container:
+    name: juice-shop-app
+    image: bkimminich/juice-shop:latest
+    state: started
+    restart: yes
+
