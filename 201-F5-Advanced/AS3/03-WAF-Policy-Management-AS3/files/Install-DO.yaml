@@ -33,6 +33,7 @@
           user: "{{ ansible_user }}"
           password: "{{ ansible_ssh_pass }}"
           server_port: "{{ server_port }}"
+          no_f5_teem: yes
           validate_certs: no
 
     - name: Grab the DO version from the home directory
