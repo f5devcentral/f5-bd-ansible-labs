@@ -1,0 +1,12 @@
+- name: pull juicebox image
+  containers.podman.podman_image:
+    name:  docker.io/bkimminich/juice-shop:latest
+
+- name: start juicebox container
+  containers.podman.podman_container:
+    name: juice-shop-app
+    image: docker.io/bkimminich/juice-shop:latest
+    ports:
+      - "0.0.0.0:3000:3000"
+    state: started
+    restart: yes

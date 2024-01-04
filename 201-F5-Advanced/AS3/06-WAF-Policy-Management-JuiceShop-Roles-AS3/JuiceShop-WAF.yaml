@@ -1,11 +1,19 @@
 ---
+- hosts: web
+#  connection: local
+  gather_facts: false
+  become: yes
+  roles:
+    - roles/Podman-Roles/install_podman
+    - roles/Podman-Roles/install_juice_shop
+
 - name: CHMOD WebServer - Open
   hosts: node1
   gather_facts: False
   vars_files:
     - vars/f5_vars.yml
   roles: 
-    - permissions_change
+    - roles/Webserver-Roles/permissions_change
 
 - name: Install DO/ASM
   hosts: lb
@@ -14,8 +22,8 @@
   vars_files:
     - vars/f5_vars.yml
   roles:
-    - install_do
-    - install_asm
+    - roles/F5-Roles/install_do
+    - roles/F5-Roles/install_asm
 
 - name: WAF Policy
   hosts: node1
@@ -24,10 +32,10 @@
   vars_files:
     - vars/f5_vars.yml
   roles:
-    - existing_policy
-    - waf_block_ip
-    - waf_block_urls
-    - checksum
+    - roles/F5-Roles/existing_policy
+    - roles/F5-Roles/waf_block_ip
+    - roles/F5-Roles/waf_block_urls
+    - roles/Webserver-Roles/checksum
 
 - name: Push AS3
   hosts: lb
@@ -36,8 +44,8 @@
     - vars/f5_vars.yml
     - vars/f5_httpapi.yml
   roles:
-    - find_file_webserver
-    - apply_as3
+    - roles/Webserver-Roles/find_file_webserver
+    - roles/F5-Roles/apply_as3
 
 - name: CHMOD WebServer - Close
   hosts: node1
@@ -45,4 +53,4 @@
   vars_files:
     - vars/f5_vars.yml
   roles: 
-    - permissions_change
+    - roles/Webserver-Roles/permissions_change
