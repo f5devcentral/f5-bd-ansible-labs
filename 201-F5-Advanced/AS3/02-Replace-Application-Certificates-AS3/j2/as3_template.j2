@@ -1,6 +1,6 @@
 "AS3-UseCase-1": {
   "class": "Application",
-  "{{F5_VIP_Name}}": {
+  "{{F5_VIP_Name_UC1}}": {
     "class": "Service_HTTPS",
     "virtualAddresses": [
       "{{ private_ip }}"
@@ -8,13 +8,13 @@
     "profileMultiplex": {
         "bigip": "/Common/oneconnect"
     },
-    "pool": "{{ F5_VIP_Name }}_pool",
+    "pool": "{{ F5_VIP_Name_UC1 }}_pool",
     "serverTLS": {
         "bigip": "/Common/clientssl"
     },
     "persistenceMethods": []
   },
-  "{{ F5_VIP_Name }}_pool": {
+  "{{ F5_VIP_Name_UC1 }}_pool": {
     "class": "Pool",
     "minimumMembersActive": 0,
     "minimumMonitors": "all",
