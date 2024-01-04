@@ -1,6 +1,6 @@
 - name: pull juicebox image
   containers.podman.podman_image:
-    name:  bkimminich/juice-shop:latest
+    name:  docker.io/bkimminich/juice-shop:latest
 
 - name: start juicebox container
   containers.podman.podman_container:
