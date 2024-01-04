@@ -263,9 +263,13 @@
     ansible.builtin.set_fact:
       ansible_connection: httpapi
  
+  - name: CREATE AS3 JSON BODY
+    set_fact:
+      as3_app_body: "{{ lookup('template', 'j2/as3_template.j2', split_lines=False) }}"
+
   - name: PUSH AS3 Template
     f5networks.f5_bigip.bigip_as3_deploy:
-      content: "{{ lookup('template','j2/configure_as3.j2', split_lines=False) }}"
+      content: "{{ lookup('template','j2/tenant_base.j2', split_lines=False) }}"
 
 - name: CHMOD WebServer - Close
   hosts: node1
