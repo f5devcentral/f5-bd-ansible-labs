@@ -1,6 +1,5 @@
 ---
 - hosts: web
-#  connection: local
   gather_facts: false
   become: yes
   vars:
@@ -9,7 +8,7 @@
     ansible_become_pass: "{{ ansible_password }}"
   roles:
     - roles/Podman-Roles/install_podman
-    - roles/Podman-Roles/install_juice_shop_podman
+    - roles/Podman-Roles/install_juice_shop
   
 - hosts: lb
   connection: local
