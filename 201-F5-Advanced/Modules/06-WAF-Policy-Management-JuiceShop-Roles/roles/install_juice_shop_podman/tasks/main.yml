@@ -6,6 +6,8 @@
   containers.podman.podman_container:
     name: juice-shop-app
     image: docker.io/bkimminich/juice-shop:latest
+    ports:
+      - "3000:3000"
     state: started
     restart: yes
 
