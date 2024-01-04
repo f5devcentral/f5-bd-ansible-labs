@@ -11,7 +11,7 @@
      - restore
 
  - name: Restore F5 Configuration
-   include: f5_restore_config.yaml
+   include_tasks: f5_restore_config.yaml
    tags:
      - restore
    when: backup_file.stat.exists == true
