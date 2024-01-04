@@ -5,7 +5,7 @@
 - name: start juicebox container
   containers.podman.podman_container:
     name: juice-shop-app
-    image: bkimminich/juice-shop:latest
+    image: docker.io/bkimminich/juice-shop:latest
     state: started
     restart: yes
 
