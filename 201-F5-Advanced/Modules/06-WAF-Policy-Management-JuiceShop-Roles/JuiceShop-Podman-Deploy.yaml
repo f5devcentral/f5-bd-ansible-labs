@@ -10,4 +10,3 @@
   roles:
     - install_podman
     - install_juice_shop_podman
-    - install_nginx

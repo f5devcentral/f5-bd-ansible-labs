@@ -17,6 +17,6 @@
       pool: "{{ F5_VIP_Name }}_pool"
       name: "{{hostvars[item].inventory_hostname}}"
       host: "{{hostvars[item].private_ip}}"
-      port: "8443"
+      port: "3000"
     loop: "{{ groups['web']}}"
 
