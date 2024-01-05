@@ -1,19 +1,22 @@
 - debug:
     var: id_array
 
-# - name: Visualizer adding Array Objects
-#   uri: 
-#     url: "https://10.1.1.4/api/v2/workflow_job_templates/{{workflow_id.json.id}}/workflow_nodes/"
-#     method: POST
-#     user: "admin"
-#     password: "Ansible123!"
-#     force_basic_auth: yes
-#     return_content: yes
-#     body: {"unified_job_template": "{{id_array_output}}" }
-#     body_format: json
-#     status_code: 201
-#   register: template_out
-  
+- name: Visualizer adding Array Objects
+  uri: 
+    url: "https://10.1.1.4/api/v2/workflow_job_templates/{{workflow_id.json.id}}/workflow_nodes/"
+    method: POST
+    user: "admin"
+    password: "Ansible123!"
+    force_basic_auth: yes
+    return_content: yes
+    body: {"unified_job_template": "{{item}}" }
+    body_format: json
+    status_code: 201
+  register: visual_id_array
+  with_items: id_array
+
+ - debug:
+     var: visual_id_array
 
 #     "id_array": [
 #         50,
