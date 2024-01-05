@@ -14,8 +14,84 @@
 
   tasks:
 
+    - name: Get Inventory ID for Workshop Inventory
+      uri: 
+        url: https://10.1.1.4/api/v2/inventories/?search=Workshop%20Inventory
+        method: GET
+        user: "admin"
+        password: "Ansible123!"
+        force_basic_auth: yes
+        body_format: json
+        status_code: 200
+        validate_certs: no
+      register: inventory
+
+    # - debug:
+    #     var: inventory.json.results[0].id
+
+    - name: Get Organization ID for DEFAULT
+      uri: 
+        url: https://10.1.1.4/api/v2/organizations/?search=Default
+        method: GET
+        user: "admin"
+        password: "Ansible123!"
+        force_basic_auth: yes
+        body_format: json
+        status_code: 200
+        validate_certs: no
+      register: organization
+
+    # - debug:
+    #     var: organization.json.results[0].id
+
+    - name: Get Project ID for Workshop Project
+      uri: 
+        url: https://10.1.1.4/api/v2/projects/?search=Workshop%20Project
+        method: GET
+        user: "admin"
+        password: "Ansible123!"
+        force_basic_auth: yes
+        body_format: json
+        status_code: 200
+        validate_certs: no
+      register: project
+
+    # - debug:
+    #     var: project.json.results[0].id
+
+    - name: Get Credentials for BIGIP
+      uri: 
+        url: https://10.1.1.4/api/v2/credentials/?search=BIGIP
+        method: GET
+        user: "admin"
+        password: "Ansible123!"
+        force_basic_auth: yes
+        body_format: json
+        status_code: 200
+        validate_certs: no
+      register: bigip
+
+    # - debug:
+    #     var: bigip.json.results[0].id
+
+    - name: Get Workshop Machine Credential
+      uri: 
+        url: https://10.1.1.4/api/v2/credentials/?search=Workshop%20Credential
+        method: GET
+        user: "admin"
+        password: "Ansible123!"
+        force_basic_auth: yes
+        body_format: json
+        status_code: 200
+        validate_certs: no
+      register: workshop
+
+    # - debug:
+    #     var: workshop.json.results[0].id
+
+
     - name: Create Workflow Templates
-      include: create_workflow_templates.yml
+      include_tasks: create_workflow_templates.yml
       with_items: "{{array_var}}"
       loop_control:
         loop_var: array_var_output
@@ -28,7 +104,7 @@
         password: "Ansible123!"
         force_basic_auth: yes
         return_content: yes
-        body: {"description": "", "inventory": 2, "name": "Node Maintenance Workflow", "organization": 1 }
+        body: {"description": "", "inventory": "{{inventory.json.results[0].id}}", "name": "Node Maintenance Workflow", "organization": "{{organization.json.results[0].id}}" }
         body_format: json
         status_code: 201
         validate_certs: no

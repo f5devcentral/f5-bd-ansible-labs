@@ -6,7 +6,7 @@
     password: "Ansible123!"
     force_basic_auth: yes
     return_content: yes
-    body: {"description": "", "inventory": 2, "project": 12, "name": "{{array_var_output.name}}", "organization": 0, "playbook": "{{array_var_output.playbook}}"}
+    body: {"description": "", "inventory": "{{inventory.json.results[0].id}}", "project": "{{project.json.results[0].id}}", "name": "{{array_var_output.name}}", "organization": "{{organization.json.results[0].id}}", "playbook": "{{array_var_output.playbook}}"}
     body_format: json
     status_code: 201
     validate_certs: no
@@ -20,7 +20,7 @@
     password: "Ansible123!"
     force_basic_auth: yes
     return_content: yes
-    body: {"associate": true, "id": 4}
+    body: {"associate": true, "id": "{{inventory.json.results[0].id}}"}
     body_format: json
     status_code: 204
     validate_certs: no
@@ -34,7 +34,7 @@
     password: "Ansible123!"
     force_basic_auth: yes
     return_content: yes
-    body: {"associate": true, "id": 3}
+    body: {"associate": true, "id": "{{workshop.json.results[0].id}}"}
     body_format: json
     status_code: 204
     validate_certs: no
