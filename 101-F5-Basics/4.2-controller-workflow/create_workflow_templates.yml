@@ -1,0 +1,48 @@
+- name: Create {{array_var_output.name}} Template
+  uri: 
+    url: https://10.1.1.4/api/v2/job_templates/
+    method: POST
+    user: "admin"
+    password: "Ansible123!"
+    force_basic_auth: yes
+    return_content: yes
+    body: {"description": "", "inventory": "{{inventory.json.results[0].id |int}}", "project": "{{project.json.results[0].id |int}}", "name": "{{array_var_output.name}}", "organization": "{{organization.json.results[0].id |int}}", "playbook": "{{array_var_output.playbook}}"}
+    body_format: json
+    status_code: 201
+    validate_certs: no
+  register: template_out
+
+- name: Add Credentials for {{array_var_output.name}}
+  uri: 
+    url: "https://10.1.1.4/api/v2/job_templates/{{template_out.json.id}}/credentials/"
+    method: POST
+    user: "admin"
+    password: "Ansible123!"
+    force_basic_auth: yes
+    return_content: yes
+    body: '{ "associate": true, "id": {{ bigip.json.results[0].id | int }} }'
+    body_format: json
+    status_code: 204
+    validate_certs: no
+  when: array_var_output.playbook != "patch_server.yml"
+
+- name: Add Credentials for {{array_var_output.name}}
+  uri: 
+    url: "https://10.1.1.4/api/v2/job_templates/{{template_out.json.id}}/credentials/"
+    method: POST
+    user: "admin"
+    password: "Ansible123!"
+    force_basic_auth: yes
+    return_content: yes
+    body: '{ "associate": true, "id": {{workshop.json.results[0].id | int }} }'
+    body_format: json
+    status_code: 204
+    validate_certs: no
+  when: array_var_output.playbook == "patch_server.yml"
+
+- name: Create Array for IDs
+  set_fact:
+    id_array: "{{ id_array + [template_out.json.id] }}"
+
+- debug:
+    var: id_array
