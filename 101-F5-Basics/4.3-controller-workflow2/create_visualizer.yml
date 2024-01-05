@@ -17,11 +17,19 @@
     body_format: json
     status_code: 201
     validate_certs: no
-  register: visual_id_array
+  register: visualizer_out
   with_items: "{{ id_array }}"
 
 - debug:
-    var: visual_id_array
+    var: visualizer_out
+
+- name: Create Array for IDs
+  set_fact:
+    visulizer_id_array: "{{ visulizer_id_array + [item.json.id] }}"
+  with_items: "{{ visualizer_out.results }}"
+
+- debug:
+    var: visulizer_id_array
 
 #     "id_array": [
 #         50,
