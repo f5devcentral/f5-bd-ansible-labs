@@ -41,7 +41,7 @@
     return_content: yes
     body: '{"assoicate": true, "id": {{visulizer_id_array[2] |int }} }'
     body_format: json
-    status_code: 201
+    status_code: 204
     validate_certs: no
 
 - name: Moving Objects Part 2
@@ -54,7 +54,7 @@
     return_content: yes
     body: '{"assoicate": true, "id": {{visulizer_id_array[3] |int }} }'
     body_format: json
-    status_code: 201
+    status_code: 204
     validate_certs: no
 
 - name: Moving Objects Part 3
@@ -67,7 +67,7 @@
     return_content: yes
     body: '{"assoicate": true, "id": {{visulizer_id_array[4] |int }} }'
     body_format: json
-    status_code: 201
+    status_code: 204
     validate_certs: no
 
 - name: Moving Objects Part 4
@@ -80,9 +80,9 @@
     return_content: yes
     body: '{"assoicate": true, "id": {{visulizer_id_array[4] |int }} }'
     body_format: json
-    status_code: 201
+    status_code: 204
     validate_certs: no
-    
+
 #     "id_array": [
 #         50,
 #         51,
