@@ -1,9 +1,9 @@
 - debug:
     var: id_array
 
-- debug:
-    var: item
-  with_items: "{{id_array}}"
+# - debug:
+#     var: item
+#   with_items: "{{id_array}}"
 
 - name: Visualizer adding Array Objects
   uri: 
@@ -18,7 +18,7 @@
     status_code: 201
     validate_certs: no
   register: visual_id_array
-  with_items: id_array
+  with_items: "{{ id_array }}"
 
 - debug:
     var: visual_id_array
