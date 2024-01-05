@@ -20,7 +20,7 @@
     password: "Ansible123!"
     force_basic_auth: yes
     return_content: yes
-    body: {"associate": true, "id": "{{inventory.json.results[0].id |int}}"}
+    body: {"associate": true, "id": "{{bigip.json.results[0].id |int}}"}
     body_format: json
     status_code: 204
     validate_certs: no
