@@ -12,6 +12,7 @@
     body: {"unified_job_template": "{{item}}" }
     body_format: json
     status_code: 201
+    validate_certs: no
   register: visual_id_array
   with_items: id_array
 
