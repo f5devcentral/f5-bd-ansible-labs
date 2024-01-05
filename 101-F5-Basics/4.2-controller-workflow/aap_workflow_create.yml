@@ -96,7 +96,6 @@
       with_items: "{{array_var}}"
       loop_control:
         loop_var: array_var_output
-      ignore_errors: true
 
     - name: Create Workflow
       uri: 
@@ -111,13 +110,12 @@
         status_code: 201
         validate_certs: no
       register: workflow_id
-      ignore_errors: true
 
     # - debug:
     #     var: workflow_id.json.id
 
-    # - name: Create Visualizer
-    #   include: create_visualizer.yml
-    #   with_items: "{{id_array}}"
-    #   loop_control:
-    #     loop_var: id_array_output
+    - name: Create Visualizer
+      include: create_visualizer.yml
+      with_items: "{{id_array}}"
+      loop_control:
+        loop_var: id_array_output

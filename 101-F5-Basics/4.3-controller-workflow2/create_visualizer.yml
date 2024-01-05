@@ -15,7 +15,7 @@
   register: template_out
   
   
-#   curl -i -u "admin:Ansible123!" -H "Accept: application/json" -H "Content-Type:application/json" -X POST https://10.1.1.4/api/v2/workflow_job_templates/43/workflow_nodes/ --data '{"unified_job_template": 14, "success_nodes": [], "failure_nodes": [] }'
+# curl -i -u "admin:Ansible123!" -H "Accept: application/json" -H "Content-Type:application/json" -X POST https://10.1.1.4/api/v2/workflow_job_templates/43/workflow_nodes/ --data '{"unified_job_template": 14, "success_nodes": [], "failure_nodes": [] }'
 # curl -i -u "admin:Ansible123!" -H "Accept: application/json" -H "Content-Type:application/json" -X POST https://10.1.1.4/api/v2/workflow_job_templates/43/workflow_nodes/ --data '{"unified_job_template": 15, "success_nodes": [1], "failure_nodes": [] }'
 # curl -i -u "admin:Ansible123!" -H "Accept: application/json" -H "Content-Type:application/json" -X POST https://10.1.1.4/api/v2/workflow_job_templates/43/workflow_nodes/ --data '{"unified_job_template": 16, "success_nodes": [2], "failure_nodes": [] }'
 # curl -i -u "admin:Ansible123!" -H "Accept: application/json" -H "Content-Type:application/json" -X POST https://10.1.1.4/api/v2/workflow_job_templates/43/workflow_nodes/ --data '{"unified_job_template": 17, "success_nodes": [], "failure_nodes": [1] }'
