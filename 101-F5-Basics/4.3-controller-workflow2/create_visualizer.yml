@@ -15,8 +15,8 @@
   register: visual_id_array
   with_items: id_array
 
- - debug:
-     var: visual_id_array
+- debug:
+    var: visual_id_array
 
 #     "id_array": [
 #         50,
