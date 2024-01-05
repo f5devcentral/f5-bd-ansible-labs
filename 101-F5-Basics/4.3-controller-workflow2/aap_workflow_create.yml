@@ -5,6 +5,7 @@
   gather_facts: false
   vars: 
     id_array: []
+    visulizer_id_array: []
     array_var: 
     - {name: "Disable node", playbook: "disable_node.yml" }
     - {name: "Attach iRule", playbook: "attach_irule.yml" }
