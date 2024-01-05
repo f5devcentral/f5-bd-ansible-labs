@@ -96,6 +96,7 @@
       with_items: "{{array_var}}"
       loop_control:
         loop_var: array_var_output
+      ignore_errors: true
 
     - name: Create Workflow
       uri: 
@@ -110,6 +111,7 @@
         status_code: 201
         validate_certs: no
       register: workflow_id
+      ignore_errors: true
 
     # - debug:
     #     var: workflow_id.json.id
