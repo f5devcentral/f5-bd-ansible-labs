@@ -9,7 +9,7 @@
     password: "Ansible123!"
     force_basic_auth: yes
     return_content: yes
-    body: {"unified_job_template": "{{item}}" }
+    body: '{"unified_job_template": {{item |int}} }'
     body_format: json
     status_code: 201
     validate_certs: no
