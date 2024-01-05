@@ -1,6 +1,10 @@
 - debug:
     var: id_array
 
+- debug:
+    var: item
+  with_items: id_array
+  
 - name: Visualizer adding Array Objects
   uri: 
     url: "https://10.1.1.4/api/v2/workflow_job_templates/{{workflow_id.json.id}}/workflow_nodes/"
