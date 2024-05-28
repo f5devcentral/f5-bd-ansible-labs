@@ -7,22 +7,30 @@
         - iapplx-packages
     register: bigip_device_facts
 
+  - name: "Show if Service-Discovery Installed"
+    debug: "msg={{ item }}"
+    loop: "{{ bigip_device_facts.iapplx_packages | json_query(query_string) }}"
+    vars:
+      query_string: "[?name=='f5-service-discovery'].package_name"
+    register: output
+
+  - name: Remove Previous Service Discovery Package
+    f5networks.f5_modules.bigip_lx_package:
+      package: "{{ output.results[0].item }}.rpm"
+      provider: "{{provider}}"
+      state: absent 
+    ignore_errors: true
+
   - name: "Show if AS3 Installed"
     debug: "msg={{ item }}"
     loop: "{{ bigip_device_facts.iapplx_packages | json_query(query_string) }}"
     vars:
-      query_string: 
-      - "[?name=='f5-service-discovery'].package_name"
-      - "[?name=='f5-appsvcs'].package_name"
-    register: output
+      query_string: "[?name=='f5-appsvcs'].package_name"
+    register: output2
 
-  - debug:
-      var: output
-      
   - name: Remove Previous AS3 Package
     f5networks.f5_modules.bigip_lx_package:
-      package: "{{ item }}.rpm"
+      package: "{{ output2.results[0].item }}.rpm"
       provider: "{{provider}}"
       state: absent 
-    with_items: "{{ output.results}}"
     ignore_errors: true
