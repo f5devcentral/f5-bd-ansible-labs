@@ -72,7 +72,8 @@
   f5networks.f5_modules.bigip_command:
     provider: "{{provider}}"
     commands:
-      - 'run /util bash -c "bigstart restart restjavad restnoded"'
+      - restart sys service restjavad
+      - restart sys service restnoded
   ignore_errors: true
 
 - pause:
