@@ -68,5 +68,11 @@
 - ansible.builtin.set_fact:
     ansible_connection: httpapi
 
+- name: Restart RestNoded
+  f5networks.f5_modules.bigip_command:
+    provider: "{{provider}}"
+    commands:
+      - 'run /util bash -c "bigstart restart restjavad restnoded"'
+
 - pause:
-    seconds: 120
+    seconds: 60
