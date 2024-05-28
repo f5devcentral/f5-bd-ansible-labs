@@ -69,4 +69,4 @@
     ansible_connection: httpapi
 
 - pause:
-    seconds: 60
+    seconds: 120
