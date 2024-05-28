@@ -73,6 +73,7 @@
     provider: "{{provider}}"
     commands:
       - 'run /util bash -c "bigstart restart restjavad restnoded"'
+  ignore_errors: true
 
 - pause:
     seconds: 60
