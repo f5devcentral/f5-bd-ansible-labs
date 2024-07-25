@@ -6,8 +6,8 @@
   vars_files:
     - vars/f5_vars.yml
   vars:
-    ansible_user: "{{ ANSIBLE_NET_USERNAME }}"
-    ansible_httpapi_password: "{{ ANSIBLE_NET_PASSWORD }}"
+    ansible_user: "{{ ansible_env.ANSIBLE_NET_USERNAME }}"
+    ansible_httpapi_password: "{{ ansible_env.ANSIBLE_NET_PASSWORD }}"
     ansible_httpapi_port: 443
     ansible_network_os: f5networks.next.cm
     ansible_httpapi_use_ssl: true
