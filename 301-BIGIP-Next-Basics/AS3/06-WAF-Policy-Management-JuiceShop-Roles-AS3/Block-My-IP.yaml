@@ -1,0 +1,50 @@
+---
+- name: CHMOD WebServer - Open
+  hosts: node1
+  gather_facts: False
+  vars_files:
+    - vars/f5_vars.yml
+  roles: 
+    - roles/Webserver-Roles/permissions_change
+
+- name: Install AS3/DO
+  hosts: lb
+  connection: httpapi
+  gather_facts: false
+  vars_files:
+    - vars/f5_vars.yml
+  roles:
+    - roles/F5-Roles/install_do
+    - roles/F5-Roles/install_asm
+
+- name: WAF Policy
+  hosts: node1
+  gather_facts: true
+  become: yes
+  vars_files:
+    - vars/f5_vars.yml
+  roles:
+    - roles/F5-Roles/block_my_ip
+    - roles/F5-Roles/existing_policy
+    - roles/F5-Roles/waf_block_ip
+    - roles/F5-Roles/waf_block_urls
+    - roles/Webserver-Roles/checksum
+
+- name: Apply AS3
+  hosts: f5
+ # connection: httpapi
+  gather_facts: false
+  become: yes
+  vars_files:
+    - vars/f5_vars.yml
+  roles:
+    - roles/Webserver-Roles/find_file_webserver
+    - roles/F5-Roles/apply_as3
+
+- name: CHMOD WebServer - Close
+  hosts: node1
+  gather_facts: False
+  vars_files:
+    - vars/f5_vars.yml
+  roles: 
+    - roles/Webserver-Roles/permissions_change

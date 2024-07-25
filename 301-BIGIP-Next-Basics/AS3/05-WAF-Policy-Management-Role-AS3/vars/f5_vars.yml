@@ -1,0 +1,30 @@
+---
+
+do_uri: "https://api.github.com/repos/F5Networks/f5-declarative-onboarding/releases/latest"
+
+as3_tenant_name: "WorkshopExample"
+F5_VIP_Port: "8084"
+F5_VIP_Name: Use-Case-5-VIP
+pool_members: "{{ groups['web'] }}"
+ 
+ASM_Policy_Website: "http://{{ hostvars['node1'].ansible_host }}/asm-profiles/"
+ASM_Master_File: "{{ playbook_dir }}/files/Master_Template_v16.xml"
+ASM_Policy_File: "/tmp/Modified_Master_Template_v16.xml"
+ASM_WebServer_File_Location: "/usr/share/nginx/html/asm-profiles/"
+ASM_WebServer_File_Location_2: "/var/www/html/asm-profiles/"
+
+
+
+#Blocked URLS Tasks Variables
+Blocked_URLs:
+- /blocked.html
+- /hacked.html
+- /robot.txt
+
+#Blocked IPs Tasks Variables
+Blocked_IPs:
+- 10.192.1.199
+- 10.105.192.199
+- 172.16.192.199
+- 192.168.30.199
+- 192.172.1.1

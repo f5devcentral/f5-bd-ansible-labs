@@ -1,0 +1,294 @@
+---
+- import_playbook: "{{playbook_dir}}/files/Install-DO.yaml"
+
+- name: WebServer Create Directory and Set Permissions
+  hosts: node1
+  gather_facts: False
+  become: yes
+  vars_files:
+    - vars/f5_vars.yml
+
+  tasks:
+
+  - name: change Web Server based on lab
+    ansible.builtin.set_fact:
+      ASM_WebServer_File_Location: "{{ASM_WebServer_File_Location_2}}"
+    when: lab_version is not defined
+
+  - name: Modify Permissions of "{{ ASM_WebServer_File_Location }}" to 777
+    ansible.builtin.file:
+      path: "{{ ASM_WebServer_File_Location }}"
+      state: directory
+      mode: '0777'
+
+- name: Install ASM via DO
+  hosts: lb
+  gather_facts: false
+  connection: httpapi 
+  vars_files:
+    - vars/f5_vars.yml
+    - vars/f5_httpapi.yml
+
+  tasks:
+
+  - name: Install ASM via DO
+    f5networks.f5_bigip.bigip_do_deploy:
+      content: "{{ lookup('template','j2/provision.j2', split_lines=False) }}"
+    register: task
+
+  - debug:
+      var: task
+
+  - debug:
+      msg: "{{ task.task_id }}"
+
+  - name: Wait for DO Task to complete
+    ansible.builtin.uri:
+      url: "https://{{ ansible_host }}:{{ server_port }}/mgmt/shared/declarative-onboarding/task/{{ task.task_id }}"
+      method: GET
+      return_content: true
+      status_code: 200
+      force_basic_auth: true
+      user: "{{ ansible_user }}"
+      password: "{{ ansible_ssh_pass }}"
+      validate_certs: false
+    register: atc_DO_status
+    until: atc_DO_status is success
+    retries: 30
+    delay: 15
+    delegate_to: localhost
+    when: task.changed
+    
+
+  #### CODE HAS ERRORS HAVING REPAIRED
+  # - name: Check if DO Completed installation Task
+  #   f5networks.f5_bigip.bigip_do_deploy:
+  #     task_id: "{{ task.task_id }}"
+  #   register: result
+
+
+  - name: Pause for Install to complete
+    ansible.builtin.pause:
+      minutes: 1
+    when: task.changed
+
+- name: ASM Policy
+  hosts: node1
+  gather_facts: true
+  become: yes
+  vars_files:
+    - vars/f5_vars.yml
+
+  tasks:
+
+  - name: change Web Server based on lab
+    ansible.builtin.set_fact:
+      ASM_WebServer_File_Location: "{{ASM_WebServer_File_Location_2}}"
+    when: lab_version is not defined
+
+#hardcode timestamp into variable
+  - ansible.builtin.set_fact:
+      ASM_Final_File_Name: "{{F5_VIP_Name}}-ASMPolicy-{{ ansible_date_time.iso8601 }}.xml"
+
+  - debug:
+      var: ASM_Final_File_Name
+
+  - name: Does Previous Policy Exist?
+    ansible.builtin.find:
+      paths: "{{ ASM_WebServer_File_Location }}"
+      patterns: '*.xml'
+    register: does_xml_exist
+
+  - ansible.builtin.debug:
+      var: does_xml_exist
+
+  - name: Find Latest File
+    ansible.builtin.shell: ls {{ ASM_WebServer_File_Location }} -Artf | tail -n 1
+    register: latest_file_output
+    when: does_xml_exist.matched >= 1
+
+  - ansible.builtin.debug:
+      var: latest_file_output.stdout
+    when: does_xml_exist.matched >= 1
+
+  - name: Fetch WebServer Latest Template to TMP
+    ansible.builtin.fetch:
+      src: "{{ ASM_WebServer_File_Location }}{{latest_file_output.stdout}}"
+      dest: "{{ ASM_Policy_File }}"
+      flat: yes
+    when: does_xml_exist.matched >= 1
+
+  - name: Get Checksum of Master file
+    ansible.builtin.stat:
+      path : "{{ ASM_Policy_File }}"
+    register: first_file
+    when: does_xml_exist.matched >= 1
+    delegate_to: localhost
+
+  - name: Master Template SHA1
+    ansible.builtin.set_fact:
+      file1_sha: "{{ first_file.stat.checksum }}"  
+    when: does_xml_exist.matched >= 1
+    delegate_to: localhost
+
+# Get Master XML File and store
+  - name: Copy Master File to tmp
+    ansible.builtin.copy:
+      src: "{{ ASM_Master_File }}"
+      dest: "{{ ASM_Policy_File }}"
+    when: does_xml_exist.matched == 0
+    delegate_to: localhost
+
+#Validate Existing IP Addresses
+  - name: Validate Existing IP Addresses
+    ansible.builtin.shell: grep "<ip_address>{{ item }}" {{ ASM_Policy_File }}
+    register: Blocked_IP_Valid
+    with_items: "{{ Blocked_IPs }}"
+    ignore_errors: yes
+    when: Blocked_IPs is defined
+    delegate_to: localhost
+
+#Import Additional Disallowed IPs
+  - name: Add Disallowed IPs
+    community.general.xml:
+      path: "{{ ASM_Policy_File }}"
+      pretty_print: yes
+      input_type: xml
+      insertafter: yes
+      xpath: /policy/geolocation
+      add_children: "<whitelist><ip_address>{{ item.item }}</ip_address><subnet_mask>255.255.255.255</subnet_mask><policy_builder_trusted>false</policy_builder_trusted><ignore_anomalies>false</ignore_anomalies><never_log>false</never_log><block_ip>Always</block_ip><never_learn>false</never_learn><description>blocked</description><ignore_ip_reputation>false</ignore_ip_reputation></whitelist>"
+    with_items: "{{ Blocked_IP_Valid.results }}"
+    when: Blocked_IPs is defined and item.rc == 1
+    delegate_to: localhost
+
+#Validate Existing URL Addresses
+  - name: Validate Existing URL Addresses
+    ansible.builtin.shell: grep 'name="{{ item }}"' {{ ASM_Policy_File }}
+    register: Blocked_URLs_Valid
+    with_items: "{{ Blocked_URLs }}"
+    ignore_errors: yes
+    when: Blocked_URLs is defined
+    delegate_to: localhost
+
+#create Disallowed URLs Section if missing
+  - name: Add Disallowed URLs
+    community.general.xml:
+      path: "{{ ASM_Policy_File }}"
+      input_type: xml
+      pretty_print: yes
+      insertafter: yes
+      xpath: /policy/urls/url[*]
+      add_children: "<disallowed_urls></disallowed_urls>"
+    when: "'<disallowed_urls>' not in lookup('file', ASM_Policy_File ) and Blocked_URLs is defined"
+    delegate_to: localhost
+
+#Import Additional Disallowed URLs
+  - name: Add Disallowed URLs
+    community.general.xml:
+      path: "{{ ASM_Policy_File }}"
+      input_type: xml
+      pretty_print: yes
+      xpath: /policy/urls/disallowed_urls
+      add_children:
+        - "<url protocol=\"HTTP\" type=\"explicit\" name=\"{{ item.item }}\"/>"
+        - "<url protocol=\"HTTPS\" type=\"explicit\" name=\"{{ item.item }}\"/>"
+    with_items: "{{ Blocked_URLs_Valid.results }}"
+    when: Blocked_URLs is defined and item.rc == 1
+    delegate_to: localhost
+
+#Enable Illegal URL Blocking Violations
+  - name: Illegal URL Blocking Violations Enablement
+    community.general.xml:
+      path: "{{ ASM_Policy_File }}"
+      input_type: xml
+      pretty_print: yes
+      xpath: /policy/blocking/violation[@name="Illegal URL"]
+      set_children:
+        - "<alarm>true</alarm>"
+        - "<block>true</block>"
+        - "<learn>true</learn>"
+        - "<policy_builder_tracking>enabled</policy_builder_tracking>"
+    when: Blocked_URLs is defined
+    delegate_to: localhost
+
+  - name: Get Checksum of Modified file
+    ansible.builtin.stat:
+      path : "{{ ASM_Policy_File }}"
+    register: second_file
+    when: does_xml_exist.matched >= 1
+    delegate_to: localhost
+
+  - name: Modified File Sha1
+    ansible.builtin.set_fact:
+      file2_sha: "{{ second_file.stat.checksum }}"  
+    when: does_xml_exist.matched >= 1
+    delegate_to: localhost
+
+  - name: Compilation Changed
+    ansible.builtin.set_fact:
+      sha_matched: = "{{file2_sha and file1_sha}}"
+    when:  (does_xml_exist.matched >= 1) and (file2_sha != file1_sha)
+    delegate_to: localhost
+
+  - name: Store Modified File in Webserver
+    ansible.builtin.copy:
+      src: "{{ ASM_Policy_File }}"
+      dest: "{{ ASM_WebServer_File_Location }}{{ ASM_Final_File_Name }}"
+    when:  (does_xml_exist.matched == 0) or (file2_sha != file1_sha)
+
+  - name: Modify File for Web Use
+    ansible.builtin.shell: chcon -t httpd_sys_content_t {{ ASM_WebServer_File_Location }}{{ ASM_Final_File_Name }}
+    when:  (does_xml_exist.matched == 0) or (file2_sha != file1_sha)
+
+- name: Push AS3
+  hosts: lb
+  gather_facts: false
+  vars_files:
+    - vars/f5_vars.yml
+    - vars/f5_httpapi.yml
+
+  tasks:
+
+  - name: change Web Server based on lab
+    ansible.builtin.set_fact:
+      ASM_WebServer_File_Location: "{{ASM_WebServer_File_Location_2}}"
+    when: lab_version is not defined
+
+  - name: Find Latest File
+    ansible.builtin.shell: ls {{ ASM_WebServer_File_Location }} -Artf | tail -n 1
+    register: file_name
+    delegate_to: node1
+
+  - name: Change Communication
+    ansible.builtin.set_fact:
+      ansible_connection: httpapi
+ 
+  - name: CREATE AS3 JSON BODY
+    set_fact:
+      as3_app_body: "{{ lookup('template', 'j2/as3_template.j2', split_lines=False) }}"
+
+  - name: PUSH AS3 Template
+    f5networks.f5_bigip.bigip_as3_deploy:
+      content: "{{ lookup('template','j2/tenant_base.j2', split_lines=False) }}"
+
+- name: CHMOD WebServer - Close
+  hosts: node1
+  gather_facts: False
+  vars_files:
+    - vars/f5_vars.yml
+
+  tasks:
+  
+  - name: change Web Server based on lab
+    ansible.builtin.set_fact:
+      ASM_WebServer_File_Location: "{{ASM_WebServer_File_Location_2}}"
+    when: lab_version is not defined
+
+  - name: Modify Permissions of "{{ ASM_WebServer_File_Location }}" to 755
+    ansible.builtin.file:
+      path: "{{ ASM_WebServer_File_Location }}"
+      state: directory
+      mode: '0755'
+    become: yes
+    become_method: sudo
+    become_user: root

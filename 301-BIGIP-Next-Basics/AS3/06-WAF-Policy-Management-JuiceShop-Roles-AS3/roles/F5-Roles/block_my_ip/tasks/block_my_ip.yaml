@@ -1,0 +1,9 @@
+
+  - debug:
+      msg: "Now Blocking {{ my_ip_address }}"
+    failed_when: my_ip_address is not defined
+
+#Add My Client IP to Blocked IP Array
+  - name: Add to Blocked IP Array
+    ansible.builtin.set_fact:
+      Blocked_IPs: "{{ Blocked_IPs + [ my_ip_address ] }}"

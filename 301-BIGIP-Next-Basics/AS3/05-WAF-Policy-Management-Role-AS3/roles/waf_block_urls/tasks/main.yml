@@ -1,0 +1,10 @@
+---
+# tasks file for ASM-Role
+
+ - name: Inject Blocked URLs into XML
+   include_tasks: f5_asm_blocked_urls_injection.yaml
+   when: Blocked_URLs is defined
+   tags: 
+     - policy
+     - block_urls
+

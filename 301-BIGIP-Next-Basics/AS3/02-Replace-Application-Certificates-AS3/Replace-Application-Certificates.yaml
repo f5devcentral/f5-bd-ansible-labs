@@ -1,0 +1,28 @@
+---
+- name: BIG-IP Next Automation
+  hosts: next-lb
+  connection: httpapi
+  gather_facts: false
+  vars_files:
+    - vars/f5_vars.yml
+  vars:
+    ansible_host: bigip-next-hostname
+    ansible_user: "{{ ansible_user }}"
+    ansible_httpapi_password: "{{ ansible_password}}"
+    ansible_httpapi_port: 443
+    ansible_network_os: f5networks.next.cm
+    ansible_httpapi_use_ssl: true
+    ansible_httpapi_validate_certs: false
+    as3_tenant_name: "WorkshopExample"
+    F5_VIP_Name_UC1: Use-Case-1-VIP
+    F5_VIP_Name: Use-Case-2-VIP
+    pool_members: "{{ groups['web'] }}"
+
+  tasks:
+    - name: CREATE AS3 JSON BODY
+      ansible.builtin.set_fact:
+        as3_app_body: "{{ lookup('template', 'j2/as3_template.j2', split_lines=False) }}"
+
+    - name: Declaration with Next - AS3
+      f5networks.next.cm_next_as3_deploy:
+        content: "{{ lookup('template','j2/tenant_base.j2', split_lines=False) }}"

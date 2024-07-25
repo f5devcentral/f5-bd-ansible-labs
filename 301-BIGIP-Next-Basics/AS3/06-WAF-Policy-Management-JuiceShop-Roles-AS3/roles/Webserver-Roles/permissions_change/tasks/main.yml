@@ -1,0 +1,35 @@
+---
+
+- name: change Web Server based on lab
+  ansible.builtin.set_fact:
+    ASM_WebServer_File_Location: "{{ASM_WebServer_File_Location_2}}"
+  when: lab_version is not defined
+
+- name: Obtain the ACL for a specific folder
+  ansible.posix.acl:
+    path: "{{ ASM_WebServer_File_Location }}"
+  register: folder_output
+
+- name: Modify Permissions of "{{ ASM_WebServer_File_Location }}" to 777
+  ansible.builtin.file:
+    path: "{{ ASM_WebServer_File_Location }}"
+    state: directory
+    mode: '0777'
+  become: yes
+  become_method: sudo
+  become_user: root
+  when:
+    - '"r-x" in folder_output.acl[1]'
+    - hostvars['f5']['finished'] is not defined
+
+- name: Modify Permissions of "{{ ASM_WebServer_File_Location }}" to 755
+  ansible.builtin.file:
+    path: "{{ ASM_WebServer_File_Location }}"
+    state: directory
+    mode: '0755'
+  become: yes
+  become_method: sudo
+  become_user: root
+  when: 
+    - '"rwx" in folder_output.acl[1]'
+    - hostvars['f5']['finished'] is defined

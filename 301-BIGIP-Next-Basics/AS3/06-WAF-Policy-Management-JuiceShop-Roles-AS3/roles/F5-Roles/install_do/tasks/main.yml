@@ -1,0 +1,36 @@
+---
+# tasks insttall Declaritive Onboarding Latest
+
+- name: Get latest DO RPM version
+  ansible.builtin.shell: curl -s {{do_uri}} | grep -E rpm |grep -E browser_download_url | head -1 | cut -d "\"" -f 4
+  register: do_output
+
+- debug:
+    var: do_output.stdout_lines[0]
+
+- ansible.builtin.set_fact:
+    do_download: "{{do_output.stdout_lines[0]}}"
+
+- name: Grab DO RPM from github
+  ansible.builtin.get_url:
+    url: "{{do_download}}?raw=true"
+    dest: "~/"
+    validate_certs: false
+
+- name: Grab the DO version from the home directory
+  ansible.builtin.shell: ls -Art ~/*.rpm | tail -n 1 | rev | cut -d/ -f 1 | rev
+  register: ls_output
+
+- ansible.builtin.set_fact:
+    do_rpm: "{{ls_output.stdout}}"
+
+- name: Install DO
+  f5networks.f5_modules.bigip_lx_package:
+    package: "~/{{do_rpm}}"
+    provider: "{{provider}}"
+  register: install_do
+
+- name: Pause for Install to complete
+  ansible.builtin.pause:
+    minutes: 1
+  when: install_do.changed

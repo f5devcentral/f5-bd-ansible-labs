@@ -1,0 +1,16 @@
+---
+# tasks file for ASM-Role
+
+- name: change Web Server based on lab
+  ansible.builtin.set_fact:
+    ASM_WebServer_File_Location: "{{ASM_WebServer_File_Location_2}}"
+  when: lab_version is not defined
+
+- name: Find Latest File
+  ansible.builtin.shell: ls {{ ASM_WebServer_File_Location }} -Artf | tail -n 1
+  register: file_name
+  delegate_to: node1
+
+#  - debug:
+#      var: file_name
+
