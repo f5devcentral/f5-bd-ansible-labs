@@ -2,6 +2,7 @@
 
 - name: Backup BIG-IP Next instance
   f5networks.next.cm_next_backup_restore:
+    device_hostname: "{{ item.hostname }}"
     device_ip: "{{ item.address }}"
     #filename: "{{ item.id }}.{{ lookup('pipe', 'date +%Y-%m-%d-%H-%M-%S') }}"
     filename: "ansible.backup.tar.gz"
