@@ -6,5 +6,6 @@
     filename: "{{ item.id }}.{{ lookup('pipe', 'date +%Y-%m-%d-%H-%M-%S') }}"
     file_password: '{{ lookup("env", "ANSIBLE_NET_PASSWORD") }}'
     state: backup
+    force: true
     timeout: 600
   with_items: "{{ cm_info.managed_devices }}"
