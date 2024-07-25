@@ -5,3 +5,8 @@
     gather_subset:
       - users
       - files
+  register: cm_info
+
+- name: Debug CM-Info
+  ansible.builtin.debug:
+    var: cm_info
