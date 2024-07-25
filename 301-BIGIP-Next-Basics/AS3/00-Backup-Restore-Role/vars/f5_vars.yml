@@ -1,7 +1,6 @@
 ---
 # Modify based on deployment
-F5_Admin_Port: "{{ server_port }}"
 local_folder_location: "/tmp/f5/"
 
 #File Name of Backup could use timestamps/names/etc.
-file_name: UseCase-00-backup.ucs
+file_name: "{{ inventory_hostname }}-Backup-{{ lookup('pipe','date +%Y-%m-%d-%H-%M-%S') }}.xml"

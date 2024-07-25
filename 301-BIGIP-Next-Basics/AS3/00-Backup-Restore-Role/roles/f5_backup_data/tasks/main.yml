@@ -2,8 +2,9 @@
 
 - name: Backup BIG-IP Next instance
   f5networks.next.cm_next_backup_restore:
-    device_ip: "127.1.1.1"
-    filename: "ansible_test.tar.gz"
-    file_password: "pass123!"
+    device_ip: "{{ item.address }}"
+    filename: "{{ item.id }}.{{ lookup('pipe', 'date +%Y-%m-%d-%H-%M-%S') }}"
+    file_password: '{{ lookup("env", "ANSIBLE_NET_PASSWORD") }}'
     state: backup
     timeout: 600
+  with_items: "{{ cm_info.managed_devices }}"
