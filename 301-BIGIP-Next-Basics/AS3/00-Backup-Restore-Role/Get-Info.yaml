@@ -2,11 +2,11 @@
 - name: BIG-IP Next Automation
   hosts: next-cm
   connection: httpapi
-  gather_facts: true
+  gather_facts: false
   vars_files:
     - vars/f5_vars.yml
   vars:
-    ansible_httpapi_password: "{{ ansible_pass }}"
+    ansible_httpapi_password: "{{ ANSIBLE_NET_PASSWORD }}"
     ansible_httpapi_port: 443
     ansible_network_os: f5networks.next.cm
     ansible_httpapi_use_ssl: true
