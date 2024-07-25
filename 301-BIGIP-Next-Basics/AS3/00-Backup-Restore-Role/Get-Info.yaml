@@ -2,7 +2,7 @@
 - name: BIG-IP Next Automation
   hosts: next-cm
   connection: httpapi
-  gather_facts: false
+  gather_facts: true
   vars_files:
     - vars/f5_vars.yml
   vars:
