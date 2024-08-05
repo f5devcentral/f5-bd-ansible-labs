@@ -1,5 +1,5 @@
 ---
-- name: BIG-IP Next Automation
+- name: BIG-IP Next Automation TEST
   hosts: next_cm
   connection: httpapi
   gather_facts: false
