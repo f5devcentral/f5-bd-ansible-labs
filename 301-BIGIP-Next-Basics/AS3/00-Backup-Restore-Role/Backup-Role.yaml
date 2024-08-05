@@ -1,6 +1,6 @@
 ---
 - name: BIG-IP Next Automation
-  hosts: next-cm
+  hosts: next_cm
   connection: httpapi
   gather_facts: false
   vars_files:
