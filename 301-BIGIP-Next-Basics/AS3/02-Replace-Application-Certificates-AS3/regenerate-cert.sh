@@ -1,1 +1,0 @@
-openssl req -x509 -newkey ec -pkeyopt ec_paramgen_curve:prime256v1 -days 3650 -nodes -keyout f5-demos.org.key -out f5-demos.org.crt -subj "/CN=f5-demos.org"  -addext "subjectAltName=DNS:f5-demos.org,DNS:*.f5-demos.org"
