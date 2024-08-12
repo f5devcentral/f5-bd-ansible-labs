@@ -8,14 +8,21 @@
   "label": "Central Manager Example Template",
   "remark": "",
   "schemaVersion": "3.43.0",
-  "tenantikcHpBuLREOPbrdQ2Atz2Q": {
+  "tenantHipcfyrRSp2IKtQDWdWcrQ": {
     "Use-Case-2-App": {
-      "Use-Case-2-Pool": {
-        "allowNetworks": [
-          {
-            "bigip": "Default"
-          }
+      "Use-Case-2-App": {
+        "class": "Service_HTTPS",
+        "mirroring": "L4",
+        "persistenceMethods": [],
+        "pool": "Use-Case-2-Pool",
+        "serverTLS": "pTLSServer_Local_Use-Case-2-App",
+        "snat": "auto",
+        "virtualAddresses": [
+          "10.1.20.8"
         ],
+        "virtualPort": 443
+      },
+      "Use-Case-2-Pool": {
         "class": "Pool",
         "loadBalancingMode": "round-robin",
         "members": [
@@ -39,18 +46,6 @@
             "use": "http"
           }
         ]
-      },
-      "Use-Case-2-VS": {
-        "class": "Service_HTTPS",
-        "mirroring": "L4",
-        "persistenceMethods": [],
-        "pool": "Use-Case-2-Pool",
-        "serverTLS": "pTLSServer_Local_Use-Case-2-VS",
-        "snat": "auto",
-        "virtualAddresses": [
-          "10.1.10.8"
-        ],
-        "virtualPort": 443
       },
       "class": "Application",
       "http": {
@@ -94,10 +89,10 @@
         "responseTime": 20,
         "retryTime": 300
       },
-      "pTLSServer_Local_Use-Case-2-VS": {
+      "pTLSServer_Local_Use-Case-2-App": {
         "certificates": [
           {
-            "certificate": "tlsserver_local_cert_Use-Case-2-VS_Use-Case-2-Cert_Use-Case-2-Cert_ecda"
+            "certificate": "tlsserver_local_cert_Use-Case-2-App_Use-Case-2-Cert_Use-Case-2-Cert_ecda"
           }
         ],
         "class": "TLS_Server"
@@ -117,7 +112,7 @@
         "monitorType": "tcp-half-open",
         "timeout": 16
       },
-      "tlsserver_local_cert_Use-Case-2-VS_Use-Case-2-Cert_Use-Case-2-Cert_ecda": {
+      "tlsserver_local_cert_Use-Case-2-App_Use-Case-2-Cert_Use-Case-2-Cert_ecda": {
         "certificate": {
           "bigip": "Use-Case-2-Cert.crt"
         },
