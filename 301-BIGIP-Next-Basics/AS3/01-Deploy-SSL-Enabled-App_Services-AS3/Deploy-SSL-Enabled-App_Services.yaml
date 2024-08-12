@@ -20,5 +20,5 @@
     - name: Declaration with Next - AS3
       f5networks.next.cm_next_as3_deploy:
         content: "{{ lookup('template','j2/new_declaration.j2', split_lines=False) }}"
-        target_ip: "{{item.inventory_hostname}}"
+        target_ip: "{{ hostvars[item].inventory_hostname}}"
       with_items: "{{ groups['next-instances'] }}"
