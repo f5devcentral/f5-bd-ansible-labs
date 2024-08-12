@@ -32,8 +32,8 @@
     - name: Import Certificate/Key to Next
       f5networks.next.cm_ssl_certificate_import:
         name: Use-Case-2-Cert
-        cert: "{{ SSL_Cert }}"
-        key: "{{ SSL_Key }}"
+        cert: "{{ playbook_dir}}/{{ SSL_Cert }}"
+        key: "{{ playbook_dir}}/{{ SSL_Key }}"
         type: PEM
         update_cert: true
         update_key: true 
