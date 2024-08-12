@@ -8,20 +8,8 @@
   "label": "Central Manager Example Template",
   "remark": "",
   "schemaVersion": "3.43.0",
-  "tenantqKLXTIC8QrWgtv05eUs02g": {
+  "tenantikcHpBuLREOPbrdQ2Atz2Q": {
     "Use-Case-2-App": {
-      "Use-Case-2-App": {
-        "class": "Service_HTTPS",
-        "mirroring": "L4",
-        "persistenceMethods": [],
-        "pool": "Use-Case-2-Pool",
-        "serverTLS": "pTLSServer_Local_Use-Case-2-App",
-        "snat": "auto",
-        "virtualAddresses": [
-          "10.1.10.8"
-        ],
-        "virtualPort": 443
-      },
       "Use-Case-2-Pool": {
         "allowNetworks": [
           {
@@ -51,6 +39,18 @@
             "use": "http"
           }
         ]
+      },
+      "Use-Case-2-VS": {
+        "class": "Service_HTTPS",
+        "mirroring": "L4",
+        "persistenceMethods": [],
+        "pool": "Use-Case-2-Pool",
+        "serverTLS": "pTLSServer_Local_Use-Case-2-VS",
+        "snat": "auto",
+        "virtualAddresses": [
+          "10.1.10.8"
+        ],
+        "virtualPort": 80
       },
       "class": "Application",
       "http": {
@@ -94,10 +94,10 @@
         "responseTime": 20,
         "retryTime": 300
       },
-      "pTLSServer_Local_Use-Case-2-App": {
+      "pTLSServer_Local_Use-Case-2-VS": {
         "certificates": [
           {
-            "certificate": "tlsserver_local_cert_Use-Case-2-App_Use-Case-2-SSL_Use-Case-2-Cert_rsa"
+            "certificate": "tlsserver_local_cert_Use-Case-2-VS_Use-Case-2-Cert_Use-Case-2-Cert_ecda"
           }
         ],
         "class": "TLS_Server"
@@ -117,7 +117,7 @@
         "monitorType": "tcp-half-open",
         "timeout": 16
       },
-      "tlsserver_local_cert_Use-Case-2-App_Use-Case-2-SSL_Use-Case-2-Cert_rsa": {
+      "tlsserver_local_cert_Use-Case-2-VS_Use-Case-2-Cert_Use-Case-2-Cert_ecda": {
         "certificate": {
           "bigip": "Use-Case-2-Cert.crt"
         },
