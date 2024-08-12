@@ -14,10 +14,11 @@
     as3_tenant_name: "WorkshopExample"
     F5_VIP_Name: Use-Case-1-VIP
     pool_members: "{{ groups['web'] }}"
+    vip_ip_address: 
 
   tasks:
     - name: Declaration with Next - AS3
       f5networks.next.cm_next_as3_deploy:
-        content: "{{ lookup('template','j2/https.j2', split_lines=False) }}"
+        content: "{{ lookup('template','j2/new_declaration.j2', split_lines=False) }}"
         target_ip: "{{item.inventory_hostname}}"
       with_items: "{{ groups['next-instances'] }}"
