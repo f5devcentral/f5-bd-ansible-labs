@@ -14,8 +14,6 @@
     as3_tenant_name: "WorkshopExample"
     F5_VIP_Name: Use-Case-2-VIP
     pool_members: "{{ groups['web'] }}"
-    # SSL_Cert: app-demo.crt
-    # SSL_Key: app-demo.key 
     SSL_Key: new-app-demo.key
     SSL_Cert: new-app-demo.crt
 
