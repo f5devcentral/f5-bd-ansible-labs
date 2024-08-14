@@ -67,7 +67,7 @@
 
     - name: "Add Blocked IPs to {{ waf_policy_name }}"
       ansible.builtin.uri:
-        url: "https://{{ bigip_next_cm_mgmt_ip }}/api/v1/spaces/default/security/waf/policy-ip-addresses/"
+        url: "https://{{ ansible_host }}/api/v1/spaces/default/security/waf/policy-ip-addresses/"
         method: POST
         body: '{"blocking_mode":"always","ip_address":"{{ item }}","ip_mask":"","action":"create","policies":["{{ waf_policy_name }}"],"trusted_by_policy_builder":false,"never_log_requests":false,"never_learn_requests":false}'
         status_code:
@@ -85,7 +85,7 @@
 
     # - name: "Add URLS IPs to {{ waf_policy_name }}"
     #   ansible.builtin.uri:
-    #     url: "https://{{ bigip_next_cm_mgmt_ip }}/api/v1/spaces/default/security/waf/policy-ip-addresses/"
+    #     url: "https://{{ ansible_host }}/api/v1/spaces/default/security/waf/policy-ip-addresses/"
     #     method: POST
     #     body: '{"blocking_mode":"always","ip_address":"{{ item }}","ip_mask":"","action":"create","policies":["{{ waf_policy_name }}"],"trusted_by_policy_builder":false,"never_log_requests":false,"never_learn_requests":false}'
     #     status_code:
@@ -107,7 +107,7 @@
 
     # - name: "Deploying WAF Policy - {{ waf_policy_name }}"
     #   ansible.builtin.uri:
-    #     url: "https://{{ bigip_next_cm_mgmt_ip }}/api/waf/v1/tasks/deploy-policy"
+    #     url: "https://{{ ansible_host }}/api/waf/v1/tasks/deploy-policy"
     #     method: POST
     #     body: '{"policy_name": "{{ waf_policy_name }}","comment": "This is a comment" }'
     #     status_code:
