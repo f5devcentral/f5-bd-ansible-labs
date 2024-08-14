@@ -9,47 +9,8 @@
   "remark": "",
   "schemaVersion": "3.43.0",
   "tenant2rYbnmocSKaLfVmF905V99Kg": {
-    "Use-Case-4-App": {
-      "Use-Case-4-App": {
-        "class": "Service_HTTPS",
-        "mirroring": "L4",
-        "persistenceMethods": [],
-        "pool": "Use-Case-4-Pool",
-        "serverTLS": "pTLSServer_Local_Use-Case-4-App",
-        "policyWAF": {
-          "bigip": "Ansible-AAP-WAF"
-        },
-        "snat": "auto",
-        "virtualAddresses": [
-          "10.1.20.8"
-        ],
-        "virtualPort": 443
-      },
-      "Use-Case-4-Pool": {
-        "class": "Pool",
-        "loadBalancingMode": "round-robin",
-        "members": [
-          {
-            "ratio": 10,
-            "servers": [
-              {
-                "address": "10.1.10.5",
-                "name": "Node-1"
-              },
-              {
-                "address": "10.1.10.6",
-                "name": "Node-2"
-              }
-            ],
-            "servicePort": 80
-          }
-        ],
-        "monitors": [
-          {
-            "use": "http"
-          }
-        ]
-      },
+    "class": "Tenant",
+    "test": {
       "class": "Application",
       "http": {
         "class": "Monitor",
@@ -92,10 +53,10 @@
         "responseTime": 20,
         "retryTime": 300
       },
-      "pTLSServer_Local_Use-Case-4-App": {
+      "pTLSServer_Local_test": {
         "certificates": [
           {
-            "certificate": "tlsserver_local_cert_Use-Case-2-App_Use-Case-2-Cert_Use-Case-2-Cert_ecda"
+            "certificate": "tlsserver_local_cert_test_test_c_Use-Case-2-Cert_ecda"
           }
         ],
         "class": "TLS_Server"
@@ -115,7 +76,38 @@
         "monitorType": "tcp-half-open",
         "timeout": 16
       },
-      "tlsserver_local_cert_Use-Case-2-App_Use-Case-2-Cert_Use-Case-2-Cert_ecda": {
+      "test": {
+        "class": "Service_HTTPS",
+        "mirroring": "L4",
+        "persistenceMethods": [],
+        "policyWAF": {
+          "bigip": "Ansible-AAP-WAF"
+        },
+        "pool": "test_p",
+        "serverTLS": "pTLSServer_Local_test",
+        "snat": "auto",
+        "virtualAddresses": [
+          "10.10.10.10"
+        ],
+        "virtualPort": 80
+      },
+      "test_p": {
+        "class": "Pool",
+        "loadBalancingMode": "round-robin",
+        "members": [
+          {
+            "ratio": 10,
+            "servers": [],
+            "servicePort": 80
+          }
+        ],
+        "monitors": [
+          {
+            "use": "http"
+          }
+        ]
+      },
+      "tlsserver_local_cert_test_test_c_Use-Case-2-Cert_ecda": {
         "certificate": {
           "bigip": "Use-Case-2-Cert.crt"
         },
@@ -124,7 +116,6 @@
           "bigip": "Use-Case-2-Cert.pem"
         }
       }
-    },
-    "class": "Tenant"
+    }
   }
 }
