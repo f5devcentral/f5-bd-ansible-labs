@@ -57,38 +57,6 @@
         "send": "GET / HTTP/1.0\r\n\r\n",
         "timeout": 16
       },
-      "http2": {
-        "class": "Monitor",
-        "interval": 5,
-        "monitorType": "http2",
-        "receive": ".*",
-        "receiveDown": "",
-        "send": "GET / HTTP/1.1",
-        "timeout": 16
-      },
-      "https": {
-        "class": "Monitor",
-        "interval": 5,
-        "monitorType": "https",
-        "receive": ".*",
-        "receiveDown": "",
-        "send": "GET / HTTP/1.0\r\n\r\n",
-        "timeout": 16
-      },
-      "icmp": {
-        "class": "Monitor",
-        "interval": 5,
-        "monitorType": "icmp",
-        "timeout": 16
-      },
-      "inband": {
-        "class": "Monitor",
-        "failureInterval": 30,
-        "failures": 3,
-        "monitorType": "inband",
-        "responseTime": 20,
-        "retryTime": 300
-      },
       "pTLSServer_Local_Use-Case-2-App": {
         "certificates": [
           {
@@ -96,21 +64,6 @@
           }
         ],
         "class": "TLS_Server"
-      },
-      "tcp": {
-        "class": "Monitor",
-        "interval": 5,
-        "monitorType": "tcp",
-        "receive": ".*",
-        "receiveDown": "",
-        "send": "",
-        "timeout": 16
-      },
-      "tcp-half-open": {
-        "class": "Monitor",
-        "interval": 5,
-        "monitorType": "tcp-half-open",
-        "timeout": 16
       },
       "tlsserver_local_cert_Use-Case-2-App_Use-Case-2-Cert_Use-Case-2-Cert_ecda": {
         "certificate": {
