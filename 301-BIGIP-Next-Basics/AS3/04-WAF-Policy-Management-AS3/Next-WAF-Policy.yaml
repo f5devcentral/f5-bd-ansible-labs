@@ -1,7 +1,8 @@
 ---
 
 - name: ASM Policy Update with Blocked IPs
-  hosts: localhost
+  hosts: next-lb
+  connection: local
   gather_facts: false
   vars:
     waf_policy_name: "Ansible-AAP-WAF"
