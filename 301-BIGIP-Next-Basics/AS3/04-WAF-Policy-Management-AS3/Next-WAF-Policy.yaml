@@ -35,7 +35,7 @@
       ansible.builtin.uri:
         url: "https://{{ ansible_host }}/api/v1/spaces/default/security/waf-policies"
         method: POST
-        body: '{"description": "My Ansible WAF Policy","enforcement_mode": "blocking", "application_language": "utf-8", "tags": [ "tag1" ], "case_insensitive": true, "name": "{{ waf_policy_name }}", "template_name": "Advanced-Protection", "declaration": {}}'
+        body: '{"description": "My Ansible WAF Policy","enforcement_mode": "blocking", "application_language": "utf-8", "tags": [ "tag1" ], "case_insensitive": true, "name": "{{ waf_policy_name }}", "template_name": "RAPID-Template", "declaration": {}}'
         status_code:
           - 204
         timeout: 300
