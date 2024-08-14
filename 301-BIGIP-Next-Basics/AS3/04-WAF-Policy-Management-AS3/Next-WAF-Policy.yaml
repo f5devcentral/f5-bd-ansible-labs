@@ -1,7 +1,7 @@
 ---
 
 - name: ASM Policy Update with Blocked IPs
-  hosts: next-lb
+  hosts: next-cm
   connection: local
   gather_facts: false
   vars:
