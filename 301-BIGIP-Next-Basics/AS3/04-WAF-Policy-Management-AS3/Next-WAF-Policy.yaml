@@ -6,6 +6,8 @@
   gather_facts: false
   vars:
     waf_policy_name: "Ansible-AAP-WAF"
+  vars_files:
+    -  vars/f5_vars.yml
   tasks:
 
     - name: "Show Debug of Blocked IPs"
