@@ -8,14 +8,14 @@
   "label": "Central Manager Example Template",
   "remark": "",
   "schemaVersion": "3.43.0",
-  "tenantHipcfyrRSp2IKtQDWdWcra": {
+  "tenantHipcfyrRSp2IKtQDWdWcrA": {
     "Use-Case-4-App": {
       "Use-Case-4-App": {
         "class": "Service_HTTPS",
         "mirroring": "L4",
         "persistenceMethods": [],
         "pool": "Use-Case-4-Pool",
-        "serverTLS": "pTLSServer_Local_Use-Case-2-App",
+        "serverTLS": "pTLSServer_Local_Use-Case-4-App",
         "snat": "auto",
         "virtualAddresses": [
           "10.1.20.8"
@@ -92,7 +92,7 @@
       "pTLSServer_Local_Use-Case-4-App": {
         "certificates": [
           {
-            "certificate": "tlsserver_local_cert_Use-Case-4-App_Use-Case-4-Cert_Use-Case-4-Cert_ecda"
+            "certificate": "tlsserver_local_cert_Use-Case-2-App_Use-Case-2-Cert_Use-Case-2-Cert_ecda"
           }
         ],
         "class": "TLS_Server"
@@ -112,7 +112,7 @@
         "monitorType": "tcp-half-open",
         "timeout": 16
       },
-      "tlsserver_local_cert_Use-Case-4-App_Use-Case-4-Cert_Use-Case-4-Cert_ecda": {
+      "tlsserver_local_cert_Use-Case-2-App_Use-Case-2-Cert_Use-Case-2-Cert_ecda": {
         "certificate": {
           "bigip": "Use-Case-2-Cert.crt"
         },
