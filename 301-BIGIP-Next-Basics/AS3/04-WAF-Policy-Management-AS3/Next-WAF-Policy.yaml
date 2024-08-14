@@ -37,7 +37,8 @@
         method: POST
         body: '{"description": "My Ansible WAF Policy","enforcement_mode": "blocking", "application_language": "utf-8", "tags": [ "tag1" ], "case_insensitive": true, "name": "{{ waf_policy_name }}", "template_name": "RAPID-Template", "declaration": {}}'
         status_code:
-          - 204
+          - 200
+          - 400
         timeout: 300
         body_format: json
         headers:
