@@ -72,6 +72,7 @@
         body: '{"blocking_mode":"always","ip_address":"{{ item }}","ip_mask":"","action":"create","policies":["{{ waf_policy_name }}"],"trusted_by_policy_builder":false,"never_log_requests":false,"never_learn_requests":false}'
         status_code:
           - 204
+          - 304
           - 400
         timeout: 300
         body_format: json
