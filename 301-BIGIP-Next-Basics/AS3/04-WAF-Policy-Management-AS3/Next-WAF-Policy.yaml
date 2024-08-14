@@ -124,6 +124,7 @@
     as3_tenant_name: "WorkshopExample"
     F5_VIP_Name: Use-Case-4-VIP
     pool_members: "{{ groups['web'] }}"
+    waf_policy_name: "Ansible-AAP-WAF"
 
 
   tasks:
