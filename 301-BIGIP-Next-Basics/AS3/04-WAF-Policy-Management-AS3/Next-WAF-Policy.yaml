@@ -16,7 +16,7 @@
 
     - name: Login to BIG-IP Next
       ansible.builtin.uri:
-        url: " https://{{ bigip_next_cm_mgmt_ip }}/api/login"
+        url: " https://{{ ansible_host }}/api/login"
         method: POST
         body: '{"username": "{{ lookup("env", "ANSIBLE_NET_USERNAME") }}", "password": "{{ lookup("env", "ANSIBLE_NET_PASSWORD") }}"}'
         status_code: 200
@@ -33,7 +33,7 @@
 
     - name: Create WAF Policy
       ansible.builtin.uri:
-        url: "https://{{ bigip_next_cm_mgmt_ip }}/api/v1/spaces/default/security/waf-policies"
+        url: "https://{{ ansible_host }}/api/v1/spaces/default/security/waf-policies"
         method: POST
         body: '{"description": "My Ansible WAF Policy","enforcement_mode": "blocking", "application_language": "utf-8", "tags": [ "tag1" ], "case_insensitive": true, "name": "{{ waf_policy_name }}", "template_name": "RAPID", "declaration": {}}'
         status_code:
@@ -50,7 +50,7 @@
 
     - name: Get all WAF Policies
       ansible.builtin.uri:
-        url: "https://{{ bigip_next_cm_mgmt_ip }}/api/v1/spaces/default/security/waf-policies"
+        url: "https://{{ ansible_host }}/api/v1/spaces/default/security/waf-policies"
         method: GET
         status_code: 200
         timeout: 300
