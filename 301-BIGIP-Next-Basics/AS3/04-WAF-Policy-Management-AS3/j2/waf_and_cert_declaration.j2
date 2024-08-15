@@ -8,24 +8,23 @@
   "label": "Central Manager Example Template",
   "remark": "",
   "schemaVersion": "3.43.0",
-  "tenant2rYbnmocSKaLfVmF905V99Kg": {
-    "Use-Case-4-App": {
-      "Use-Case-4-App": {
-        "class": "Service_HTTPS",
+  "tenantQBfi912HTSmSgf5LHysh992A": {
+    "Test-App": {
+      "Test-App-App": {
+        "class": "Service_HTTP",
         "mirroring": "L4",
         "persistenceMethods": [],
-        "pool": "Use-Case-4-Pool",
-        "serverTLS": "pTLSServer_Local_Use-Case-4-App",
         "policyWAF": {
-          "bigip": "test"
+          "bigip": "Ansible-AAP-WAF"
         },
+        "pool": "Test-App-Pool",
         "snat": "auto",
         "virtualAddresses": [
           "10.1.20.8"
         ],
-        "virtualPort": 4443
+        "virtualPort": 80
       },
-      "Use-Case-4-Pool": {
+      "Test-App-Pool": {
         "class": "Pool",
         "loadBalancingMode": "round-robin",
         "members": [
@@ -58,6 +57,47 @@
         "receive": ".*",
         "receiveDown": "",
         "send": "GET / HTTP/1.0\r\n\r\n",
+        "timeout": 16
+      },
+      "http2": {
+        "class": "Monitor",
+        "interval": 5,
+        "monitorType": "http2",
+        "receive": ".*",
+        "receiveDown": "",
+        "send": "GET / HTTP/1.1",
+        "timeout": 16
+      },
+      "https": {
+        "class": "Monitor",
+        "interval": 5,
+        "monitorType": "https",
+        "receive": ".*",
+        "receiveDown": "",
+        "send": "GET / HTTP/1.0\r\n\r\n",
+        "timeout": 16
+      },
+      "icmp": {
+        "class": "Monitor",
+        "interval": 5,
+        "monitorType": "icmp",
+        "timeout": 16
+      },
+      "inband": {
+        "class": "Monitor",
+        "failureInterval": 30,
+        "failures": 3,
+        "monitorType": "inband",
+        "responseTime": 20,
+        "retryTime": 300
+      },
+      "tcp": {
+        "class": "Monitor",
+        "interval": 5,
+        "monitorType": "tcp",
+        "receive": ".*",
+        "receiveDown": "",
+        "send": "",
         "timeout": 16
       }
     },
