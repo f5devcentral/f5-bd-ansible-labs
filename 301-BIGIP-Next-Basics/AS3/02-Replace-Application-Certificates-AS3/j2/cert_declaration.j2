@@ -8,21 +8,21 @@
   "label": "Central Manager Example Template",
   "remark": "",
   "schemaVersion": "3.43.0",
-  "tenantHipcfyrRSp2IKtQDWdWcrQ": {
-    "Use-Case-2-App": {
-      "Use-Case-2-App": {
+  "tenanttTNwsfBoTye1rwYz2mxIfA": {
+    "Test-App": {
+      "Test-App-App": {
         "class": "Service_HTTPS",
         "mirroring": "L4",
         "persistenceMethods": [],
-        "pool": "Use-Case-2-Pool",
-        "serverTLS": "pTLSServer_Local_Use-Case-2-App",
+        "pool": "Test-App-Pool",
+        "serverTLS": "pTLSServer_Local_Test-App-App",
         "snat": "auto",
         "virtualAddresses": [
           "10.1.20.8"
         ],
         "virtualPort": 443
       },
-      "Use-Case-2-Pool": {
+      "Test-App-Pool": {
         "class": "Pool",
         "loadBalancingMode": "round-robin",
         "members": [
@@ -57,15 +57,60 @@
         "send": "GET / HTTP/1.0\r\n\r\n",
         "timeout": 16
       },
-      "pTLSServer_Local_Use-Case-2-App": {
+      "http2": {
+        "class": "Monitor",
+        "interval": 5,
+        "monitorType": "http2",
+        "receive": ".*",
+        "receiveDown": "",
+        "send": "GET / HTTP/1.1",
+        "timeout": 16
+      },
+      "https": {
+        "class": "Monitor",
+        "interval": 5,
+        "monitorType": "https",
+        "receive": ".*",
+        "receiveDown": "",
+        "send": "GET / HTTP/1.0\r\n\r\n",
+        "timeout": 16
+      },
+      "icmp": {
+        "class": "Monitor",
+        "interval": 5,
+        "monitorType": "icmp",
+        "timeout": 16
+      },
+      "inband": {
+        "class": "Monitor",
+        "failureInterval": 30,
+        "failures": 3,
+        "monitorType": "inband",
+        "responseTime": 20,
+        "retryTime": 300
+      },
+      "pTLSServer_Local_Test-App-App": {
         "certificates": [
           {
-            "certificate": "tlsserver_local_cert_Use-Case-2-App_Use-Case-2-Cert_Use-Case-2-Cert_ecda"
+            "certificate": "tlsserver_local_cert_Test-App-App_Test-App-Cert_Use-Case-2-Cert_ecda"
           }
         ],
-        "class": "TLS_Server"
+        "ciphers": "DEFAULT",
+        "class": "TLS_Server",
+        "tls1_1Enabled": false,
+        "tls1_2Enabled": true,
+        "tls1_3Enabled": false
       },
-      "tlsserver_local_cert_Use-Case-2-App_Use-Case-2-Cert_Use-Case-2-Cert_ecda": {
+      "tcp": {
+        "class": "Monitor",
+        "interval": 5,
+        "monitorType": "tcp",
+        "receive": ".*",
+        "receiveDown": "",
+        "send": "",
+        "timeout": 16
+      },
+      "tlsserver_local_cert_Test-App-App_Test-App-Cert_Use-Case-2-Cert_ecda": {
         "certificate": {
           "bigip": "Use-Case-2-Cert.crt"
         },
