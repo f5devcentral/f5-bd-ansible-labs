@@ -8,23 +8,24 @@
   "label": "Central Manager Example Template",
   "remark": "",
   "schemaVersion": "3.43.0",
-  "tenantQBfi912HTSmSgf5LHysh992A": {
-    "Test-App": {
-      "Test-App-App": {
+  "tenant2rYbnmocSKaLfVmF905V99Kg": {
+    "Use-Case-4-App": {
+      "Use-Case-4-App": {
         "class": "Service_HTTP",
         "mirroring": "L4",
         "persistenceMethods": [],
+        "pool": "Use-Case-4-Pool",
+        "serverTLS": "pTLSServer_Local_Use-Case-4-App",
         "policyWAF": {
-          "bigip": "Ansible-AAP-WAF"
+          "bigip": "Use-Case-4-App/Ansible-AAP-WAF"
         },
-        "pool": "Test-App-Pool",
         "snat": "auto",
         "virtualAddresses": [
           "10.1.20.8"
         ],
-        "virtualPort": 80
+        "virtualPort": 4443
       },
-      "Test-App-Pool": {
+      "Use-Case-4-Pool": {
         "class": "Pool",
         "loadBalancingMode": "round-robin",
         "members": [
@@ -91,6 +92,14 @@
         "responseTime": 20,
         "retryTime": 300
       },
+      "pTLSServer_Local_Use-Case-4-App": {
+        "certificates": [
+          {
+            "certificate": "tlsserver_local_cert_Use-Case-2-App_Use-Case-2-Cert_Use-Case-2-Cert_ecda"
+          }
+        ],
+        "class": "TLS_Server"
+      },
       "tcp": {
         "class": "Monitor",
         "interval": 5,
@@ -99,6 +108,21 @@
         "receiveDown": "",
         "send": "",
         "timeout": 16
+      },
+      "tcp-half-open": {
+        "class": "Monitor",
+        "interval": 5,
+        "monitorType": "tcp-half-open",
+        "timeout": 16
+      },
+      "tlsserver_local_cert_Use-Case-2-App_Use-Case-2-Cert_Use-Case-2-Cert_ecda": {
+        "certificate": {
+          "bigip": "Use-Case-2-Cert.crt"
+        },
+        "class": "Certificate",
+        "privateKey": {
+          "bigip": "Use-Case-2-Cert.pem"
+        }
       }
     },
     "class": "Tenant"
