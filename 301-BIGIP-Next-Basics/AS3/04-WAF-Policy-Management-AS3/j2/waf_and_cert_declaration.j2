@@ -8,28 +8,75 @@
   "label": "Central Manager Example Template",
   "remark": "",
   "schemaVersion": "3.43.0",
-  "tenant2rYbnmocSKaLfVmF905V99Kg": {
-    "Use-Case-4-App": {
-      "My_ASM_Policy": {
-        "class": "WAF_Policy",
-        "ignoreChanges": true,
-        "policy": "https://raw.githubusercontent.com/f5devcentral/f5-bd-ansible-labs/main/301-BIGIP-Next-Basics/AS3/04-WAF-Policy-Management-AS3/files/Ansible-AAP-WAF.json"
+  "tenantCxqtsrwYSuGdc33zJM99tTA": {
+    "class": "Tenant",
+    "test-app": {
+      "class": "Application",
+      "http": {
+        "class": "Monitor",
+        "interval": 5,
+        "monitorType": "http",
+        "receive": ".*",
+        "receiveDown": "",
+        "send": "GET / HTTP/1.0\r\n\r\n",
+        "timeout": 16
       },
-      "Use-Case-4-App": {
+      "http2": {
+        "class": "Monitor",
+        "interval": 5,
+        "monitorType": "http2",
+        "receive": ".*",
+        "receiveDown": "",
+        "send": "GET / HTTP/1.1",
+        "timeout": 16
+      },
+      "https": {
+        "class": "Monitor",
+        "interval": 5,
+        "monitorType": "https",
+        "receive": ".*",
+        "receiveDown": "",
+        "send": "GET / HTTP/1.0\r\n\r\n",
+        "timeout": 16
+      },
+      "icmp": {
+        "class": "Monitor",
+        "interval": 5,
+        "monitorType": "icmp",
+        "timeout": 16
+      },
+      "inband": {
+        "class": "Monitor",
+        "failureInterval": 30,
+        "failures": 3,
+        "monitorType": "inband",
+        "responseTime": 20,
+        "retryTime": 300
+      },
+      "tcp": {
+        "class": "Monitor",
+        "interval": 5,
+        "monitorType": "tcp",
+        "receive": ".*",
+        "receiveDown": "",
+        "send": "",
+        "timeout": 16
+      },
+      "test-app": {
         "class": "Service_HTTP",
         "mirroring": "L4",
         "persistenceMethods": [],
         "policyWAF": {
-          "use": "My_ASM_Policy"
+          "bigip": "Ansible-AAP-WAF"
         },
-        "pool": "Use-Case-4-Pool",
+        "pool": "test-pool",
         "snat": "auto",
         "virtualAddresses": [
-          "10.1.20.8"
+          "10.10.10.50"
         ],
-        "virtualPort": 4443
+        "virtualPort": 80
       },
-      "Use-Case-4-Pool": {
+      "test-pool": {
         "class": "Pool",
         "loadBalancingMode": "round-robin",
         "members": [
@@ -37,12 +84,8 @@
             "ratio": 10,
             "servers": [
               {
-                "address": "10.1.10.5",
-                "name": "Node-1"
-              },
-              {
-                "address": "10.1.10.6",
-                "name": "Node-2"
+                "address": "10.10.10.51",
+                "name": "node"
               }
             ],
             "servicePort": 80
@@ -53,18 +96,7 @@
             "use": "http"
           }
         ]
-      },
-      "class": "Application",
-      "http": {
-        "class": "Monitor",
-        "interval": 5,
-        "monitorType": "http",
-        "receive": ".*",
-        "receiveDown": "",
-        "send": "GET / HTTP/1.0\r\n\r\n",
-        "timeout": 16
       }
-    },
-    "class": "Tenant"
+    }
   }
 }
