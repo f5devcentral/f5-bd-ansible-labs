@@ -17,7 +17,7 @@
         "pool": "Use-Case-4-Pool",
         "serverTLS": "pTLSServer_Local_Use-Case-4-App",
         "policyWAF": {
-          "bigip": "Use-Case-4-App/Ansible-AAP-WAF"
+          "bigip": "My_ASM_Policy"
         },
         "snat": "auto",
         "virtualAddresses": [
@@ -123,6 +123,11 @@
         "privateKey": {
           "bigip": "Use-Case-2-Cert.pem"
         }
+      },
+      "My_ASM_Policy": {
+        "class": "WAF_Policy",
+        "url": "https://raw.githubusercontent.com/f5devcentral/f5-bd-ansible-labs/main/301-BIGIP-Next-Basics/AS3/04-WAF-Policy-Management-AS3/files/Ansible-AAP-WAF.json",
+        "ignoreChanges": true
       }
     },
     "class": "Tenant"
