@@ -10,14 +10,19 @@
   "schemaVersion": "3.43.0",
   "tenant2rYbnmocSKaLfVmF905V99Kg": {
     "Use-Case-4-App": {
+      "My_ASM_Policy": {
+        "class": "WAF_Policy",
+        "ignoreChanges": true,
+        "policy": "https://raw.githubusercontent.com/f5devcentral/f5-bd-ansible-labs/main/301-BIGIP-Next-Basics/AS3/04-WAF-Policy-Management-AS3/files/Ansible-AAP-WAF.json"
+      },
       "Use-Case-4-App": {
         "class": "Service_HTTP",
         "mirroring": "L4",
         "persistenceMethods": [],
-        "pool": "Use-Case-4-Pool",
         "policyWAF": {
           "use": "My_ASM_Policy"
         },
+        "pool": "Use-Case-4-Pool",
         "snat": "auto",
         "virtualAddresses": [
           "10.1.20.8"
@@ -58,11 +63,6 @@
         "receiveDown": "",
         "send": "GET / HTTP/1.0\r\n\r\n",
         "timeout": 16
-      },
-      "My_ASM_Policy": {
-        "class": "WAF_Policy",
-        "policy": "https://raw.githubusercontent.com/f5devcentral/f5-bd-ansible-labs/main/301-BIGIP-Next-Basics/AS3/04-WAF-Policy-Management-AS3/files/Ansible-AAP-WAF.json",
-        "ignoreChanges": true
       }
     },
     "class": "Tenant"
