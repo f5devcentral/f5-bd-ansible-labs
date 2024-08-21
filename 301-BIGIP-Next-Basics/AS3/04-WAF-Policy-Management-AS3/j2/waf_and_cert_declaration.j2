@@ -8,75 +8,24 @@
   "label": "Central Manager Example Template",
   "remark": "",
   "schemaVersion": "3.43.0",
-  "tenantCxqtsrwYSuGdc33zJM99tTA": {
-    "class": "Tenant",
-    "test-app": {
-      "class": "Application",
-      "http": {
-        "class": "Monitor",
-        "interval": 5,
-        "monitorType": "http",
-        "receive": ".*",
-        "receiveDown": "",
-        "send": "GET / HTTP/1.0\r\n\r\n",
-        "timeout": 16
-      },
-      "http2": {
-        "class": "Monitor",
-        "interval": 5,
-        "monitorType": "http2",
-        "receive": ".*",
-        "receiveDown": "",
-        "send": "GET / HTTP/1.1",
-        "timeout": 16
-      },
-      "https": {
-        "class": "Monitor",
-        "interval": 5,
-        "monitorType": "https",
-        "receive": ".*",
-        "receiveDown": "",
-        "send": "GET / HTTP/1.0\r\n\r\n",
-        "timeout": 16
-      },
-      "icmp": {
-        "class": "Monitor",
-        "interval": 5,
-        "monitorType": "icmp",
-        "timeout": 16
-      },
-      "inband": {
-        "class": "Monitor",
-        "failureInterval": 30,
-        "failures": 3,
-        "monitorType": "inband",
-        "responseTime": 20,
-        "retryTime": 300
-      },
-      "tcp": {
-        "class": "Monitor",
-        "interval": 5,
-        "monitorType": "tcp",
-        "receive": ".*",
-        "receiveDown": "",
-        "send": "",
-        "timeout": 16
-      },
-      "test-app": {
-        "class": "Service_HTTP",
+  "tenant2rYbnmocSKaLfVmF905V99Kg": {
+    "Use-Case-4-App": {
+      "Use-Case-4-App": {
+        "class": "Service_HTTPS",
         "mirroring": "L4",
         "persistenceMethods": [],
+        "pool": "Use-Case-4-Pool",
+        "serverTLS": "pTLSServer_Local_Use-Case-4-App",
         "policyWAF": {
-          "bigip": "Ansible-AAP-WAF"
+          "cm": "Ansible-AAP-WAF"
         },
-        "pool": "test-pool",
         "snat": "auto",
         "virtualAddresses": [
-          "10.10.10.50"
+          "10.1.20.8"
         ],
-        "virtualPort": 80
+        "virtualPort": 4443
       },
-      "test-pool": {
+      "Use-Case-4-Pool": {
         "class": "Pool",
         "loadBalancingMode": "round-robin",
         "members": [
@@ -84,8 +33,12 @@
             "ratio": 10,
             "servers": [
               {
-                "address": "10.10.10.51",
-                "name": "node"
+                "address": "10.1.10.5",
+                "name": "Node-1"
+              },
+              {
+                "address": "10.1.10.6",
+                "name": "Node-2"
               }
             ],
             "servicePort": 80
@@ -96,7 +49,35 @@
             "use": "http"
           }
         ]
+      },
+      "class": "Application",
+      "http": {
+        "class": "Monitor",
+        "interval": 5,
+        "monitorType": "http",
+        "receive": ".*",
+        "receiveDown": "",
+        "send": "GET / HTTP/1.0\r\n\r\n",
+        "timeout": 16
+      },
+      "pTLSServer_Local_Use-Case-4-App": {
+        "certificates": [
+          {
+            "certificate": "tlsserver_local_cert_Use-Case-2-App_Use-Case-2-Cert_Use-Case-2-Cert_ecda"
+          }
+        ],
+        "class": "TLS_Server"
+      },
+      "tlsserver_local_cert_Use-Case-2-App_Use-Case-2-Cert_Use-Case-2-Cert_ecda": {
+        "certificate": {
+          "cm": "Use-Case-2-Cert.crt"
+        },
+        "class": "Certificate",
+        "privateKey": {
+          "cm": "Use-Case-2-Cert.pem"
+        }
       }
-    }
+    },
+    "class": "Tenant"
   }
 }
