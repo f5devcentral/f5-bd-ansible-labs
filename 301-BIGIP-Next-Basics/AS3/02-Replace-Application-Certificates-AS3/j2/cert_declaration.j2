@@ -9,20 +9,20 @@
   "remark": "",
   "schemaVersion": "3.43.0",
   "tenanttTNwsfBoTye1rwYz2mxIfA": {
-    "Test-App": {
-      "Test-App-App": {
+    "Use-Case-2": {
+      "Use-Case-2-App": {
         "class": "Service_HTTPS",
         "mirroring": "L4",
         "persistenceMethods": [],
-        "pool": "Test-App-Pool",
-        "serverTLS": "pTLSServer_Local_Test-App-App",
+        "pool": "Use-Case-2-App-Pool",
+        "serverTLS": "pTLSServer_Local_Use-case-2-App",
         "snat": "auto",
         "virtualAddresses": [
           "10.1.20.8"
         ],
         "virtualPort": 443
       },
-      "Test-App-Pool": {
+      "Use-Case-2-App-Pool": {
         "class": "Pool",
         "loadBalancingMode": "round-robin",
         "members": [
@@ -89,10 +89,10 @@
         "responseTime": 20,
         "retryTime": 300
       },
-      "pTLSServer_Local_Test-App-App": {
+      "pTLSServer_Local_Use-case-2-App": {
         "certificates": [
           {
-            "certificate": "tlsserver_local_cert_Test-App-App_Test-App-Cert_Use-Case-2-Cert_ecda"
+            "certificate": "tlsserver_local_cert_Use-Case-2-App-Cert_Use-Case-2-Cert_ecda"
           }
         ],
         "ciphers": "DEFAULT",
@@ -110,7 +110,7 @@
         "send": "",
         "timeout": 16
       },
-      "tlsserver_local_cert_Test-App-App_Test-App-Cert_Use-Case-2-Cert_ecda": {
+      "tlsserver_local_cert_Use-Case-2-App-Cert_Use-Case-2-Cert_ecda": {
         "certificate": {
           "cm": "Use-Case-2-Cert.crt"
         },
