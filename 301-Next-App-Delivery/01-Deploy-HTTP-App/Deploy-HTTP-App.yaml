@@ -30,12 +30,12 @@
 
     - name: Declaration with Next - AS3
       f5networks.next.cm_next_as3_deploy:
-        content: "{{ lookup('template','j2/new_declaration.j2', split_lines=False) }}"
+        content: "{{ lookup('template','j2/http_declaration.j2', split_lines=False) }}"
         target_ip: "{{ item.hostname }}"
       with_items: "{{ cm_info.managed_devices }}"
 
-    - name: Declaration with Next - AS3
-      f5networks.next.cm_next_as3_deploy:
-        content: "{{ lookup('template','j2/new_declaration_modified.j2', split_lines=False) }}"
-        target_ip: "{{ item.hostname }}"
-      with_items: "{{ cm_info.managed_devices }}"
+    # - name: Declaration with Next - AS3
+    #   f5networks.next.cm_next_as3_deploy:
+    #     content: "{{ lookup('template','j2/new_declaration_modified.j2', split_lines=False) }}"
+    #     target_ip: "{{ item.hostname }}"
+    #   with_items: "{{ cm_info.managed_devices }}"

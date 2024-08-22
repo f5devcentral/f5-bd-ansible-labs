@@ -10,8 +10,8 @@
   "schemaVersion": "3.43.0",
   "tenant5LhYODjoRTm91rolcXlEdNQ": {
     "class": "Tenant",
-    "Use-Case-1-App": {
-      "Use-Case-1-Pool": {
+    "{{ as3_tenant_name }}": {
+      "{{ as3_tenant_name }}-Pool": {
         "allowNetworks": [
           {
             "bigip": "Default"
@@ -23,14 +23,11 @@
           {
             "ratio": 10,
             "servers": [
-              {
-                "address": "10.1.10.5",
-                "name": "Node-1"
-              },
-              {
-                "address": "10.1.10.6",
-                "name": "Node-2"
-              }
+              {% set comma = joiner(",") %}
+              {% for members in pool_members %}
+                  {{comma()}} "address: \"{{  hostvars[members]['ansible_host']\"  }}",
+                  "name: \"{{  hostvars[members]['inventory_hostname']  }}\" "
+              {% endfor %}
             ],
             "servicePort": 443
           }
@@ -41,11 +38,11 @@
           }
         ]
       },
-      "Use-Case-1-Pool_service": {
+      "{{ as3_tenant_name }}-Pool_service": {
         "class": "Service_Pool",
-        "pool": "Use-Case-1-Pool"
+        "pool": "{{ as3_tenant_name }}-Pool"
       },
-      "Use-Case-1-VIP": {
+      "{{ as3_tenant_name }}-VIP": {
         "class": "Service_HTTP",
         "mirroring": "L4",
         "persistenceMethods": [],
