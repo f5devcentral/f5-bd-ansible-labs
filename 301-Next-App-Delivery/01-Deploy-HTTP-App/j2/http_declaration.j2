@@ -25,8 +25,8 @@
             "servers": [
               {% set comma = joiner(",") %}
               {% for members in pool_members %}
-                  {{comma()}} "address: \"{{  hostvars[members]['ansible_host']\"  }}",
-                  "name: \"{{  hostvars[members]['inventory_hostname']  }}\" "
+                  {{comma()}} "address: \\"{{  hostvars[members]['ansible_host']\\"  }}",
+                  "name: \\"{{  hostvars[members]['inventory_hostname']  }}\\" "
               {% endfor %}
             ],
             "servicePort": 443
