@@ -15,7 +15,7 @@
     pool_members: "{{ groups['web'] }}"
     SSL_Key: new-app-demo.key
     SSL_Cert: new-app-demo.crt
-
+    vip_ip_address: 10.1.20.8
 
   tasks:
 
