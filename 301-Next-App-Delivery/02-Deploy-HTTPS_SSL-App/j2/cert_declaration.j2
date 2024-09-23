@@ -11,19 +11,12 @@
   "tenanttTNwsfBoTye1rwYz2mxIfA": {
     "class": "Tenant",
     "{{ as3_tenant_name }}": {
-      "{{ as3_tenant_name }}-App": {
-        "class": "Service_HTTPS",
-        "mirroring": "L4",
-        "persistenceMethods": [],
-        "pool": "{{ as3_tenant_name }}-Pool",
-        "serverTLS": "pTLSServer_Local_Use-case-2-App",
-        "snat": "auto",
-        "virtualAddresses": [
-          "{{ vip_ip_address }}"
-        ],
-        "virtualPort": 443
-      },
       "{{ as3_tenant_name }}-Pool": {
+        "allowNetworks": [
+          {
+            "bigip": "Default"
+          }
+        ],
         "class": "Pool",
         "loadBalancingMode": "round-robin",
         "members": [
@@ -41,6 +34,28 @@
           "servicePort": 443
           }
         ],
+        "monitors": [
+          {
+            "use": "http"
+          }
+        ]
+      },
+      "{{ as3_tenant_name }}-Pool_service": {
+        "class": "Service_Pool",
+        "pool": "{{ as3_tenant_name }}-Pool"
+      },
+      "{{ as3_tenant_name }}-VIP": {
+        "class": "Service_HTTPS",
+        "mirroring": "L4",
+        "persistenceMethods": [],
+        "pool": "{{ as3_tenant_name }}-Pool",
+        "serverTLS": "pTLSServer_Local_Use-case-2-App",
+        "snat": "auto",
+        "virtualAddresses": [
+          "{{ vip_ip_address }}"
+        ],
+        "virtualPort": 443
+      },
       "class": "Application",
       "http": {
         "class": "Monitor",
