@@ -9,8 +9,9 @@
   "remark": "",
   "schemaVersion": "3.43.0",
   "tenanttTNwsfBoTye1rwYz2mxIfA": {
-    "Use-Case-2-App": {
-      "Use-Case-2-App": {
+    "class": "Tenant"
+    "{{ as3_tenant_name }}": {
+      "{{ as3_tenant_name }}-App": {
         "class": "Service_HTTPS",
         "mirroring": "L4",
         "persistenceMethods": [],
@@ -18,27 +19,26 @@
         "serverTLS": "pTLSServer_Local_Use-case-2-App",
         "snat": "auto",
         "virtualAddresses": [
-          "10.1.20.8"
+          "{{ vip_ip_address }}"
         ],
         "virtualPort": 443
       },
-      "Use-Case-2-App-Pool": {
+      "{{ as3_tenant_name }}-Pool": {
         "class": "Pool",
         "loadBalancingMode": "round-robin",
         "members": [
           {
             "ratio": 10,
             "servers": [
+              {% set comma = joiner(",") %}
+              {% for members in pool_members %}
               {
-                "address": "10.1.10.5",
-                "name": "Node-1"
+                  "address": "{{ hostvars[members]['ansible_host'] }}",
+                  "name": "{{ hostvars[members]['inventory_hostname'] }}"
               },
-              {
-                "address": "10.1.10.6",
-                "name": "Node-2"
-              }
+              {% endfor %}
             ],
-            "servicePort": 80
+          "servicePort": 443
           }
         ],
         "monitors": [
@@ -56,38 +56,6 @@
         "receiveDown": "",
         "send": "GET / HTTP/1.0\r\n\r\n",
         "timeout": 16
-      },
-      "http2": {
-        "class": "Monitor",
-        "interval": 5,
-        "monitorType": "http2",
-        "receive": ".*",
-        "receiveDown": "",
-        "send": "GET / HTTP/1.1",
-        "timeout": 16
-      },
-      "https": {
-        "class": "Monitor",
-        "interval": 5,
-        "monitorType": "https",
-        "receive": ".*",
-        "receiveDown": "",
-        "send": "GET / HTTP/1.0\r\n\r\n",
-        "timeout": 16
-      },
-      "icmp": {
-        "class": "Monitor",
-        "interval": 5,
-        "monitorType": "icmp",
-        "timeout": 16
-      },
-      "inband": {
-        "class": "Monitor",
-        "failureInterval": 30,
-        "failures": 3,
-        "monitorType": "inband",
-        "responseTime": 20,
-        "retryTime": 300
       },
       "pTLSServer_Local_Use-case-2-App": {
         "certificates": [
@@ -120,6 +88,5 @@
         }
       }
     },
-    "class": "Tenant"
   }
 }
