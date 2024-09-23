@@ -125,6 +125,7 @@
     F5_VIP_Name: Use-Case-4-VIP
     pool_members: "{{ groups['web'] }}"
     waf_policy_name: "Ansible-AAP-WAF"
+    vip_ip_address: 10.1.20.8
 
 
   tasks:

@@ -9,39 +9,28 @@
   "remark": "",
   "schemaVersion": "3.43.0",
   "tenant2rYbnmocSKaLfVmF905V99Kg": {
-    "Use-Case-4-App": {
-      "Use-Case-4-App": {
-        "class": "Service_HTTPS",
-        "mirroring": "L4",
-        "persistenceMethods": [],
-        "pool": "Use-Case-4-Pool",
-        "serverTLS": "pTLSServer_Local_Use-Case-4-App",
-        "policyWAF": {
-          "cm": "Ansible-AAP-WAF"
-        },
-        "snat": "auto",
-        "virtualAddresses": [
-          "10.1.20.8"
+    "{{ as3_tenant_name }}": {
+      "{{ as3_tenant_name }}-Pool": {
+        "allowNetworks": [
+          {
+            "bigip": "Default"
+          }
         ],
-        "virtualPort": 4443
-      },
-      "Use-Case-4-Pool": {
         "class": "Pool",
         "loadBalancingMode": "round-robin",
         "members": [
           {
             "ratio": 10,
             "servers": [
+              {% set comma = joiner(",") %}
+              {% for members in pool_members %}
               {
-                "address": "10.1.10.5",
-                "name": "Node-1"
+                  "address": "{{ hostvars[members]['ansible_host'] }}",
+                  "name": "{{ hostvars[members]['inventory_hostname'] }}"
               },
-              {
-                "address": "10.1.10.6",
-                "name": "Node-2"
-              }
+              {% endfor %}
             ],
-            "servicePort": 80
+          "servicePort": 443
           }
         ],
         "monitors": [
@@ -49,6 +38,25 @@
             "use": "http"
           }
         ]
+      },
+      "{{ as3_tenant_name }}-Pool_service": {
+        "class": "Service_Pool",
+        "pool": "{{ as3_tenant_name }}-Pool"
+      },
+      "{{ as3_tenant_name }}-VIP": {
+        "class": "Service_HTTPS",
+        "mirroring": "L4",
+        "persistenceMethods": [],
+        "pool": "{{ as3_tenant_name }}-Pool",
+        "serverTLS": "pTLSServer_Local_Use-Case-4-App",
+        "policyWAF": {
+          "cm": "{{ waf_policy_name }}"
+        },
+        "snat": "auto",
+        "virtualAddresses": [
+          "{{ vip_ip_address }}"
+        ],
+        "virtualPort": 4443
       },
       "class": "Application",
       "http": {
