@@ -1,6 +1,6 @@
 ---
 #Tenat Variables
-as3_tenant_name: "Use-Case-2-SSL-App"
+as3_tenant_name: "Use-Case-4-WAF"
 pool_members: "{{ groups['web'] }}"
 waf_policy_name: "Ansible-AAP-WAF"
 vip_ip_address: 10.1.20.8
