@@ -11,17 +11,12 @@
   "tenant5LhYODjoRTm91rolcXlEdNQ": {
     "class": "Tenant",
     "{{ as3_tenant_name }}": {
-      "{{ as3_tenant_name }}-App": {
-        "class": "Service_HTTP",
-        "mirroring": "L4",
-        "persistenceMethods": [],
-        "snat": "auto",
-        "virtualAddresses": [
-          "{{ vip_ip_address }}"
-        ],
-        "virtualPort": 80
-      },
       "{{ as3_tenant_name }}-Pool": {
+        "allowNetworks": [
+          {
+            "bigip": "Default"
+          }
+        ],
         "class": "Pool",
         "loadBalancingMode": "round-robin",
         "members": [
@@ -44,15 +39,20 @@
             "use": "http"
           }
         ]
-        "allowNetworks": [
-          {
-            "bigip": "Default"
-          }
-        ],
       },
       "{{ as3_tenant_name }}-Pool_service": {
         "class": "Service_Pool",
         "pool": "{{ as3_tenant_name }}-Pool"
+      },
+      "{{ as3_tenant_name }}-VIP": {
+        "class": "Service_HTTP",
+        "mirroring": "L4",
+        "persistenceMethods": [],
+        "snat": "auto",
+        "virtualAddresses": [
+          "{{ vip_ip_address }}"
+        ],
+        "virtualPort": 80
       },
       "class": "Application",
       "http": {
