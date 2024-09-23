@@ -17,11 +17,11 @@
 
   tasks:
 
-    - name: Collect users and files information on CM device
-      f5networks.next.cm_device_info:
-        gather_subset:
-          - all
-      register: cm_info
+    # - name: Collect users and files information on CM device
+    #   f5networks.next.cm_device_info:
+    #     gather_subset:
+    #       - all
+    #   register: cm_info
 
     # - name: Debug CM-Info
     #   ansible.builtin.debug:
@@ -33,6 +33,6 @@
 
     - name: Declaration with Next - AS3
       f5networks.next.cm_next_as3_deploy:
-        content: "{{ lookup('template','j2/http_declaration.j2', split_lines=False) }}"
+        content: "{{ lookup('template', 'j2/http_declaration.j2', split_lines=False) }}"
         target_ip: "{{ item.hostname }}"
       with_items: "{{ cm_info.managed_devices }}"
