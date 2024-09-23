@@ -14,7 +14,6 @@
     as3_tenant_name: "Use-Case-1-HTTP-App"
     pool_members: "{{ groups['web'] }}"
     vip_ip_address: 10.1.20.8
-    vip_ip_port: 80
 
   tasks:
 
