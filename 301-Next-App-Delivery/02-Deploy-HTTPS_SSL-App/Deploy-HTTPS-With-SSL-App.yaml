@@ -11,7 +11,7 @@
     ansible_network_os: f5networks.next.cm
     ansible_httpapi_use_ssl: true
     ansible_httpapi_validate_certs: false
-    as3_tenant_name: "Use-Case-2-App"
+    as3_tenant_name: "Use-Case-2-SSL-App"
     pool_members: "{{ groups['web'] }}"
     SSL_Key: new-app-demo.key
     SSL_Cert: new-app-demo.crt
@@ -32,14 +32,14 @@
     - name: Import Certificate/Key to Next
       f5networks.next.cm_ssl_certificate_import:
         name: Use-Case-2-Cert
-        cert: "{{ playbook_dir}}/{{ SSL_Cert }}"
-        key: "{{ playbook_dir}}/{{ SSL_Key }}"
+        cert: "{{ playbook_dir }}/{{ SSL_Cert }}"
+        key: "{{ playbook_dir }}/{{ SSL_Key }}"
         type: PEM
         update_cert: true
-        update_key: true 
+        update_key: true
 
     - name: Declaration with Next - AS3
       f5networks.next.cm_next_as3_deploy:
-        content: "{{ lookup('template','j2/cert_declaration.j2', split_lines=False) }}"
+        content: "{{ lookup('template', 'j2/cert_declaration.j2', split_lines=False) }}"
         target_ip: "{{ item.hostname }}"
       with_items: "{{ cm_info.managed_devices }}"

@@ -11,10 +11,10 @@
     ansible_network_os: f5networks.next.cm
     ansible_httpapi_use_ssl: true
     ansible_httpapi_validate_certs: false
-    as3_tenant_name: "WorkshopExample"
-    F5_VIP_Name: Use-Case-1-VIP
+    as3_tenant_name: "Use-Case-1-HTTP-App"
     pool_members: "{{ groups['web'] }}"
-    vip_ip_address: 
+    vip_ip_address: 10.1.20.8
+    vip_ip_port: 80
 
   tasks:
 

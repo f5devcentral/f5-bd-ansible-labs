@@ -50,9 +50,9 @@
         "persistenceMethods": [],
         "snat": "auto",
         "virtualAddresses": [
-          "10.1.20.8"
+          "{{ vip_ip_address }}"
         ],
-        "virtualPort": 80
+        "virtualPort": "{{ vip_ip_port }}"
       },
       "class": "Application",
       "http": {
