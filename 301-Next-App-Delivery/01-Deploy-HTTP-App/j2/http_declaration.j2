@@ -28,7 +28,7 @@
               {
                   "address": "{{ hostvars[members]['ansible_host'] }}",
                   "name": "{{ hostvars[members]['inventory_hostname'] }}"
-              }{{ comma () }}
+              },
               {% endfor %}
             ],
           "servicePort": 443
