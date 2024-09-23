@@ -38,6 +38,10 @@
         update_cert: true
         update_key: true
 
+    - name: Debug Declaration
+      ansible.builtin.debug:
+        msg: "{{ lookup('template','j2/cert_declaration.j2', split_lines=False) }}"
+
     - name: Declaration with Next - AS3
       f5networks.next.cm_next_as3_deploy:
         content: "{{ lookup('template', 'j2/cert_declaration.j2', split_lines=False) }}"
