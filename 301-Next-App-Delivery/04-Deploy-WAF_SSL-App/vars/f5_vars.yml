@@ -4,7 +4,6 @@ as3_tenant_name: "Use-Case-2-SSL-App"
 pool_members: "{{ groups['web'] }}"
 waf_policy_name: "Ansible-AAP-WAF"
 vip_ip_address: 10.1.20.8
-waf_policy_name: "Ansible-AAP-WAF"
 
 #Blocked URLS Tasks Variables
 Blocked_URLs:
