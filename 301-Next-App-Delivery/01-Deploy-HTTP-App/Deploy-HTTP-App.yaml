@@ -24,6 +24,13 @@
           - all
       register: cm_info
 
+    - name: debug variable
+      ansible.builtin.debug:
+        msg: |
+          vip_ip_port: {{ vip_ip_port }}
+          vip_ip_port|type_debug: {{ vip_ip_port|type_debug }}
+
+
     - name: Debug Declaration
       ansible.builtin.debug:
         msg: "{{ lookup('template','j2/http_declaration.j2', split_lines=False) }}" 
