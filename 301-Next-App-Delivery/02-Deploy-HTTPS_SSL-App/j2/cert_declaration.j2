@@ -9,13 +9,12 @@
   "remark": "",
   "schemaVersion": "3.43.0",
   "tenanttTNwsfBoTye1rwYz2mxIfA": {
-    "class": "Tenant"
     "{{ as3_tenant_name }}": {
       "{{ as3_tenant_name }}-App": {
         "class": "Service_HTTPS",
         "mirroring": "L4",
         "persistenceMethods": [],
-        "pool": "Use-Case-2-App-Pool",
+        "pool": "{{ as3_tenant_name }}-Pool",
         "serverTLS": "pTLSServer_Local_Use-case-2-App",
         "snat": "auto",
         "virtualAddresses": [
@@ -41,12 +40,6 @@
           "servicePort": 443
           }
         ],
-        "monitors": [
-          {
-            "use": "http"
-          }
-        ]
-      },
       "class": "Application",
       "http": {
         "class": "Monitor",
@@ -88,5 +81,6 @@
         }
       }
     },
+    "class": "Tenant"
   }
 }
