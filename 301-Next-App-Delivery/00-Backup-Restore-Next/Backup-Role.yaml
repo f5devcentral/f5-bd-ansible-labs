@@ -1,6 +1,6 @@
 ---
 - name: BIG-IP Next Automation TEST
-  hosts: next_cm
+  hosts: next-cm
   connection: httpapi
   gather_facts: false
   vars_files:
