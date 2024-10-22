@@ -25,7 +25,7 @@
               {% set comma = joiner(",") %}
               {% for members in pool_members %}
               {
-                  "address": "{{ hostvars[members]['ansible_host'] }}",
+                  "address": "{{ hostvars[members]['private_ip'] }}",
                   "name": "{{ hostvars[members]['inventory_hostname'] }}"
               },
               {% endfor %}
