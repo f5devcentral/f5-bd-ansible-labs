@@ -12,5 +12,5 @@
     ansible_httpapi_use_ssl: true
     ansible_httpapi_validate_certs: false
   roles:
-    - f5_get_info
+    # - f5_get_info
     - f5_backup_data
