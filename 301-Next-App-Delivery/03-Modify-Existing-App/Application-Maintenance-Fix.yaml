@@ -3,8 +3,8 @@
   hosts: next-cm
   connection: httpapi
   gather_facts: false
-  vars_files:
-    - vars/f5_vars.yml
+  # vars_files:
+  #   - vars/f5_vars.yml
   vars:
     ansible_httpapi_password: '{{ lookup("env", "ANSIBLE_NET_PASSWORD") }}'
     ansible_httpapi_port: 443
