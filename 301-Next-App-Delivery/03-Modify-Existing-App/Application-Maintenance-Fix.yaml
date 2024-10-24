@@ -50,7 +50,7 @@
       ansible.builtin.debug:
         var: item.name
       when:  item.name eq as3_tenant_name
-      with_items: "{{ get_as3_info.json._embedded_appsvcs }}"
+      with_items: "{{ get_as3_info.json._embedded.appsvcs }}"
 
 
     # - name: Deploy AS3 Declaration via URI (Patch)
