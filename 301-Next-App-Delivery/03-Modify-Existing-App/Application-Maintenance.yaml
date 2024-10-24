@@ -25,9 +25,13 @@
           - all
       register: cm_info
 
-    # - name: Debug Declaration
-    #   ansible.builtin.debug:
-    #     msg: "{{ lookup('template', 'j2/cert_declaration.j2', split_lines=False) }}"
+    - name: Debug CM-Info
+      ansible.builtin.debug:
+        var: cm_info
+  
+    - name: Debug Declaration
+      ansible.builtin.debug:
+        msg: "{{ lookup('template', 'j2/app_maint.j2', split_lines=False) }}"
 
     - name: Declaration with Next - AS3
       f5networks.next.cm_next_as3_deploy:
