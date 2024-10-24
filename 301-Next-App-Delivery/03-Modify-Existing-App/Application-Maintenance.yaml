@@ -19,6 +19,12 @@
 
   tasks:
 
+    - name: Collect users and files information on CM device
+      f5networks.next.cm_device_info:
+        gather_subset:
+          - all
+      register: cm_info
+
     # - name: Debug Declaration
     #   ansible.builtin.debug:
     #     msg: "{{ lookup('template', 'j2/cert_declaration.j2', split_lines=False) }}"
@@ -27,3 +33,4 @@
       f5networks.next.cm_next_as3_deploy:
         content: "{{ lookup('template', 'j2/app_maint.j2', split_lines=False) }}"
         target_ip: "{{ item.hostname }}"
+      with_items: "{{ cm_info.managed_devices }}"
