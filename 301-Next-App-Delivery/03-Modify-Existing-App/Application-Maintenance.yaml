@@ -6,24 +6,24 @@
   vars_files:
     - vars/f5_vars.yml
   vars:
-    ansible_host: bigip-next-hostname
-    ansible_user: "{{ ansible_user }}"
-    ansible_httpapi_password: "{{ ansible_password}}"
+    ansible_httpapi_password: '{{ lookup("env", "ANSIBLE_NET_PASSWORD") }}'
     ansible_httpapi_port: 443
     ansible_network_os: f5networks.next.cm
     ansible_httpapi_use_ssl: true
     ansible_httpapi_validate_certs: false
-    as3_tenant_name: "WorkshopExample"
-    F5_VIP_Name_UC1: Use-Case-1-VIP
-    F5_VIP_Name_UC2: Use-Case-2-VIP
-    F5_VIP_Name: Use-Case-3-VIP
+    as3_tenant_name: "Use-Case-3-Modify-App"
     pool_members: "{{ groups['web'] }}"
+    SSL_Key: new-app-demo.key
+    SSL_Cert: new-app-demo.crt
+    vip_ip_address: 10.1.20.8
 
   tasks:
-    - name: CREATE AS3 JSON BODY
-      ansible.builtin.set_fact:
-        as3_app_body: "{{ lookup('template', 'j2/as3_template.j2', split_lines=False) }}"
+
+    # - name: Debug Declaration
+    #   ansible.builtin.debug:
+    #     msg: "{{ lookup('template', 'j2/cert_declaration.j2', split_lines=False) }}"
 
     - name: Declaration with Next - AS3
       f5networks.next.cm_next_as3_deploy:
-        content: "{{ lookup('template','j2/tenant_base.j2', split_lines=False) }}"
+        content: "{{ lookup('template', 'j2/app_maint.j2', split_lines=False) }}"
+        target_ip: "{{ item.hostname }}"
