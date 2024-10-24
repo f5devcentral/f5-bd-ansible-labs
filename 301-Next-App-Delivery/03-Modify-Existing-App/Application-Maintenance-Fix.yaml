@@ -34,7 +34,7 @@
 
     - name: Get Existing AS3 Deployments 
       ansible.builtin.uri:
-        url: "https://{{ ansible_host }}api/v1/spaces/default/appsvcs/documents"
+        url: "https://{{ ansible_host }}/api/v1/spaces/default/appsvcs/documents"
         method: GET
         status_code:
           - 200
