@@ -6,8 +6,8 @@
       - all
   register: cm_info
 
-- name: Declaration with Next - AS3 - USE-CASE-4
+- name: Declaration with Next - AS3 - USE-CASE-5
   f5networks.next.cm_next_as3_deploy:
-    content: "{{ lookup('template', 'j2/juiceshop_waf_declaration.j2', split_lines=False) }}"
+    content: "{{ lookup('template', 'juiceshop_waf_declaration.j2', split_lines=False) }}"
     target_ip: "{{ item.hostname }}"
   with_items: "{{ cm_info.managed_devices }}"
