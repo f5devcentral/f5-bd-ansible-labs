@@ -54,7 +54,7 @@
         "virtualAddresses": [
           "{{ vip_ip_address }}"
         ],
-        "virtualPort": 443
+        "virtualPort": 80
       },
       "class": "Application",
       "http": {
@@ -69,14 +69,20 @@
       "pTLSServer_Local_Use-case-2-App": {
         "certificates": [
           {
-            "certificate": "tlsserver_local_cert_Use-Case-2-App-Cert_Use-Case-2-Cert_ecda"
+            "certificates": [
+              "tlsserver_local_cert_Use-Case-2-App-Cert_Use-Case-2-Cert_ecda"
+            ],
+            "ciphers": "DEFAULT",
+            "enableAuthentication": false,
+            "namedGroups": "DEFAULT",
+            "signatureAlgorithms": "DEFAULT",
+            "sniDefault": true,
+            "tls1_1Enabled": false,
+            "tls1_2Enabled": true,
+            "tls1_3Enabled": false
           }
         ],
-        "ciphers": "DEFAULT",
-        "class": "TLS_Server",
-        "tls1_1Enabled": false,
-        "tls1_2Enabled": true,
-        "tls1_3Enabled": false
+        "class": "TLS_Server"
       },
       "tcp": {
         "class": "Monitor",
