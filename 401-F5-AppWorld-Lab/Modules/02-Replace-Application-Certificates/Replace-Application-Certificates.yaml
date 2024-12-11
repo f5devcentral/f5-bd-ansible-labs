@@ -1,0 +1,88 @@
+---
+- name: Cert Management on BIG-IP
+  hosts: lb
+  connection: local
+  gather_facts: false
+
+#Environment variables defined
+  tasks:
+  - name: Setup provider
+    ansible.builtin.set_fact:
+     provider:
+      server: "{{ ansible_host }}"
+      user: "{{ ansible_user }}"
+      password: "{{ ansible_ssh_pass }}"
+      server_port: "{{ F5_Admin_Port }}"
+      no_f5_teem: yes
+      validate_certs: "no"
+
+#Create Pool and Virtual Server for Use Case
+  - name: Create Pool with Members
+    f5networks.f5_modules.bigip_pool:
+      provider: "{{ provider }}"
+      state: present
+      name: "{{ F5_VIP_Name }}_pool"
+      lb_method: round-robin
+      monitors:
+        - http
+
+  - name: Add Pool Members
+    f5networks.f5_modules.bigip_pool_member:
+      provider: "{{ provider }}"
+      state: present
+      pool: "{{ F5_VIP_Name }}_pool"
+      name: "{{ hostvars[item].inventory_hostname }}"
+      host: "{{ hostvars[item].private_ip }}"
+      port: "80"
+    loop: "{{ groups['web'] }}"
+
+  - name: Create a HTTPS Virtual Server
+    f5networks.f5_modules.bigip_virtual_server:
+      provider: "{{ provider }}"
+      state: present
+      description: "HTTPS Virtual Server"
+      name: "{{ F5_VIP_Name }}_https_vip"
+      destination: "{{ private_ip }}"
+      port: "8081"
+      pool: "{{ F5_VIP_Name }}_pool"
+      snat: Automap
+      profiles:
+       - http
+       - oneconnect
+       - name: clientssl
+         context: client-side
+    when: F5_VIP_Name is defined
+
+
+#SSL Upload and Modification of VIP to use New Certificate
+  - name: SSL cert upload
+    f5networks.f5_modules.bigip_ssl_certificate:
+      provider: "{{ provider }}"
+      name: "{{ F5_VIP_Name }}_Cert"
+      content: "{{ lookup('file', SSL_Cert) }}"
+
+  - name: SSL key upload
+    f5networks.f5_modules.bigip_ssl_key:
+      provider: "{{ provider }}"
+      name: "{{ F5_VIP_Name }}_Cert"
+      content: "{{ lookup('file', SSL_Key) }}"
+
+  - name: Create a client SSL profile with a cert/key/chain setting
+    f5networks.f5_modules.bigip_profile_client_ssl:
+      provider: "{{ provider }}"
+      state: present
+      name: "{{ F5_VIP_Name }}_ClientSSL_profile"
+      cert_key_chain:
+       - cert: "{{ F5_VIP_Name }}_Cert"
+         key: "{{ F5_VIP_Name }}_Cert"
+
+  - name: UPDATE A VIRTUAL SERVER
+    f5networks.f5_modules.bigip_virtual_server:
+      provider: "{{ provider }}"
+      name: "{{ F5_VIP_Name }}_https_vip"
+      port: "8081"
+      profiles:
+      - http
+      - name: "{{ F5_VIP_Name }}_ClientSSL_profile"
+        context: client-side
+      - oneconnect

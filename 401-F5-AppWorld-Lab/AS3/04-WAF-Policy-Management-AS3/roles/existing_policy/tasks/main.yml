@@ -1,0 +1,56 @@
+---
+
+
+- name: change Web Server based on lab
+  ansible.builtin.set_fact:
+    ASM_WebServer_File_Location: "{{ASM_WebServer_File_Location_2}}"
+  when: lab_version is not defined
+
+- ansible.builtin.set_fact:
+    ASM_Final_File_Name: "{{F5_VIP_Name}}-ASMPolicy-{{ lookup('pipe','date +%Y-%m-%d-%H-%M-%S') }}.xml"
+
+- name: Does Previous Policy Exist?
+  ansible.builtin.find:
+    paths: "{{ ASM_WebServer_File_Location }}"
+    patterns: '*.xml'
+  register: does_xml_exist
+
+# - ansible.builtin.debug:
+#     var: does_xml_exist
+
+- name: Find Latest File
+  ansible.builtin.shell: ls {{ ASM_WebServer_File_Location }} -Artf | tail -n 1
+  register: latest_file_output
+  when: does_xml_exist.matched >= 1
+
+- ansible.builtin.debug:
+    var: latest_file_output.stdout
+  when: does_xml_exist.matched >= 1
+
+- name: Fetch WebServer Latest Template to TMP
+  ansible.builtin.fetch:
+    src: "{{ ASM_WebServer_File_Location }}{{latest_file_output.stdout}}"
+    dest: "{{ ASM_Policy_File }}"
+    flat: yes
+  when: does_xml_exist.matched >= 1
+
+- name: Get Checksum of Master file
+  ansible.builtin.stat:
+    path : "{{ ASM_Policy_File }}"
+  register: first_file
+  when: does_xml_exist.matched >= 1
+  delegate_to: localhost
+
+- name: Master Template SHA1
+  ansible.builtin.set_fact:
+    file1_sha: "{{ first_file.stat.checksum }}"  
+  when: does_xml_exist.matched >= 1
+  delegate_to: localhost
+
+# Get Master XML File and store
+- name: Copy Master File to tmp
+  ansible.builtin.copy:
+    src: "{{ ASM_Master_File }}"
+    dest: "{{ ASM_Policy_File }}"
+  when: does_xml_exist.matched == 0
+  delegate_to: localhost   

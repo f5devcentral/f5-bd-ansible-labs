@@ -1,0 +1,16 @@
+---
+ansible_httpapi_password: "{{ ansible_password }}"
+ansible_network_os: f5networks.f5_bigip.bigip
+ansible_httpapi_use_ssl: yes
+ansible_httpapi_validate_certs: no
+ansible_httpapi_port: "{{ server_port }}"
+ansible_connection: httpapi
+
+provider:
+  server: "{{ ansible_host }}"
+  user: "{{ ansible_user }}"
+  password: "{{ ansible_ssh_pass }}"
+  server_port: "{{ server_port }}"
+  no_f5_teem: yes
+  validate_certs: "no"
+

@@ -1,0 +1,48 @@
+---
+- name: CHMOD WebServer - Open
+  hosts: node1
+  gather_facts: False
+  vars_files:
+    - vars/f5_vars.yml
+  roles: 
+    - permissions_change
+
+- name: Install DO/ASM
+  hosts: lb
+  connection: httpapi
+  gather_facts: false
+  vars_files:
+    - vars/f5_vars.yml
+  roles:
+    - install_do
+    - install_asm
+
+- name: WAF Policy
+  hosts: node1
+  gather_facts: true
+  become: yes
+  vars_files:
+    - vars/f5_vars.yml
+  roles:
+    - existing_policy
+    - waf_block_ip
+    - waf_block_urls
+    - checksum
+
+- name: Push AS3
+  hosts: lb
+  gather_facts: false
+  vars_files:
+    - vars/f5_vars.yml
+    - vars/f5_httpapi.yml
+  roles:
+    - find_file_webserver
+    - apply_as3
+
+- name: CHMOD WebServer - Close
+  hosts: node1
+  gather_facts: False
+  vars_files:
+    - vars/f5_vars.yml
+  roles: 
+    - permissions_change

@@ -1,0 +1,9 @@
+---
+- hosts: lb
+  connection: local
+  gather_facts: false
+  vars_files:
+    - vars/f5_vars.yml
+  roles:
+    - f5_remove_as3_backup
+    - f5_restore_data_imparative

@@ -1,0 +1,6 @@
+---
+# Modify based on deployment
+F5_Admin_Port: "{{ server_port }}"
+F5_VIP_Name: Use-Case-2-VIP 
+SSL_Cert: app-demo.crt
+SSL_Key: app-demo.key

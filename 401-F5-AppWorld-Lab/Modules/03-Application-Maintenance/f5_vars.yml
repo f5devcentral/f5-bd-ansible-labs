@@ -1,0 +1,19 @@
+---
+# Modify based on deployment
+F5_Admin_Port: "{{ server_port }}"
+F5_VIP_Name: "Use-Case-4-VIP"
+F5_Pool_Name: "Use-Case-4-VIP_pool"
+
+# Array can Pass Single Node, Multiple Nodes, or "ALL" Nodes (When Using All use single array object with all in it do not mix with Nodes)
+F5_Pool_Members:
+ - node1:80
+# - node2:80
+
+# Example for Changing State of "ALL" Nodes within the given Pool this use case is for customers who have lots of webservers and would want to disable an entire pool
+# F5_Pool_Members:
+# - All
+
+# State is either Enabled, Disabled, Forced_Offline (case doesnt matter)
+F5_Pool_Node_State: "Disabled"
+#F5_Pool_Node_State: "Enabled"
+#F5_Pool_Node_State: "Forced_Offline"

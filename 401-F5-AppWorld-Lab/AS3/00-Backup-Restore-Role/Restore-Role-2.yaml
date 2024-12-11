@@ -1,0 +1,28 @@
+---
+- hosts: lb
+  connection: httpapi
+  gather_facts: false
+  vars_files:
+    - vars/f5_vars.yml
+
+  vars: 
+    ansible_httpapi_password: "{{ ansible_password}}"
+    ansible_httpapi_port: 443
+    ansible_network_os: f5networks.f5_bigip.bigip
+    ansible_httpapi_use_ssl: yes
+    ansible_httpapi_validate_certs: no
+
+  roles:
+    - f5_restore_data_declarative
+
+
+
+# Imparative restore code
+# ---
+# - hosts: lb
+#   connection: local
+#   gather_facts: false
+#   vars_files:
+#     - vars/f5_vars.yml
+#   roles:
+#     - f5_restore_data_imparative

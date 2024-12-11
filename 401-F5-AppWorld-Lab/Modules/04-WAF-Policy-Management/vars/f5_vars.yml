@@ -1,0 +1,24 @@
+---
+# Modify based on deployment
+ansible_python_interpreter: "{{ ansible_playbook_python }}" 
+
+#Use-Case Variables
+F5_VIP_Name: Use-Case-5-VIP
+F5_VIP_Port: "8084"
+F5_Admin_Port: "{{ server_port }}"
+ASM_Policy_Name: "Use-Case-5-ASM"
+ASM_Policy_File: "/tmp/f5/Use-Case-5-XML-Policy.xml"
+
+#Blocked URLS Tasks Variables
+Blocked_URLs:
+- /blocked.html
+- /hacked.html
+- /robot.txt
+
+#Blocked IPs Tasks Variables
+Blocked_IPs:
+- 10.192.1.199
+- 10.105.192.199
+- 172.16.192.199
+- 192.168.30.199
+- 192.172.1.1

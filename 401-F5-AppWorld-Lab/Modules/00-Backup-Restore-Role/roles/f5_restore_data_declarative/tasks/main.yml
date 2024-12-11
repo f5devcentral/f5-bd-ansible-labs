@@ -1,0 +1,35 @@
+---
+# tasks file for Backup-Restore Role
+#  - name: Install Declarative Onboarding
+#    include: Install-DO.yaml
+
+ - name: Check if Backup File Exists
+   stat:
+     path: "{{local_folder_location}}{{file_name}}"
+   register: backup_file
+   tags:
+     - restore
+
+ - name: Restore F5 Configuration
+   include_tasks: f5_restore_config.yaml
+   tags:
+     - restore
+   when: backup_file.stat.exists == true
+
+ - debug:
+     msg: "Restore F5 Configuration FAILED do to backup file not found"
+   when: backup_file.stat.exists == false
+   tags:
+     - restore
+
+ - debug:
+     msg: "An Error might occur but backup should still restore, ignore any errors."
+   when: backup_file.stat.exists == true
+   tags:
+     - restore
+
+ - debug:
+     msg: "Restores can take up to 5 Minutes to complete, please wait until your BIG-IP is Restored"
+   when: backup_file.stat.exists == true
+   tags:
+     - restore

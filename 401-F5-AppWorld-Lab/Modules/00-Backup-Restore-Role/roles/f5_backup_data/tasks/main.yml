@@ -1,0 +1,8 @@
+---
+# tasks file for ASM-Role
+
+ - name: Backup F5 Configuration
+   include_tasks: f5_backup_config.yaml
+   tags: 
+     - backup
+

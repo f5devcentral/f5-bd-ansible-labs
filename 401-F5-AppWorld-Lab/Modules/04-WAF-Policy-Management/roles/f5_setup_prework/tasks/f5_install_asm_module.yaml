@@ -1,0 +1,7 @@
+---
+
+#Provision BIGIP-ASM
+  - name: Provision ASM
+    f5networks.f5_modules.bigip_provision:
+      provider: "{{ provider }}"
+      module: asm

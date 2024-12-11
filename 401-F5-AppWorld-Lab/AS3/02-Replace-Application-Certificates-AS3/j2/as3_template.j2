@@ -1,0 +1,80 @@
+"AS3-UseCase-1": {
+  "class": "Application",
+  "{{F5_VIP_Name_UC1}}": {
+    "class": "Service_HTTPS",
+    "virtualAddresses": [
+      "{{ private_ip }}"
+    ],
+    "profileMultiplex": {
+        "bigip": "/Common/oneconnect"
+    },
+    "pool": "{{ F5_VIP_Name_UC1 }}_pool",
+    "serverTLS": {
+        "bigip": "/Common/clientssl"
+    },
+    "persistenceMethods": []
+  },
+  "{{ F5_VIP_Name_UC1 }}_pool": {
+    "class": "Pool",
+    "minimumMembersActive": 0,
+    "minimumMonitors": "all",
+    "monitors": [
+      "http"
+    ],
+    "members": [{
+      "servicePort": 80,
+      "serverAddresses": [
+              {% set comma = joiner(",") %}
+              {% for mem in pool_members %}
+                  {{comma()}} "{{  hostvars[mem]['private_ip']  }}"
+              {% endfor %}
+      ]
+    }]
+  }
+},
+"AS3-UseCase-2": {
+	"class": "Application",
+	"{{F5_VIP_Name}}": {
+		"class": "Service_HTTPS",
+		"virtualPort": 8081,
+		"virtualAddresses": [
+			"{{ private_ip }}"
+		],
+		"pool": "{{ F5_VIP_Name }}_pool",
+		"redirect80": false,
+		"profileMultiplex": {
+			"bigip": "/Common/oneconnect"
+		},
+		"serverTLS": "{{ F5_VIP_Name }}_cert",
+		"persistenceMethods": []
+	},
+	"{{ F5_VIP_Name }}_pool": {
+		"class": "Pool",
+		"minimumMembersActive": 0,
+		"minimumMonitors": "all",
+		"monitors": [
+			"http"
+		],
+		"members": [{
+			"servicePort": 80,
+			"serverAddresses": [
+		{% set comma = joiner(",") %}
+		{% for mem in pool_members %}
+			{{comma()}} "{{  hostvars[mem]['private_ip']  }}"
+		{% endfor %}
+]
+		}]
+	},
+	"{{ F5_VIP_Name }}_cert": {
+		"class": "TLS_Server",
+		"certificates": [{
+			"certificate": "{{ F5_VIP_Name }}_crt"
+		}]
+	},
+	"{{ F5_VIP_Name }}_crt": {
+		"class": "Certificate",
+		"remark": "in practice we recommend using a passphrase",
+		"certificate": "{{ lookup('file', '{{playbook_dir}}/app-demo.crt') | replace('\n', '\\n') }}",
+		"privateKey": "{{ lookup('file', '{{playbook_dir}}/app-demo.key') | replace('\n', '\\n') }}"
+	}
+}

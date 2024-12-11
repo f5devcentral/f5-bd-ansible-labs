@@ -1,0 +1,10 @@
+---
+# tasks file for ASM-Role
+
+ - name: Inject Blocked IP Addresses into XML
+   include_tasks: f5_asm_blocked_ip_injection.yaml
+   when: Blocked_IPs is defined
+   tags: 
+     - policy
+     - block_ips
+

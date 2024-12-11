@@ -1,0 +1,22 @@
+---
+
+#Create Pool and Virtual Server for Use Case
+  - name: Create Pool with Members
+    f5networks.f5_modules.bigip_pool:
+      provider: "{{ provider }}"
+      state: present
+      name: "{{ F5_VIP_Name }}_pool"
+      lb_method: round-robin
+      monitors:
+        - http
+
+  - name: Add Pool Members
+    f5networks.f5_modules.bigip_pool_member:
+      provider: "{{ provider }}"
+      state: present
+      pool: "{{ F5_VIP_Name }}_pool"
+      name: "{{ hostvars[item].inventory_hostname }}"
+      host: "{{ hostvars[item].private_ip }}"
+      port: "80"
+    loop: "{{ groups['web'] }}"
+

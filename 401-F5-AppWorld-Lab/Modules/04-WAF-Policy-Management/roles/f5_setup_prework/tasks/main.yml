@@ -1,0 +1,18 @@
+---
+# tasks file for ASM-Role
+
+ - name: Provision F5 BIG-IP ASM 
+   include_tasks: f5_install_asm_module.yaml
+   tags: 
+     - provision
+
+ - name: Create Use-Case VIP and Pool
+   include_tasks: f5_create_usecase_vip.yaml
+   tags: 
+     - provision
+
+ - name: Create Blank ASM Policy
+   include_tasks: f5_create_asm_policy.yaml
+   tags: 
+     - provision
+

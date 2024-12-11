@@ -1,0 +1,45 @@
+  - name: Get latest DO RPM version
+    ansible.builtin.shell: curl -s {{do_uri}} | grep -E rpm |grep -E browser_download_url | head -1 | cut -d "\"" -f 4
+    register: do_output
+    delegate_to: localhost
+
+  - debug:
+     var: do_output.stdout_lines[0]
+    delegate_to: localhost
+
+  - ansible.builtin.set_fact:
+     do_download: "{{do_output.stdout_lines[0]}}"
+    delegate_to: localhost
+
+  - name: Grab DO RPM from github
+    ansible.builtin.get_url:
+     url: "{{do_download}}?raw=true"
+     dest: "~/"
+     validate_certs: false
+    delegate_to: localhost
+
+  - name: Set a fact named 'provider' with BIG-IP login information
+    ansible.builtin.set_fact:
+      provider:
+        server: "{{ ansible_host }}"
+        user: "{{ ansible_user }}"
+        password: "{{ ansible_ssh_pass }}"
+        server_port: "{{ server_port }}"
+        validate_certs: no
+
+  - name: Grab the DO version from the home directory
+    ansible.builtin.shell: ls -Art ~/*.rpm | tail -n 1 | rev | cut -d/ -f 1 | rev
+    register: ls_output
+
+  - ansible.builtin.set_fact:
+      do_rpm: "{{ls_output.stdout}}"
+
+  - name: Install DO
+    f5networks.f5_modules.bigip_lx_package:
+      package: "~/{{do_rpm}}"
+      provider: "{{provider}}"
+    register: install_do
+
+  - pause: 
+      seconds: 30 
+    when: install_do.changed

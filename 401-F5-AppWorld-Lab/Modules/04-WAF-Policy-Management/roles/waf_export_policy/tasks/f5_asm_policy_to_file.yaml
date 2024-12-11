@@ -1,0 +1,18 @@
+---
+
+#Fetch ASM_Policy to Variable
+  - name: Fetching ASM Policy
+    f5networks.f5_modules.bigip_asm_policy_fetch:
+      provider: "{{ provider }}"
+      name: "{{ ASM_Policy_Name }}"
+      inline: yes
+      force: yes
+    register: ASM_Policy
+    when: Blocked_URLs is defined or Blocked_IPs is defined
+
+#Output Data to File due to BUG 1390
+  - ansible.builtin.copy:
+      content: "{{ ASM_Policy.inline_policy }}"
+      dest: "{{ ASM_Policy_File }}"
+    when: Blocked_URLs is defined or Blocked_IPs is defined
+

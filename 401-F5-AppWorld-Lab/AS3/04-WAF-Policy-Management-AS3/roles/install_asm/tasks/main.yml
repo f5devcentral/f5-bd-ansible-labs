@@ -1,0 +1,29 @@
+---
+# tasks install ASM
+- name: Install ASM via DO
+  f5networks.f5_bigip.bigip_do_deploy:
+    content: "{{ lookup('template','provision.j2', split_lines=False) }}"
+  register: task
+
+- debug:
+    var: task
+
+- debug:
+    msg: "{{ task.task_id }}"
+
+- name: Wait for DO Task to complete
+  ansible.builtin.uri:
+    url: "https://{{ ansible_host }}:{{ server_port }}/mgmt/shared/declarative-onboarding/task/{{ task.task_id }}"
+    method: GET
+    return_content: true
+    status_code: 200
+    force_basic_auth: true
+    user: "{{ ansible_user }}"
+    password: "{{ ansible_ssh_pass }}"
+    validate_certs: false
+  register: atc_DO_status
+  until: atc_DO_status is success
+  retries: 30
+  delay: 15
+  delegate_to: localhost
+  when: task.changed

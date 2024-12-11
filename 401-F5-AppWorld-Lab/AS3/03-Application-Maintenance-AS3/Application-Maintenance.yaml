@@ -1,0 +1,13 @@
+---
+- name: AS3 USECASE-3
+  hosts: lb
+  connection: httpapi
+  gather_facts: false
+
+  vars_files:
+    - vars/f5_vars.yml
+
+  tasks:
+    - name: PUSH AS3 Template
+      f5networks.f5_bigip.bigip_as3_deploy:
+        content: "{{ lookup('template','j2/app_maint.j2', split_lines=False) }}"

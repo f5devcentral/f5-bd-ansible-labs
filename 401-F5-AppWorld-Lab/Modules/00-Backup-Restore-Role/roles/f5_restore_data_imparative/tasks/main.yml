@@ -1,0 +1,26 @@
+---
+# tasks file for Backup-Restore Role
+ - name: Check if Backup File Exists
+   stat:
+     path: "{{local_folder_location}}/UseCase-00-backup.ucs"
+   register: backup_file
+   tags:
+     - restore
+
+ - name: Restore F5 Configuration
+   include: f5_restore_config.yaml
+   tags:
+     - restore
+   when: backup_file.stat.exists == true
+
+ - debug:
+     msg: "Restore F5 Configuration FAILED do to backup file not found"
+   when: backup_file.stat.exists == false
+   tags:
+     - restore
+
+ - debug:
+     msg: "Restore Completed, Ignore Above Error in Restoration Section.  Reported bug at https://github.com/F5Networks/f5-ansible/issues/1666"
+   when: backup_file.stat.exists == true
+   tags:
+     - restore

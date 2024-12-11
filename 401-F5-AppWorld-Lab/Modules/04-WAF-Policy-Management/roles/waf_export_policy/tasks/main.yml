@@ -1,0 +1,11 @@
+---
+# tasks file for ASM-Role
+
+ - name: Export ASM Policy to File
+   include_tasks: f5_asm_policy_to_file.yaml
+   when: Blocked_URLs is defined or Blocked_IPs is defined
+   tags: 
+     - policy
+     - block_urls
+     - block_ips
+

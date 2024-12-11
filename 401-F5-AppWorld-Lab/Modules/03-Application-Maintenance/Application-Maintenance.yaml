@@ -1,0 +1,104 @@
+---
+- name: "Enable, Disable or Offline a F5 Pool member"
+  hosts: lb
+  gather_facts: false
+  connection: local
+
+  tasks:
+  - name: Setup provider
+    ansible.builtin.set_fact:
+     provider:
+      server: "{{ ansible_host }}"
+      user: "{{ ansible_user }}"
+      password: "{{ ansible_ssh_pass }}"
+      server_port: "{{ F5_Admin_Port }}"
+      no_f5_teem: yes
+      validate_certs: "no"
+
+  - name: Query BIG-IP facts
+    f5networks.f5_modules.bigip_device_info:
+      provider: "{{ provider }}"
+      gather_subset:
+       - virtual-servers
+    register: previous_run   
+
+  # - debug:
+  #     var: previous_run
+
+  - name: Check if Previous run exists
+    set_fact:
+      previous_run_exists: "{{ item.name }}"
+    with_items: "{{ previous_run.virtual_servers }}"
+    when: item.name == "Use-Case-4-VIP_https_vip"
+    loop_control:
+      label: "{{ item.name }}"
+
+  - name: Create Pool with Members
+    f5networks.f5_modules.bigip_pool:
+      provider: "{{ provider }}"
+      state: present
+      name: "{{ F5_VIP_Name }}_pool"
+      lb_method: round-robin
+      monitors:
+        - http
+    when: previous_run_exists is not defined        
+
+  - name: Create a HTTPS Virtual Server
+    f5networks.f5_modules.bigip_virtual_server:
+      provider: "{{ provider }}"
+      state: present
+      description: "HTTPS Virtual Server"
+      name: "{{ F5_VIP_Name }}_https_vip"
+      destination: "{{ private_ip }}"
+      port: "8083"
+      pool: "{{ F5_VIP_Name }}_pool"
+      snat: Automap
+      profiles:
+       - http
+       - name: clientssl
+         context: client-side
+       - oneconnect
+    when: (F5_VIP_Name is defined) and (previous_run_exists is not defined)
+
+  - name: Add Pool Members
+    f5networks.f5_modules.bigip_pool_member:
+      provider: "{{ provider }}"
+      state: present
+      pool: "{{ F5_VIP_Name }}_pool"
+      name: "{{ hostvars[item].inventory_hostname }}"
+      host: "{{ hostvars[item].private_ip }}"
+      port: "80"
+      preserve_node: "yes"
+    loop: "{{ groups['web'] }}"
+    when: previous_run_exists is not defined        
+
+  - name: Query BIG-IP facts
+    f5networks.f5_modules.bigip_device_info:
+      provider: "{{ provider }}"
+      gather_subset:
+       - ltm-pools
+    register: bigip_facts       
+
+  - name: Change ALL pool members State to {{F5_Pool_Node_State}}
+    f5networks.f5_modules.bigip_pool_member:
+      provider: "{{ provider }}"
+      state: "{{ F5_Pool_Node_State|lower }}"
+      name: "{{ item.split(':')[0] }}"
+      pool: "{{ F5_Pool_Name }}"
+      port: "{{ item.split(':')[1] }}"
+      host: "{{ hostvars[item.split(':')[0]].ansible_host }}"
+    loop: "{{ bigip_facts.ltm_pools | json_query(query_string) }}"
+    vars:
+     query_string: "[?name=='{{F5_Pool_Name}}'].members[*].name[]"
+    when: '"all" in F5_Pool_Members|lower and F5_Pool_Node_State is defined'
+
+  - name: Change Specific Pool member(s) State to {{F5_Pool_Node_State}}
+    f5networks.f5_modules.bigip_pool_member:
+      provider: "{{ provider }}"
+      state: "{{ F5_Pool_Node_State|lower }}"
+      name: "{{ item.split(':')[0] }}"
+      pool: "{{ F5_Pool_Name }}"
+      port: "{{ item.split(':')[1] }}"
+      host: "{{ hostvars[item.split(':')[0]].ansible_host }}"
+    with_items: "{{ F5_Pool_Members }}"
+    when: '"all" not in F5_Pool_Members|lower and F5_Pool_Node_State is defined'

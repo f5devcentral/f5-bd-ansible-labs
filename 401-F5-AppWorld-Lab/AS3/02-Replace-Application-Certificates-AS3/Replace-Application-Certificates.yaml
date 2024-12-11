@@ -1,0 +1,25 @@
+---
+- name: AS3 USECASE-2
+  hosts: lb
+  connection: httpapi
+  gather_facts: false
+
+  vars:
+    ansible_httpapi_password: "{{ ansible_password }}"
+    ansible_network_os: f5networks.f5_bigip.bigip
+    ansible_httpapi_use_ssl: yes
+    ansible_httpapi_validate_certs: no
+    ansible_httpapi_port: "{{ server_port }}"
+    as3_tenant_name: "WorkshopExample"
+    F5_VIP_Name_UC1: Use-Case-1-VIP
+    F5_VIP_Name: Use-Case-2-VIP
+    pool_members: "{{ groups['web'] }}"
+
+  tasks:
+    - name: CREATE AS3 JSON BODY
+      set_fact:
+        as3_app_body: "{{ lookup('template', 'j2/as3_template.j2', split_lines=False) }}"
+
+    - name: PUSH AS3 Template
+      f5networks.f5_bigip.bigip_as3_deploy:
+        content: "{{ lookup('template','j2/tenant_base.j2', split_lines=False) }}"

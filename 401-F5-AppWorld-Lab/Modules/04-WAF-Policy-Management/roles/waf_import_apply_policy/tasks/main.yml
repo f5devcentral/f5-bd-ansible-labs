@@ -1,0 +1,11 @@
+---
+# tasks file for ASM-Role
+
+ - name: Import ASM Policy From Modified File
+   include_tasks: f5_asm_import_and_assign.yaml
+   when: Blocked_URLs is defined or Blocked_IPs is defined
+   tags: 
+     - policy
+     - block_urls
+     - block_ips
+

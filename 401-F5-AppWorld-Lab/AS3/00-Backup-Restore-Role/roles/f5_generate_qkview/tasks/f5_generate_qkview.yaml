@@ -1,0 +1,6 @@
+---
+- name: Fetch a qkview from the remote device
+  bigip_qkview:
+    dest: "{{local_folder_location}}/{{file_name}}.qkview"
+    provider: "{{provider}}"
+  delegate_to: localhost

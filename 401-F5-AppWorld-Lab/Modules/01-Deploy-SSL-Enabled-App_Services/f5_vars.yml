@@ -1,0 +1,4 @@
+---
+# Modify based on deployment
+F5_Admin_Port: "{{ server_port }}"
+F5_VIP_Name: Use-Case-1-VIP

@@ -1,0 +1,25 @@
+---
+
+- name: Install UCS
+  f5networks.f5_bigip.bigip_ucs:
+    ucs: "{{local_folder_location}}{{file_name}}"
+    no_license: yes
+    state: installed
+    timeout: 300
+  register: task
+  ignore_errors: true
+
+
+
+# This code needs to be validated as created error so using other method to identify
+# - debug:
+#     var: task
+
+# - name: Install (upload, install) UCS without installing the license portion - check task
+#   f5networks.f5_bigip.bigip_ucs:
+#     ucs: "{{ task.ucs }}"
+#     task_id: "{{ task.task_id }}"
+#     timeout: 300
+
+# - debug:
+#     var: ucs_backup

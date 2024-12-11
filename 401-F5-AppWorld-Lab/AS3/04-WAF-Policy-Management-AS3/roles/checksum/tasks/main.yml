@@ -1,0 +1,40 @@
+---
+
+- name: change Web Server based on lab
+  ansible.builtin.set_fact:
+    ASM_WebServer_File_Location: "{{ASM_WebServer_File_Location_2}}"
+  when: lab_version is not defined
+  
+- name: Get Checksum of Modified file
+  ansible.builtin.stat:
+    path : "{{ ASM_Policy_File }}"
+  register: second_file
+  when: does_xml_exist.matched >= 1
+  delegate_to: localhost
+
+- name: Modified File Sha1
+  ansible.builtin.set_fact:
+    file2_sha: "{{ second_file.stat.checksum }}"  
+  when: does_xml_exist.matched >= 1
+  delegate_to: localhost
+
+- name: Compilation Changed
+  ansible.builtin.set_fact:
+    sha_matched: = "{{file2_sha and file1_sha}}"
+  when:  (does_xml_exist.matched >= 1) and (file2_sha != file1_sha)
+  delegate_to: localhost
+  
+- name: Store Modified File in Webserver
+  ansible.builtin.copy:
+    src: "{{ ASM_Policy_File }}"
+    dest: "{{ ASM_WebServer_File_Location }}{{ ASM_Final_File_Name }}"
+  when:  (does_xml_exist.matched == 0) or (file2_sha != file1_sha)
+
+- name: Modify File for Web Use
+  ansible.builtin.shell: chcon -t httpd_sys_content_t {{ ASM_WebServer_File_Location }}{{ ASM_Final_File_Name }}
+  when:  (does_xml_exist.matched == 0) or (file2_sha != file1_sha)
+
+- name: Use Existing ASM policy
+  ansible.builtin.set_fact:
+    ASM_Final_File_Name: "{{ latest_file_output.stdout }}"
+  when:  (does_xml_exist.matched >= 1) and (file2_sha == file1_sha)
