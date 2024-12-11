@@ -1,0 +1,11 @@
+---
+
+- name: Collect users and files information on CM device
+  f5networks.next.cm_device_info:
+    gather_subset:
+      - all
+  register: cm_info
+
+# - name: Debug CM-Info
+#   ansible.builtin.debug:
+#     var: cm_info

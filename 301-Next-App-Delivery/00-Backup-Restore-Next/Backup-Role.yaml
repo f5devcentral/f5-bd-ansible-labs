@@ -1,0 +1,16 @@
+---
+- name: BIG-IP Next Automation TEST
+  hosts: next-cm
+  connection: httpapi
+  gather_facts: false
+  vars_files:
+    - vars/f5_vars.yml
+  vars:
+    ansible_httpapi_password: '{{ lookup("env", "ANSIBLE_NET_PASSWORD") }}'
+    ansible_httpapi_port: 443
+    ansible_network_os: f5networks.next.cm
+    ansible_httpapi_use_ssl: true
+    ansible_httpapi_validate_certs: false
+  roles:
+    - f5_get_info
+    - f5_backup_data

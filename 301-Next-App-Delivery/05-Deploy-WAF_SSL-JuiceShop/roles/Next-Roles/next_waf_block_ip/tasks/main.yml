@@ -1,0 +1,29 @@
+---
+
+
+- name: "Show Debug of Blocked IPs"
+  ansible.builtin.debug:
+    msg: "These are the IPs that need to be blocked - {{ Blocked_IPs }}"
+
+- name: "Add Blocked IPs to {{ waf_policy_name }}"
+  ansible.builtin.uri:
+    url: "https://{{ ansible_host }}/api/v1/spaces/default/security/waf/policy-ip-addresses/"
+    method: POST
+    body: '{"blocking_mode":"always","ip_address":"{{ item }}","ip_mask":"","action":"create","policies":["{{ waf_policy_name }}"],"trusted_by_policy_builder":false,"never_log_requests":false,"never_learn_requests":false}'
+    status_code:
+      - 204
+      - 304
+      - 400
+    timeout: 300
+    body_format: json
+    headers:
+      Authorization: "Bearer {{ login_info.json.access_token }}"
+    validate_certs: false
+  delegate_to: localhost
+  register: waf_policy
+  with_items: "{{ Blocked_IPs }}"
+  failed_when: (waf_policy.status == 400) and (waf_policy.json.message is not search("already exists"))
+
+# - name: Debug WAF Policy
+#   ansible.builtin.debug:
+#     var: waf_policy

@@ -1,0 +1,91 @@
+{
+  "class": "ADC",
+  "controls": {
+    "class": "Controls",
+    "logLevel": "error"
+  },
+  "id": "http-canonical-cm-example-template",
+  "label": "Central Manager Example Template",
+  "remark": "",
+  "schemaVersion": "3.43.0",
+  "tenant2rYbnmocSKaLfVmF905V99Kg": {
+    "{{ as3_tenant_name }}": {
+      "{{ as3_tenant_name }}-Pool": {
+        "allowNetworks": [
+          {
+            "bigip": "Default"
+          }
+        ],
+        "class": "Pool",
+        "loadBalancingMode": "round-robin",
+        "members": [
+          {
+            "ratio": 10,
+            "servers": [
+              {% set comma = joiner(",") %}
+              {% for members in pool_members %}
+              {
+                  "address": "{{ hostvars[members]['private_ip'] }}",
+                  "name": "{{ hostvars[members]['inventory_hostname'] }}"
+              },
+              {% endfor %}
+            ],
+          "servicePort": 80
+          }
+        ],
+        "monitors": [
+          {
+            "use": "http"
+          }
+        ]
+      },
+      "{{ as3_tenant_name }}-Pool_service": {
+        "class": "Service_Pool",
+        "pool": "{{ as3_tenant_name }}-Pool"
+      },
+      "{{ as3_tenant_name }}-VIP": {
+        "class": "Service_HTTPS",
+        "mirroring": "L4",
+        "persistenceMethods": [],
+        "pool": "{{ as3_tenant_name }}-Pool",
+        "serverTLS": "pTLSServer_Local_Use-Case-4-App",
+        "policyWAF": {
+          "cm": "{{ waf_policy_name }}"
+        },
+        "snat": "auto",
+        "virtualAddresses": [
+          "{{ vip_ip_address }}"
+        ],
+        "virtualPort": 8444
+      },
+      "class": "Application",
+      "http": {
+        "class": "Monitor",
+        "interval": 5,
+        "monitorType": "http",
+        "receive": ".*",
+        "receiveDown": "",
+        "send": "GET / HTTP/1.0\r\n\r\n",
+        "timeout": 16
+      },
+      "pTLSServer_Local_Use-Case-4-App": {
+        "certificates": [
+          {
+            "certificate": "tlsserver_local_cert_Use-Case-2-App_Use-Case-2-Cert_Use-Case-2-Cert_ecda"
+          }
+        ],
+        "class": "TLS_Server"
+      },
+      "tlsserver_local_cert_Use-Case-2-App_Use-Case-2-Cert_Use-Case-2-Cert_ecda": {
+        "certificate": {
+          "cm": "Use-Case-2-Cert.crt"
+        },
+        "class": "Certificate",
+        "privateKey": {
+          "cm": "Use-Case-2-Cert.pem"
+        }
+      }
+    },
+    "class": "Tenant"
+  }
+}

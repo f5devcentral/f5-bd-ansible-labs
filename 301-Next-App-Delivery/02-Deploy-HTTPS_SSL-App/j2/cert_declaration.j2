@@ -1,0 +1,108 @@
+{
+  "class": "ADC",
+  "controls": {
+    "class": "Controls",
+    "logLevel": "error"
+  },
+  "id": "http-canonical-cm-example-template",
+  "label": "Central Manager Example Template",
+  "remark": "",
+  "schemaVersion": "3.43.0",
+  "tenanttTNwsfBoTye1rwYz2mxIfA": {
+    "class": "Tenant",
+    "{{ as3_tenant_name }}": {
+      "{{ as3_tenant_name }}-Pool": {
+        "allowNetworks": [
+          {
+            "bigip": "Default"
+          }
+        ],
+        "class": "Pool",
+        "loadBalancingMode": "round-robin",
+        "members": [
+          {
+            "ratio": 10,
+            "servers": [
+              {% set comma = joiner(",") %}
+              {% for members in pool_members %}
+              {
+                  "address": "{{ hostvars[members]['private_ip'] }}",
+                  "name": "{{ hostvars[members]['inventory_hostname'] }}"
+              },
+              {% endfor %}
+            ],
+          "servicePort": 80
+          }
+        ],
+        "monitors": [
+          {
+            "use": "http"
+          }
+        ]
+      },
+      "{{ as3_tenant_name }}-Pool_service": {
+        "class": "Service_Pool",
+        "pool": "{{ as3_tenant_name }}-Pool"
+      },
+      "{{ as3_tenant_name }}-VIP": {
+        "class": "Service_HTTPS",
+        "mirroring": "L4",
+        "persistenceMethods": [],
+        "pool": "{{ as3_tenant_name }}-Pool",
+        "serverTLS": "pTLSServer_Local_Use-case-2-App",
+        "snat": "auto",
+        "virtualAddresses": [
+          "{{ vip_ip_address }}"
+        ],
+        "virtualPort": 443
+      },
+      "class": "Application",
+      "http": {
+        "class": "Monitor",
+        "interval": 5,
+        "monitorType": "http",
+        "receive": ".*",
+        "receiveDown": "",
+        "send": "GET / HTTP/1.0\r\n\r\n",
+        "timeout": 16
+      },
+      "pTLSServer_Local_Use-case-2-App": {
+        "certificates": [
+          {
+            "certificates": [
+              "tlsserver_local_cert_Use-Case-2-App-Cert_Use-Case-2-Cert_ecda"
+            ],
+            "ciphers": "DEFAULT",
+            "enableAuthentication": false,
+            "namedGroups": "DEFAULT",
+            "signatureAlgorithms": "DEFAULT",
+            "sniDefault": true,
+            "tls1_1Enabled": false,
+            "tls1_2Enabled": true,
+            "tls1_3Enabled": false
+          }
+        ],
+        "class": "TLS_Server"
+      },
+      "tcp": {
+        "class": "Monitor",
+        "interval": 5,
+        "monitorType": "tcp",
+        "receive": ".*",
+        "receiveDown": "",
+        "send": "",
+        "timeout": 16
+      },
+      "tlsserver_local_cert_Use-Case-2-App-Cert_Use-Case-2-Cert_ecda": {
+        "certificate": {
+          "cm": "Use-Case-2-Cert.crt"
+        },
+        "class": "Certificate",
+        "privateKey": {
+          "cm": "Use-Case-2-Cert.pem"
+        }
+      }
+    },
+    "class": "Tenant"
+  }
+}

@@ -1,0 +1,15 @@
+---
+
+# Array can Pass Single Node, Multiple Nodes, or "ALL" Nodes (When Using All use single array object with all in it do not mix with Nodes)
+F5_Pool_Members:
+ - node1
+# - node2
+
+# Example for Changing State of "ALL" Nodes within the given Pool this use case is for customers who have lots of webservers and would want to disable an entire pool
+# F5_Pool_Members:
+# - All
+
+# State is either Enabled, Disabled, Forced_Offline (case doesnt matter)
+F5_Pool_Node_State: "Disable"
+#F5_Pool_Node_State: "Enable"
+#F5_Pool_Node_State: "Offline"
