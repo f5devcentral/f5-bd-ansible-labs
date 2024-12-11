@@ -1,6 +1,8 @@
 ---
 # Modify based on deployment
 F5_Admin_Port: "{{ server_port }}"
+
+#/tmp/f5 on Execution environment posts to /f5/code-output/ on local system with volume mount
 local_folder_location: "/tmp/f5/"
 
 #File Name of Backup could use timestamps/names/etc.
