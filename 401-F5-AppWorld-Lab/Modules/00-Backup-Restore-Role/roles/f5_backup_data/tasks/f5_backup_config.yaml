@@ -23,6 +23,7 @@
     path: "{{ local_folder_location }}"
     state: directory
     mode: '0755'
+  delegate_to: localhost
 
 - name: Download a new UCS
   f5networks.f5_modules.bigip_ucs_fetch:
