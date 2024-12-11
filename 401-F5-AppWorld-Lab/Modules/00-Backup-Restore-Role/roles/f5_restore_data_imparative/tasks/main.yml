@@ -21,16 +21,16 @@
   delegate_to: localhost
   ignore_errors: true
   register: restored
-  when: file_name.stat.exists == true
+  when: file_name.failed == false
 
 - debug:
     msg: "Restore F5 Configuration FAILED do to backup file not found"
-  when: file_name.stat.exists == false
+  when: file_name.failed == true
   tags:
     - restore
 
 - debug:
     msg: "Restore Completed, Ignore Above Error in Restoration Section.  Reported bug at https://github.com/F5Networks/f5-ansible/issues/1666"
-  when: file_name.stat.exists == true
+  when: file_name.failed == false
   tags:
     - restore
