@@ -18,13 +18,6 @@
     cur_date: "{{ tstamp.stdout[0:10] }}"
     cur_time: "{{ tstamp.stdout[10:] }}"
 
-- name: Create Folder for Backup Data
-  ansible.builtin.file:
-    path: "{{ local_folder_location }}"
-    state: directory
-    mode: '0755'
-  delegate_to: localhost
-
 - name: Download a new UCS
   f5networks.f5_modules.bigip_ucs_fetch:
     src: "{{ inventory_hostname }}-{{ cur_date }}-{{ cur_time }}.ucs"
