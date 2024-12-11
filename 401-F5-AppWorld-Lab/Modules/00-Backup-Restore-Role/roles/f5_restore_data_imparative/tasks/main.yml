@@ -7,6 +7,10 @@
   register: file_name
   delegate_to: localhost
 
+- name: debug:
+  ansible.builtin.debug:
+    var: file_name
+    
 #Ignore set due to Bug #1666 https://github.com/F5Networks/f5-ansible/issues/1666
 - name: Restore UCS From Backup
   f5networks.f5_modules.bigip_ucs:
