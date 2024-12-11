@@ -1,7 +1,26 @@
 ---
+# - name: Download a new UCS
+#   f5networks.f5_modules.bigip_ucs_fetch:
+#     src: "{{file_name}}"
+#     dest: "{{local_folder_location}}{{file_name}}"
+#     provider: "{{provider}}"
+#   delegate_to: localhost
+
+
+
+- name: Get timestamp from the system
+  shell: "date +%Y-%m-%d%H-%M-%S"
+  register: tstamp
+  delegate_to: localhost
+
+- name: Set variables
+  set_fact:
+    cur_date: "{{ tstamp.stdout[0:10] }}"
+    cur_time: "{{ tstamp.stdout[10:] }}"
+
 - name: Download a new UCS
   f5networks.f5_modules.bigip_ucs_fetch:
-    src: "{{file_name}}"
-    dest: "{{local_folder_location}}{{file_name}}"
+    src: "{{inventory_hostname}}-{{cur_date}}-{{cur_time}}.ucs"
+    dest: "{{local_folder_location}}/{{inventory_hostname}}-{{cur_date}}-{{cur_time}}.ucs"
     provider: "{{provider}}"
   delegate_to: localhost
