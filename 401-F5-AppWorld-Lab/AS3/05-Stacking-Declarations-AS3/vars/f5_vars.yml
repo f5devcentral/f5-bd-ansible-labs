@@ -32,5 +32,6 @@ F5_Pool_Node_State: "Disable"
 #F5_Pool_Node_State: "Enable"
 #F5_Pool_Node_State: "Offline"
 
-#UC4 Variable
+#UC4 Variables
+ASM_WebServer_File_Location: "/usr/share/nginx/html/asm-profiles/"
 ASM_Policy_Website: "http://{{ hostvars['node1'].ansible_host }}/asm-profiles/"
