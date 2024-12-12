@@ -1,7 +1,6 @@
 ---
-- name: AS3 USECASE-2
+- name: AS3 Stacking Decarations
   hosts: lb
-  connection: httpapi
   gather_facts: false
   vars_files:
     - vars/f5_vars.yml
@@ -31,6 +30,10 @@
 
     # - debug:
     #     var: as3_app_body
+
+    - name: Change Communication
+      ansible.builtin.set_fact:
+        ansible_connection: httpapi
 
     - name: PUSH AS3 Template
       f5networks.f5_bigip.bigip_as3_deploy:
