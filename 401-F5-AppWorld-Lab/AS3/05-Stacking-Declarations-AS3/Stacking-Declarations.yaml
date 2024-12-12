@@ -34,7 +34,7 @@
 
     - name: Combine Declarations
       ansible.builtin.set_fact:
-        combined: "{{ lookup('template', 'j2/'item.path.split('/')[-1], split_lines=False) }}"
+        combined: "{{ lookup('template', 'j2/item.path.split('/')[-1]', split_lines=False) }}"
       with_items: "{{ file_array.files }}"
       when: item.path.split('/')[-1] is not search("base")  
 
