@@ -7,6 +7,15 @@
 
   tasks:
        
+    - name: Find Latest File
+      ansible.builtin.shell: ls {{ ASM_WebServer_File_Location }} -Artf | tail -n 1
+      register: file_name
+      delegate_to: node1
+
+    - name: Change Communication
+      ansible.builtin.set_fact:
+        ansible_connection: httpapi
+
     - name: add filenames to array
       ansible.builtin.find:
         paths: "{{ playbook_dir }}/j2"
@@ -15,11 +24,6 @@
     - name: Initialize combined_content variable
       ansible.builtin.set_fact:
         as3_app_body: ""
-
-    - name: Find Latest File
-      ansible.builtin.shell: ls {{ ASM_WebServer_File_Location }} -Artf | tail -n 1
-      register: file_name
-      delegate_to: node1
 
     - name: CREATE AS3 JSON BODY
       ansible.builtin.set_fact:
@@ -30,10 +34,6 @@
 
     # - debug:
     #     var: as3_app_body
-
-    - name: Change Communication
-      ansible.builtin.set_fact:
-        ansible_connection: httpapi
 
     - name: PUSH AS3 Template
       f5networks.f5_bigip.bigip_as3_deploy:
