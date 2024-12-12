@@ -48,18 +48,18 @@
     - name: Read and combine file contents with commas
       ansible.builtin.set_fact:
         as3_app_body: >-
-          {{ as3_app_body + lookup('template', item.path, split_lines=False) + (',') }}
+          {{ as3_app_body + lookup('template', item.path, split_lines=false) + (',') }}
       with_items: "{{ file_array.files }}"
       when: "'base' not in item.path.split('/')[-1]"
 
-    - debug:
-        var: as3_app_body
+    # - debug:
+    #     var: as3_app_body
 
     # - name: CREATE AS3 JSON BODY
     #   set_fact:
     #     as3_app_body: "{{ lookup('template', 'j2/as3_template.j2', split_lines=False) }}"
     #   with_items: 
 
-    # - name: PUSH AS3 Template
-    #   f5networks.f5_bigip.bigip_as3_deploy:
-    #     content: "{{ lookup('template','j2/tenant_base.j2', split_lines=False) }}"
+    - name: PUSH AS3 Template
+      f5networks.f5_bigip.bigip_as3_deploy:
+        content: "{{ lookup('template','j2/tenant_base.j2', split_lines=False) }}"
