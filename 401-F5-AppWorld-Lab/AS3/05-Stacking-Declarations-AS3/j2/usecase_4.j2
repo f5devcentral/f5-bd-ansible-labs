@@ -1,15 +1,15 @@
 "AS3-UseCase-4": {
 	"class": "Application",
-	"{{F5_VIP_Name}}": {
+	"{{ F5_VIP_Name_UC4 }}": {
 		"class": "Service_HTTPS",
 		"virtualPort": 8084,
 		"virtualAddresses": [
 			"{{ private_ip }}"
 		],
 		"profileHTTP": "basic", 
-		"pool": "{{ F5_VIP_Name }}_pool",
+		"pool": "{{ F5_VIP_Name_UC4 }}_pool",
 		"policyWAF": {
-			"use": "{{F5_VIP_Name}}-Policy"
+			"use": "{{ F5_VIP_Name_UC4 }}-Policy"
 		},
 		"redirect80": false,
 		"profileMultiplex": {
@@ -20,7 +20,7 @@
 		},
 		"persistenceMethods": []
 	},
-	"{{ F5_VIP_Name }}_pool": {
+	"{{ F5_VIP_Name_UC4 }}_pool": {
 		"class": "Pool",
 		"minimumMembersActive": 0,
 		"minimumMonitors": "all",
@@ -37,7 +37,7 @@
 		]
 		}]
 	},
-	"{{F5_VIP_Name}}-Policy": {
+	"{{ F5_VIP_Name_UC4 }}-Policy": {
 		"class": "WAF_Policy",
 		"url": "{{ ASM_Policy_Website }}{{ file_name.stdout }}",
 		"ignoreChanges": false
