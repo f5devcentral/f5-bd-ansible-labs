@@ -12,7 +12,7 @@
       register: file_name
       delegate_to: node1
 
-    - name: Change Communication
+    - name: Change Communication from SSH to HTTPAPI for F5
       ansible.builtin.set_fact:
         ansible_connection: httpapi
 
