@@ -1,23 +1,16 @@
 ---
 
-# AS3 Modules
-ansible_httpapi_password: "{{ ansible_password }}"
-ansible_network_os: f5networks.f5_bigip.bigip
-ansible_httpapi_use_ssl: yes
-ansible_httpapi_validate_certs: no
-ansible_httpapi_port: "{{ server_port }}"
-
-# Declaration Info
-as3_tenant_name: "WorkshopExample"
+#### Declaration Info
+as3_tenant_name: "My-Cool-Tenant"
 F5_VIP_Name_UC1: Use-Case-1-VIP
 F5_VIP_Name_UC2: Use-Case-2-VIP
 F5_VIP_Name_UC3: Use-Case-3-VIP
 F5_VIP_Name_UC4: Use-Case-4-VIP
 
-# Pool Members Info
+#### Pool Members for All Usecases
 pool_members: "{{ groups['web'] }}"
 
-# UC3 Pool Member Status
+#### UC3 Variables
   # Array can Pass Single Node, Multiple Nodes, or "ALL" Nodes (When Using All use single array object with all in it do not mix with Nodes)
 F5_Pool_Members:
  - node1
@@ -32,6 +25,6 @@ F5_Pool_Node_State: "Disable"
 #F5_Pool_Node_State: "Enable"
 #F5_Pool_Node_State: "Offline"
 
-#UC4 Variables
+#### UC4 Variables
 ASM_WebServer_File_Location: "/usr/share/nginx/html/asm-profiles/"
 ASM_Policy_Website: "http://{{ hostvars['node1'].ansible_host }}/asm-profiles/"
