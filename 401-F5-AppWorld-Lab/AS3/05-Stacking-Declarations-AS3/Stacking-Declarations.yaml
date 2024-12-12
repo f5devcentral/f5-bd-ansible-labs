@@ -29,7 +29,7 @@
     - name: debug
       ansible.builtin.debug:
         var: item.path
-      with_items: "{{ file_array.files | split'/'[-1] }}"
+      with_items: "{{ file_array.files | split('/')[-1] }}"
 
     # - name: CREATE AS3 JSON BODY
     #   set_fact:
