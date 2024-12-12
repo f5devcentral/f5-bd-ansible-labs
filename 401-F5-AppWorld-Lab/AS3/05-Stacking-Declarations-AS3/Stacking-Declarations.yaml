@@ -39,7 +39,7 @@
       when: "'base' not in item.path.split('/')[-1]"
 
     - debug:
-        var: combined
+        var: file_array.files
 
     - name: Initialize combined_content variable
       ansible.builtin.set_fact:
