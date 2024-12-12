@@ -29,7 +29,7 @@
     set_fact:
       previous_run_exists: "{{ item.name }}"
     with_items: "{{ previous_run.virtual_servers }}"
-    when: item.name == "Use-Case-4-VIP_https_vip"
+    when: item.name == "Use-Case-3-VIP_https_vip"
     loop_control:
       label: "{{ item.name }}"
 
