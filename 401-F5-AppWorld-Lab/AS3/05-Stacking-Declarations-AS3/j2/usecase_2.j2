@@ -1,20 +1,20 @@
 "AS3-UseCase-2": {
 	"class": "Application",
-	"{{F5_VIP_Name}}": {
+	"{{F5_VIP_Name_UC2}}": {
 		"class": "Service_HTTPS",
 		"virtualPort": 8081,
 		"virtualAddresses": [
 			"{{ private_ip }}"
 		],
-		"pool": "{{ F5_VIP_Name }}_pool",
+		"pool": "{{ F5_VIP_Name_UC2 }}_pool",
 		"redirect80": false,
 		"profileMultiplex": {
 			"bigip": "/Common/oneconnect"
 		},
-		"serverTLS": "{{ F5_VIP_Name }}_cert",
+		"serverTLS": "{{ F5_VIP_Name_UC2 }}_cert",
 		"persistenceMethods": []
 	},
-	"{{ F5_VIP_Name }}_pool": {
+	"{{ F5_VIP_Name_UC2 }}_pool": {
 		"class": "Pool",
 		"minimumMembersActive": 0,
 		"minimumMonitors": "all",
@@ -31,13 +31,13 @@
 		]
 		}]
 	},
-	"{{ F5_VIP_Name }}_cert": {
+	"{{ F5_VIP_Name_UC2 }}_cert": {
 		"class": "TLS_Server",
 		"certificates": [{
-			"certificate": "{{ F5_VIP_Name }}_crt"
+			"certificate": "{{ F5_VIP_Name_UC2 }}_crt"
 		}]
 	},
-	"{{ F5_VIP_Name }}_crt": {
+	"{{ F5_VIP_Name_UC2 }}_crt": {
 		"class": "Certificate",
 		"remark": "in practice we recommend using a passphrase",
 		"certificate": "{{ lookup('file', '{{playbook_dir}}/app-demo.crt') | replace('\n', '\\n') }}",
