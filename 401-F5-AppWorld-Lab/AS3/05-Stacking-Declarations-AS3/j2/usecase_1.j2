@@ -1,0 +1,34 @@
+"AS3-UseCase-1": {
+  "class": "Application",
+  "{{F5_VIP_Name_UC1}}": {
+    "class": "Service_HTTPS",
+    "virtualAddresses": [
+      "{{ private_ip }}"
+    ],
+    "profileMultiplex": {
+        "bigip": "/Common/oneconnect"
+    },
+    "pool": "{{ F5_VIP_Name_UC1 }}_pool",
+    "serverTLS": {
+        "bigip": "/Common/clientssl"
+    },
+    "persistenceMethods": []
+  },
+  "{{ F5_VIP_Name_UC1 }}_pool": {
+    "class": "Pool",
+    "minimumMembersActive": 0,
+    "minimumMonitors": "all",
+    "monitors": [
+      "http"
+    ],
+    "members": [{
+      "servicePort": 80,
+      "serverAddresses": [
+              {% set comma = joiner(",") %}
+              {% for mem in pool_members %}
+                  {{comma()}} "{{  hostvars[mem]['private_ip']  }}"
+              {% endfor %}
+      ]
+    }]
+  }
+}

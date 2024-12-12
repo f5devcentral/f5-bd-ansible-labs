@@ -1,0 +1,46 @@
+"AS3-UseCase-3": {
+  "class": "Application",
+  "{{F5_VIP_Name}}": {
+      "class": "Service_HTTPS",
+      "virtualPort": 8083,
+      "virtualAddresses": [
+        "{{ private_ip }}"
+      ],
+      "pool": "{{ F5_VIP_Name }}_pool",
+      "redirect80": false,
+      "profileMultiplex": {
+          "bigip": "/Common/oneconnect"
+      },
+      "serverTLS": {
+          "bigip": "/Common/clientssl"
+      },
+      "persistenceMethods": []
+  },
+  "{{ F5_VIP_Name }}_pool": {
+    "class": "Pool",
+    "minimumMembersActive": 0,
+    "minimumMonitors": "all",
+    "monitors": [
+        "http"
+    ],
+    "members": [
+        {%  for item in pool_members %}
+        {
+            "servicePort": 80,
+            "serverAddresses": [
+            "{{hostvars[item]['private_ip'] }}"
+            ],
+            {%  if hostvars[item]['inventory_hostname'] in F5_Pool_Members %}
+              "adminState": "{{F5_Pool_Node_State|lower}}"
+            {%  elif "all" in F5_Pool_Members|lower %}
+              "adminState": "{{F5_Pool_Node_State|lower}}"
+            {%  else  %}
+              "adminState": "enable"
+            {% endif %}
+        }
+        {{ ", " if not loop.last else ""}}
+        {% endfor %}
+        ]
+  }
+}
+
