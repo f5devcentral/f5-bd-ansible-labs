@@ -45,7 +45,7 @@
     - name: Read and combine file contents with commas
       ansible.builtin.set_fact:
         combined_content: >-
-          {{ combined_content + lookup('file', item.path) + (',' if not loop.last else '') }}
+          {{ combined_content + lookup('file', item.path) + (',' if not item.last else '') }}
       loop: "{{ file_array.files }}"
       when: "'base' not in item.path.split('/')[-1]"
 
