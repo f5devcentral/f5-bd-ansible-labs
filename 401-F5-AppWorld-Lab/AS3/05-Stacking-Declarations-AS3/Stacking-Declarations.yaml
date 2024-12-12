@@ -32,6 +32,15 @@
       with_items: "{{ file_array.files }}"
       when: item.path.split('/')[-1] is not search("base")
 
+    - name: Combine Declarations
+      ansible.builtin.setfact:
+        combined: "{{ lookup('template', 'j2/'item.path.split('/')[-1], split_lines=False) }}"
+      with_items: "{{ file_array.files }}"
+      when: item.path.split('/')[-1] is not search("base")  
+
+    - debug:
+        var: combined
+        
     # - name: CREATE AS3 JSON BODY
     #   set_fact:
     #     as3_app_body: "{{ lookup('template', 'j2/as3_template.j2', split_lines=False) }}"
