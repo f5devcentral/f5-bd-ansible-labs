@@ -38,9 +38,19 @@
       with_items: "{{ file_array.files }}"
       when: "'base' not in item.path.split('/')[-1]"
 
+    - name: Initialize combined_content variable
+      ansible.builtin.set_fact:
+        combined_content: ""
+
+    - name: Read and combine file contents with commas
+      ansible.builtin.set_fact:
+        combined_content: >-
+          {{ combined_content + lookup('file', item.path) + (',' if not loop.last else '') }}
+      with_items: "{{ file_array.files }}"
+      when: "'base' not in item.path.split('/')[-1]"
 
     - debug:
-        var: combined
+        var: combined_content
 
     # - name: CREATE AS3 JSON BODY
     #   set_fact:
