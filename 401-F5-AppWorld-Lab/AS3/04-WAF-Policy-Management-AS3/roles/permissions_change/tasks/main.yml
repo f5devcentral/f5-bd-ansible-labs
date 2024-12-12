@@ -9,7 +9,7 @@
   ansible.builtin.file:
     path: "{{ ASM_WebServer_File_Location }}"
     state: directory
-    mode: '0777'
+    mode: '0755'
 
 - name: Obtain the ACL for a specific folder
   ansible.posix.acl:
