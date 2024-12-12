@@ -1,7 +1,7 @@
 ---
 
 - name: Find Latest UCS File
-  ansible.builtin.shell: ls {{ local_folder_location }} -Artf | tail -n 1
+  ansible.builtin.shell: ls {{ local_folder_location }} -Artf | grep -i ucs | tail -n 1
   register: file_name
   delegate_to: localhost
 
