@@ -43,7 +43,7 @@
 
     - name: Initialize combined_content variable
       ansible.builtin.set_fact:
-        combined_content: ""
+        as3_app_body: ""
 
     - name: Read and combine file contents with commas
       ansible.builtin.set_fact:
@@ -53,7 +53,7 @@
       when: "'base' not in item.path.split('/')[-1]"
 
     - debug:
-        var: combined_content
+        var: as3_app_body
 
     # - name: CREATE AS3 JSON BODY
     #   set_fact:
