@@ -1,7 +1,7 @@
 ---
 
 #### Declaration Info
-as3_tenant_name: "My-Cool-Tenant"
+as3_tenant_name: "WorkshopExample"
 F5_VIP_Name_UC1: Use-Case-1-VIP
 F5_VIP_Name_UC2: Use-Case-2-VIP
 F5_VIP_Name_UC3: Use-Case-3-VIP
