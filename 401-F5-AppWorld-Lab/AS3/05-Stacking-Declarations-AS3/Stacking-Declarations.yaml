@@ -30,6 +30,7 @@
       ansible.builtin.debug:
         var: item.path.split('/')[-1] 
       with_items: "{{ file_array.files }}"
+      when: item.path.split('/')[-1] is not search("base")
 
     # - name: CREATE AS3 JSON BODY
     #   set_fact:
