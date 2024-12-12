@@ -26,17 +26,18 @@
         paths: "{{ playbook_dir }}/j2"
       register: file_array
 
-    - name: debug
-      ansible.builtin.debug:
-        var: item.path.split('/')[-1] 
-      with_items: "{{ file_array.files }}"
-      when: item.path.split('/')[-1] is not search("base")
+    # - name: debug
+    #   ansible.builtin.debug:
+    #     var: item.path.split('/')[-1] 
+    #   with_items: "{{ file_array.files }}"
+    #   when: item.path.split('/')[-1] is not search("base")
 
     - name: Combine Declarations
       ansible.builtin.set_fact:
-        combined: "{{ lookup('template', 'j2/item.path.split('/')[-1]', split_lines=False) }}"
+        combined: "{{ combined | default([]) + [item.path.split('/')[-1]] }}"
       with_items: "{{ file_array.files }}"
-      when: item.path.split('/')[-1] is not search("base")  
+      when: "'base' not in item.path.split('/')[-1]"
+
 
     - debug:
         var: combined
