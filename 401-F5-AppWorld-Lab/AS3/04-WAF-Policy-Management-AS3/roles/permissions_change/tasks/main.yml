@@ -5,10 +5,11 @@
     ASM_WebServer_File_Location: "{{ASM_WebServer_File_Location_2}}"
   when: lab_version is not defined
 
-- name: Create Folder "{{ ASM_WebServer_File_Location }}" 
+- name: Create Folder "{{ ASM_WebServer_File_Location }}"
   ansible.builtin.file:
     path: "{{ ASM_WebServer_File_Location }}"
     state: directory
+    mode: '0755'
 
 - name: Obtain the ACL for a specific folder
   ansible.posix.acl:
