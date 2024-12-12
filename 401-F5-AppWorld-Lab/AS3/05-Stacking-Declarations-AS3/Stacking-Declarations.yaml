@@ -38,6 +38,9 @@
       with_items: "{{ file_array.files }}"
       when: "'base' not in item.path.split('/')[-1]"
 
+    - debug:
+        var: combined
+
     - name: Initialize combined_content variable
       ansible.builtin.set_fact:
         combined_content: ""
