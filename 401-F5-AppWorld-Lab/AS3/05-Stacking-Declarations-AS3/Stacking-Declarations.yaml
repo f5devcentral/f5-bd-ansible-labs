@@ -28,7 +28,8 @@
 
     - name: debug
       ansible.builtin.debug:
-        var: file_array
+        var: item.path
+      with_items: file_array.files
 
     # - name: CREATE AS3 JSON BODY
     #   set_fact:
