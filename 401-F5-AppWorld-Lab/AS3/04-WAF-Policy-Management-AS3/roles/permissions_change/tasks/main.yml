@@ -10,6 +10,8 @@
     path: "{{ ASM_WebServer_File_Location }}"
     state: directory
     mode: '0755'
+  when:
+    - hostvars['f5']['finished'] is not defined
 
 - name: Obtain the ACL for a specific folder
   ansible.posix.acl:
