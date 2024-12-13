@@ -80,7 +80,7 @@
     f5networks.f5_modules.bigip_virtual_server:
       provider: "{{ provider }}"
       name: "{{ F5_VIP_Name }}_https_vip"
-      port: "8081"
+      port: "8082"
       profiles:
       - http
       - name: "{{ F5_VIP_Name }}_ClientSSL_profile"
